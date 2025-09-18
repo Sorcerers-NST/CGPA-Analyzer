@@ -13,5 +13,4 @@ model users {
   name String
   
 
-
 }
