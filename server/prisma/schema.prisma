@@ -8,9 +8,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model users {
-  user_id Int @id @default(autoincrement())
-  name String
-  
-
+model students {
+  student_id Int @id @default(autoincrement())
+  student_name String
+  student_email String @unique
+  password String
+  college_name String
+  departement String
+  graduation_year Int
 }
