@@ -4,6 +4,8 @@ dotenv.config();
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import allRoutes from "./routes/index.js";
+import passport from 'passport'
+import setupGooglePassport from './config/passportGoogle.js'
 
 const app = express();
 
@@ -16,6 +18,10 @@ const corsOptions = {
   credentials: true,
 }
 app.use(cors(corsOptions));
+
+// initialize passport strategies (if configured)
+setupGooglePassport()
+app.use(passport.initialize())
 
 app.use(allRoutes);
 

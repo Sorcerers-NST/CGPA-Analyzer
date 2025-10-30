@@ -1,16 +1,38 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/Logo.png'
+import GoogleLogo from '../../assets/google.svg'
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Login attempt:', { email, password });
+    (async () => {
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ email, password }),
+        });
+        if (!res.ok) {
+          const txt = await res.text();
+          let err = txt;
+          try { err = JSON.parse(txt); } catch {}
+          console.error('Login failed', err);
+          return;
+        }
+        navigate('/');
+      } catch (err) {
+        console.error('Network error during login', err);
+      }
+    })();
   };
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
@@ -87,6 +109,15 @@ const Login = () => {
             >
               Login
             </button>
+              <div className="mt-3">
+                <a
+                  href="/api/auth/google"
+                  className="w-full inline-flex items-center justify-center gap-3 py-2.5 rounded-lg border border-gray-300 text-sm"
+                >
+                  <img src={GoogleLogo} alt="Google" className="h-5 w-5" />
+                  Continue with Google
+                </a>
+              </div>
           </form>
 
           

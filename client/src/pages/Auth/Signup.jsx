@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Logo from '../../assets/Logo.png'
+import GoogleLogo from '../../assets/google.svg'
 
 const Signup = () => {
   const [username, setUsername] = useState('')
@@ -146,6 +147,15 @@ const Signup = () => {
             <button type="submit" disabled={loading} className="w-full bg-black text-white py-2.5 rounded-lg font-medium hover:bg-gray-900 transition">
               {loading ? 'Creating...' : 'Sign up'}
             </button>
+              <div className="mt-3">
+                <a
+                  href="/api/auth/google"
+                  className="w-full inline-flex items-center justify-center gap-3 py-2.5 rounded-lg border border-gray-300 text-sm"
+                >
+                  <img src={GoogleLogo} alt="Google" className="h-5 w-5" />
+                  Continue with Google
+                </a>
+              </div>
           </form>
 
           <p className="text-center text-sm text-gray-600 mt-6">
