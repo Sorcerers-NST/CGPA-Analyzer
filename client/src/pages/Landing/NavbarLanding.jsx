@@ -1,15 +1,17 @@
 import React from 'react'
-
+import Logo from '../../assets/Logo.png'
 const NavbarLanding = () => {
   return (
     <div className='flex justify-around bg-white'>
       <div>
-        <ul className='list-none'>
-          <li className='text-black font-bold'>CGPA Calculator</li>
+        <ul className='flex list-none'>
+          <li>
+            <img src={Logo} alt="Logo" className=' h-28 w-28'/>
+          </li>
         </ul>
       </div>
       <div >
-        <ul className="flex gap-10 items-center list-none">
+        <ul className=" mt-8 flex gap-10 items-center list-none">
           <li className='text-black font-bold'>Home</li>
           <li className='text-black font-bold'>About</li>
           <li>

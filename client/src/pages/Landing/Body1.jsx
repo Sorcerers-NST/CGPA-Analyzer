@@ -6,7 +6,7 @@ import DownloadLogo from '../../assets/download.gif'
 const Body1 = () => {
   return (
     <div >
-        <div className='mt-40 mb-40'>
+        <div className='mt-28 mb-28'>
             <h1 className='text-6xl  font-extrabold'>Track Your CGPA with </h1>
             <h1 className='text-6xl  font-extrabold mt-4'>Ease</h1>
             <h2 className='mt-6 text-gray-500 text-xl'>Simple, accurate, and beautifully designed for students.</h2>
