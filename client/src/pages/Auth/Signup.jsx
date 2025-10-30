@@ -75,7 +75,7 @@ const Signup = () => {
         setLoading(false)
         return
       }
-      // success -> redirect to login
+
       navigate('/login')
     } catch (err) {
       console.error(err)
