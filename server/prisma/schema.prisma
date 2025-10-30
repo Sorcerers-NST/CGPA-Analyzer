@@ -8,12 +8,108 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model students {
-  student_id Int @id @default(autoincrement())
-  student_name String
-  student_email String @unique
-  password String
-  college_name String
-  departement String
-  graduation_year Int
+model User {
+  id         BigInt      @id @default(autoincrement())
+  username   String      @unique
+  email      String      @unique
+  password   String
+  role       Role        @default(STUDENT)
+  college    College     @relation(fields: [collegeId], references: [id])
+  collegeId  BigInt
+  semesters  Semester[]
+  cgpaRecords CGPARecord[]
+  leaderboardEntries Leaderboard[]
+
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model College {
+  id            BigInt    @id @default(autoincrement())
+  name          String
+  gradingScale  GradingScale
+  gradingDetails Json?
+  users         User[]
+  grades        Grade[]
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Semester {
+  id        BigInt    @id @default(autoincrement())
+  semesterNumber Int
+  user      User      @relation(fields: [userId], references: [id])
+  userId    BigInt
+  subjects  Subject[]
+  cgpaRecords CGPARecord[]
+  leaderboard    Leaderboard[]
+  startDate DateTime?
+  endDate   DateTime?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Subject {
+  id          BigInt    @id @default(autoincrement())
+  name        String
+  credits     Float
+  grade       String?
+  gradePoint  Float?
+  semester    Semester  @relation(fields: [semesterId], references: [id])
+  semesterId  BigInt
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Grade {
+  id           BigInt    @id @default(autoincrement())
+  college      College   @relation(fields: [collegeId], references: [id])
+  collegeId    BigInt
+  gradeLetter  String
+  gradePoint   Float
+  minPercentage Float?
+  maxPercentage Float?
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model CGPARecord {
+  id             BigInt    @id @default(autoincrement())
+  user           User      @relation(fields: [userId], references: [id])
+  userId         BigInt
+  semester       Semester? @relation(fields: [semesterId], references: [id])
+  semesterId     BigInt?
+  sgpa           Float?
+  cgpa           Float?
+  predictedCgpa  Float?
+
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Leaderboard {
+  id          BigInt    @id @default(autoincrement())
+  user        User      @relation(fields: [userId], references: [id])
+  userId      BigInt
+  rank        Int
+  cgpa        Float
+  semester    Semester? @relation(fields: [semesterId], references: [id])
+  semesterId  BigInt?
+
+  createdAt   DateTime  @default(now())
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+enum GradingScale {
+  TEN_POINT
+  FOUR_POINT
+  PERCENTAGE
 }
