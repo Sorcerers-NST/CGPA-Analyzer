@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Logo from '../../assets/Logo.png'
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -8,7 +9,6 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add your login logic here
     console.log('Login attempt:', { email, password });
   };
 
@@ -16,14 +16,16 @@ const Login = () => {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm">
         <div className="bg-white rounded-xl shadow-lg p-8">
-          {/* Heading */}
-          <h1 className="text-2xl font-semibold text-center text-gray-900 mb-8">
-            Welcome Back
-          </h1>
-
-          {/* Login Form */}
+          <div className="flex items-center justify-center mb-6">
+            <img src={Logo} alt="CGPA Calculator" className="h-12 w-12 mr-3" />
+            <h1 className="text-2xl font-semibold text-center text-gray-900">
+              CGPA Calculator — Login
+            </h1>
+          </div>
+          
+          
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Email Field */}
+            
             <div>
               <label 
                 htmlFor="email" 
@@ -42,7 +44,7 @@ const Login = () => {
               />
             </div>
 
-            {/* Password Field */}
+            
             <div>
               <label 
                 htmlFor="password" 
@@ -79,7 +81,6 @@ const Login = () => {
               </div>
             </div>
 
-            {/* Login Button */}
             <button
               type="submit"
               className="w-full bg-black text-white py-2.5 rounded-lg font-medium hover:bg-gray-900 hover:scale-105 transition duration-200 transform"
@@ -88,7 +89,7 @@ const Login = () => {
             </button>
           </form>
 
-          {/* Sign Up Link */}
+          
           <p className="text-center text-sm text-gray-600 mt-6">
             Don't have an account?{' '}
             <Link 
