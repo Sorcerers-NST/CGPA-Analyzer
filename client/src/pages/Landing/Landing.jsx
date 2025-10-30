@@ -6,11 +6,11 @@ import FooterLanding from './FooterLanding'
 
 const Landing = () => {
   return (
-    <>
-         <NavbarLanding/>
-         <Body1/>
-         <FooterLanding/>
-    </>
+    <div className='min-h-screen bg-white'>
+      <NavbarLanding/>
+      <Body1/>
+      <FooterLanding/>
+    </div>
   )
 }
 
