@@ -19,8 +19,44 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add your login logic here
+    
+    // TODO: Replace with actual API call to your backend
+    // For now, using mock authentication
+    
+    // Simulate API call
     console.log('Login attempt:', formData, 'Remember me:', rememberMe);
+    
+    // Mock validation - Replace with actual API response
+    if (formData.email && formData.password.length >= 6) {
+      // Store auth token (in real app, this comes from backend)
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userEmail', formData.email);
+      
+      if (rememberMe) {
+        localStorage.setItem('rememberMe', 'true');
+      }
+      
+      // Show success message (you can replace with toast notification)
+      console.log('Login successful! Redirecting to dashboard...');
+      
+      // Redirect to dashboard
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 500);
+    } else {
+      alert('Please enter valid credentials (password must be at least 6 characters)');
+    }
+  };
+
+  const handleSocialLogin = (provider) => {
+    // TODO: Implement OAuth logic for Google/GitHub
+    console.log(`${provider} login clicked`);
+    alert(`${provider} login will be implemented with OAuth`);
+  };
+
+  const handleForgotPassword = () => {
+    // TODO: Implement forgot password logic
+    alert('Forgot password feature will be implemented');
   };
 
   return (
@@ -149,6 +185,7 @@ const Login = () => {
                         </label>
                         <button
                           type="button"
+                          onClick={handleForgotPassword}
                           className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
                         >
                           Forgot password?
@@ -222,6 +259,7 @@ const Login = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <button
                       type="button"
+                      onClick={() => handleSocialLogin('Google')}
                       className="flex items-center justify-center gap-3 px-4 py-3 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
                     >
                       <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -235,6 +273,7 @@ const Login = () => {
                     
                     <button
                       type="button"
+                      onClick={() => handleSocialLogin('GitHub')}
                       className="flex items-center justify-center gap-3 px-4 py-3 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
                     >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

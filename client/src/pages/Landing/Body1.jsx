@@ -1,14 +1,27 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import CalculatorLogo from '../../assets/Calculator-logo.gif'
 import BarLogo from '../../assets/barGraph.gif'
 import DownloadLogo from '../../assets/download.gif'
 
 const Body1 = () => {
+  const navigate = useNavigate()
+
+  const handleGetStarted = () => {
+    // Check if user is logged in (you can add proper auth check later)
+    const isLoggedIn = localStorage.getItem('isLoggedIn')
+    if (isLoggedIn) {
+      navigate('/dashboard')
+    } else {
+      navigate('/signup')
+    }
+  }
+
   return (
     <div className='bg-white'>
       {/* Hero Section */}
-      <section className='max-w-6xl mx-auto px-6 py-32 text-center'>
+      <section id='home' className='max-w-6xl mx-auto px-6 py-32 text-center'>
         <div className='animate-fade-in'>
           <h1 className='text-6xl md:text-7xl font-bold tracking-tight text-gray-900 leading-tight'>
             Track Your CGPA with
@@ -19,7 +32,10 @@ const Body1 = () => {
           <p className='mt-8 text-xl text-gray-600 max-w-2xl mx-auto'>
             Simple, accurate, and beautifully designed for students.
           </p>
-          <button className='mt-10 px-8 py-4 bg-gray-900 text-white text-base font-medium rounded-full hover:bg-gray-800 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl'>
+          <button 
+            onClick={handleGetStarted}
+            className='mt-10 px-8 py-4 bg-gray-900 text-white text-base font-medium rounded-full hover:bg-gray-800 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl'
+          >
             Start Calculating
           </button>
         </div>
@@ -31,7 +47,7 @@ const Body1 = () => {
       </div>
 
       {/* Features Section */}
-      <section className='max-w-6xl mx-auto px-6 py-24'>
+      <section id='features' className='max-w-6xl mx-auto px-6 py-24'>
         <div className='text-center mb-16'>
           <h2 className='text-4xl md:text-5xl font-bold tracking-tight text-gray-900'>
             Why use our CGPA Calculator?

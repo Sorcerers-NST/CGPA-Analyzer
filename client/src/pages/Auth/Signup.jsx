@@ -33,9 +33,35 @@ const Signup = () => {
       alert('Please agree to the Terms and Privacy Policy');
       return;
     }
+
+    // Validate password length
+    if (formData.password.length < 6) {
+      alert('Password must be at least 6 characters long');
+      return;
+    }
     
-    // Add your signup logic here
+    // TODO: Replace with actual API call to your backend
     console.log('Signup attempt:', formData);
+    
+    // Mock successful registration
+    // Store auth token (in real app, this comes from backend)
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('userEmail', formData.email);
+    localStorage.setItem('userName', formData.name);
+    
+    // Show success message
+    console.log('Signup successful! Redirecting to dashboard...');
+    
+    // Redirect to dashboard
+    setTimeout(() => {
+      navigate('/dashboard');
+    }, 500);
+  };
+
+  const handleSocialSignup = (provider) => {
+    // TODO: Implement OAuth logic for Google/GitHub
+    console.log(`${provider} signup clicked`);
+    alert(`${provider} signup will be implemented with OAuth`);
   };
 
   return (
@@ -139,6 +165,7 @@ const Signup = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <button
                       type="button"
+                      onClick={() => handleSocialSignup('Google')}
                       className="flex items-center justify-center gap-3 px-4 py-3 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
                     >
                       <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -152,6 +179,7 @@ const Signup = () => {
                     
                     <button
                       type="button"
+                      onClick={() => handleSocialSignup('GitHub')}
                       className="flex items-center justify-center gap-3 px-4 py-3 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
                     >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
