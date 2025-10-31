@@ -7,10 +7,8 @@ authRouter.post("/register", createUser);
 authRouter.post("/login", loginUser);
 authRouter.post("/logout", logoutUser);
 
-// Google OAuth flow
 authRouter.get('/google', (req, res, next) => {
 	try {
-		// ensure strategy present
 		const strat = passport && typeof passport._strategy === 'function' && passport._strategy('google');
 		if (!strat) return res.status(501).json({ error: 'Google OAuth not configured on server' });
 		return passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
@@ -34,7 +32,6 @@ authRouter.get('/google/callback', (req, res, next) => {
 		const payload = req.user || {};
 		const { generateToken } = await import('../utils/generateToken.js');
 		generateToken(res, payload);
-		// Redirect to dashboard after successful OAuth
 		const redirectTo = `${process.env.CLIENT_URL || 'http://localhost:5173'}/dashboard`;
 		return res.redirect(redirectTo);
 	} catch (err) {

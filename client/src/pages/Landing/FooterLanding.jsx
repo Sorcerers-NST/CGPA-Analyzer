@@ -8,7 +8,6 @@ const FooterLanding = () => {
     <footer className='bg-gray-900 text-white w-full'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 w-full'>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12 mb-8 sm:mb-12'>
-          {/* Brand Column */}
           <div className='text-center sm:text-left'>
             <h3 className='text-xl sm:text-2xl font-bold mb-3 sm:mb-4'>CGPA Calculator</h3>
             <p className='text-gray-400 text-sm leading-relaxed mb-4 sm:mb-6 max-w-xs mx-auto sm:mx-0'>
@@ -16,7 +15,6 @@ const FooterLanding = () => {
             </p>
           </div>
 
-          {/* Quick Links */}
           <div className='text-center sm:text-left'>
             <h4 className='font-semibold text-base sm:text-lg mb-3 sm:mb-4'>Quick Links</h4>
             <ul className='space-y-2 sm:space-y-3'>
@@ -43,7 +41,6 @@ const FooterLanding = () => {
             </ul>
           </div>
 
-          {/* Support */}
           <div className='text-center sm:text-left sm:col-span-2 lg:col-span-1'>
             <h4 className='font-semibold text-base sm:text-lg mb-3 sm:mb-4'>Support</h4>
             <ul className='space-y-2 sm:space-y-3'>
@@ -71,7 +68,6 @@ const FooterLanding = () => {
           </div>
         </div>
 
-        {/* Bottom Bar */}
         <div className='border-t border-gray-800 pt-6 sm:pt-8'>
           <div className='text-center'>
             <p className='text-xs sm:text-sm text-gray-400'>

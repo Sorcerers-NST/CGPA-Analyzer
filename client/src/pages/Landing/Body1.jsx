@@ -9,7 +9,6 @@ const Body1 = () => {
   const navigate = useNavigate()
 
   const handleGetStarted = () => {
-    // Check if user is logged in (you can add proper auth check later)
     const isLoggedIn = localStorage.getItem('isLoggedIn')
     if (isLoggedIn) {
       navigate('/dashboard')
@@ -20,7 +19,6 @@ const Body1 = () => {
 
   return (
     <div className='bg-white w-full'>
-      {/* Hero Section */}
       <section id='home' className='relative overflow-hidden bg-gradient-to-b from-gray-50 to-white w-full'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-32 text-center w-full'>
           <div className='animate-fade-in'>
@@ -56,7 +54,6 @@ const Body1 = () => {
         <div className='border-t border-gray-200'></div>
       </div>
 
-      {/* Features Section */}
       <section id='features' className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 w-full'>
         <div className='text-center mb-12 sm:mb-16'>
           <h2 className='text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 px-4'>
@@ -113,7 +110,6 @@ const Body1 = () => {
         <div className='border-t border-gray-200'></div>
       </div>
 
-      {/* How It Works Section */}
       <section className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 w-full'>
         <div className='text-center mb-12 sm:mb-16'>
           <h2 className='text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 px-4'>
@@ -161,7 +157,6 @@ const Body1 = () => {
         <div className='border-t border-gray-200'></div>
       </div>
 
-      {/* Benefits Section */}
       <section className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 w-full'>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full'>
           <div className='px-4'>
@@ -230,7 +225,6 @@ const Body1 = () => {
         <div className='border-t border-gray-200'></div>
       </div>
 
-      {/* CTA Section */}
       <section className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 w-full'>
         <div className='bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl sm:rounded-3xl p-8 sm:p-12 lg:p-16 text-center text-white shadow-2xl mx-4 sm:mx-0'>
           <h2 className='text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6'>

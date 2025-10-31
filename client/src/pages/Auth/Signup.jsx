@@ -26,7 +26,6 @@ const Signup = () => {
   };
 
   useEffect(() => {
-    // Fetch colleges from server
     const fetchColleges = async () => {
       try {
         const res = await fetch('/api/colleges');
@@ -45,7 +44,6 @@ const Signup = () => {
     e.preventDefault();
     setError('');
     
-    // Validate passwords match
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match!');
       return;
@@ -56,14 +54,12 @@ const Signup = () => {
       return;
     }
 
-    // Validate password requirements
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}$/;
     if (!passwordRegex.test(formData.password)) {
       setError('Password must be at least 8 characters with uppercase, lowercase, number, and special character');
       return;
     }
 
-    // Validate username
     const usernameRegex = /^(?=.{3,30}$)(?!.*[.]{2})[a-zA-Z0-9]+(?:[._-][a-zA-Z0-9]+)*$/;
     if (!usernameRegex.test(formData.username)) {
       setError('Username must be 3-30 characters, alphanumeric with optional ._- separators');
@@ -98,7 +94,6 @@ const Signup = () => {
         return;
       }
       
-      // Registration successful, now login
       const loginRes = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -110,10 +105,8 @@ const Signup = () => {
       });
 
       if (loginRes.ok) {
-        // Redirect to dashboard
         navigate('/dashboard');
       } else {
-        // Registration succeeded but login failed, redirect to login page
         navigate('/login');
       }
     } catch (err) {
@@ -126,17 +119,14 @@ const Signup = () => {
 
   const handleSocialSignup = (provider) => {
     if (provider === 'Google') {
-      // Redirect to Google OAuth
       window.location.href = '/api/auth/google';
     } else if (provider === 'GitHub') {
-      // GitHub OAuth not configured yet
       setError('GitHub authentication is not yet configured');
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 w-full">
-      {/* Navigation Bar */}
       <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50 w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="flex items-center justify-between h-16">
@@ -158,12 +148,10 @@ const Signup = () => {
         </div>
       </nav>
 
-      {/* Main Content */}
       <div className="flex items-center justify-center px-4 py-8 sm:py-16 lg:py-24 w-full">
         <div className="w-full max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center w-full">
             
-            {/* Left Side - Branding */}
             <div className="hidden lg:block space-y-8 animate-fade-in w-full">
               <div className="space-y-4">
                 <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 leading-tight">
@@ -225,11 +213,9 @@ const Signup = () => {
               </div>
             </div>
 
-            {/* Right Side - Signup Form */}
             <div className="w-full max-w-xl mx-auto lg:max-w-none">
               <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 p-6 sm:p-8 lg:p-12 w-full">
                 <div className="space-y-6 sm:space-y-8 w-full">
-                  {/* Header */}
                   <div className="text-center lg:text-left space-y-2">
                     <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
                       Create account
@@ -239,7 +225,6 @@ const Signup = () => {
                     </p>
                   </div>
 
-                  {/* Social Signup */}
                   <div className="grid grid-cols-2 gap-4">
                     <button
                       type="button"
@@ -267,7 +252,6 @@ const Signup = () => {
                     </button>
                   </div>
 
-                  {/* Divider */}
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
                       <div className="w-full border-t border-gray-200"></div>
@@ -277,16 +261,13 @@ const Signup = () => {
                     </div>
                   </div>
 
-                  {/* Form */}
                   <form onSubmit={handleSubmit} className="space-y-5">
-                    {/* Error Message */}
                     {error && (
                       <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
                         {error}
                       </div>
                     )}
 
-                    {/* Username Field */}
                     <div className="space-y-2">
                       <label 
                         htmlFor="username" 
@@ -307,7 +288,6 @@ const Signup = () => {
                       <p className="text-xs text-gray-500 mt-1">3-30 characters, letters, numbers, and ._- only</p>
                     </div>
 
-                    {/* Email Field */}
                     <div className="space-y-2">
                       <label 
                         htmlFor="email" 
@@ -327,7 +307,6 @@ const Signup = () => {
                       />
                     </div>
 
-                    {/* College Field */}
                     <div className="space-y-2">
                       <label 
                         htmlFor="collegeId" 
@@ -352,7 +331,6 @@ const Signup = () => {
                       </select>
                     </div>
 
-                    {/* Password Field */}
                     <div className="space-y-2">
                       <label 
                         htmlFor="password" 
@@ -392,7 +370,6 @@ const Signup = () => {
                       <p className="text-xs text-gray-500 mt-1">Must be at least 8 characters with uppercase, lowercase, number, and special character</p>
                     </div>
 
-                    {/* Confirm Password Field */}
                     <div className="space-y-2">
                       <label 
                         htmlFor="confirmPassword" 
@@ -431,7 +408,6 @@ const Signup = () => {
                       </div>
                     </div>
 
-                    {/* Terms and Conditions */}
                     <div className="flex items-start">
                       <input
                         id="terms"
@@ -453,7 +429,6 @@ const Signup = () => {
                       </label>
                     </div>
 
-                    {/* Submit Button */}
                     <button
                       type="submit"
                       disabled={loading}
@@ -465,7 +440,6 @@ const Signup = () => {
                 </div>
               </div>
 
-              {/* Mobile Login Link */}
               <p className="text-center text-sm text-gray-600 mt-6 lg:hidden">
                 Already have an account?{' '}
                 <Link 

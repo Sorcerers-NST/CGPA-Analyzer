@@ -28,16 +28,13 @@ export default function setupGooglePassport() {
           const displayName = profile?.displayName || email?.split('@')?.[0] || 'user'
           if (!email) return done(new Error('No email available from Google'))
 
-          // Ensure there is a default college to attach OAuth users to
           let defaultCollege = await prisma.college.findFirst({ where: { name: 'Default College' } })
           if (!defaultCollege) {
             defaultCollege = await prisma.college.create({ data: { name: 'Default College', gradingScale: 'FOUR_POINT' } })
           }
 
-          // Find or create user
           let user = await prisma.user.findFirst({ where: { email } })
           if (!user) {
-            // make a unique username from email/displayName
             let base = displayName.replace(/[^a-zA-Z0-9]/g, '').toLowerCase() || email.split('@')[0]
             let username = base
             let i = 1
@@ -45,7 +42,6 @@ export default function setupGooglePassport() {
               username = `${base}${i++}`
             }
 
-            // generate a random password hash so the field is satisfied
             const randomPass = Math.random().toString(36).slice(2)
             const hashed = await bcrypt.hash(randomPass, saltRounds)
 
@@ -59,7 +55,6 @@ export default function setupGooglePassport() {
             })
           }
 
-          // return a minimal user object for downstream handlers
           return done(null, { username: user.username, email: user.email })
         } catch (err) {
           return done(err)

@@ -44,7 +44,6 @@ const Login = () => {
         return;
       }
       
-      // Login successful
       console.log('Login successful! Redirecting to dashboard...');
       navigate('/dashboard');
     } catch (err) {
@@ -56,10 +55,8 @@ const Login = () => {
 
   const handleSocialLogin = (provider) => {
     if (provider === 'Google') {
-      // Redirect to Google OAuth
       window.location.href = '/api/auth/google';
     } else if (provider === 'GitHub') {
-      // GitHub OAuth not configured yet
       setError('GitHub authentication is not yet configured');
     }
   };
@@ -107,7 +104,6 @@ const Login = () => {
                   </div>
 
                   <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* Error Message */}
                     {error && (
                       <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
                         {error}

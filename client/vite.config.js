@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react({
@@ -10,7 +9,6 @@ export default defineConfig({
       },
     }),
   ],
-  // dev server proxy: forward /api requests to the backend (use BACKEND_URL env or default localhost:3000)
   server: {
     proxy: {
       '/api': {

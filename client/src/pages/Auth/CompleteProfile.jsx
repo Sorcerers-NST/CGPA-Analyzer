@@ -44,7 +44,6 @@ const CompleteProfile = () => {
         setLoading(false)
         return
       }
-      // success: navigate home
       navigate('/')
     } catch (err) {
       console.error(err)

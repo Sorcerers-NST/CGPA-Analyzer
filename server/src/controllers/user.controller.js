@@ -22,7 +22,6 @@ export const getUser = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    // Prisma returns BigInt for id fields. Convert to strings for JSON serialization.
     const formatted = {
       username: user.username,
       email: user.email,
@@ -50,7 +49,6 @@ export const updateUserCollege = async (req, res) => {
       return res.status(400).json({ error: 'collegeId is required' });
     }
 
-    // verify college exists
     const college = await prisma.college.findUnique({ where: { id: BigInt(collegeId) } }).catch(() => null);
     if (!college) {
       return res.status(400).json({ error: 'Invalid collegeId' });
