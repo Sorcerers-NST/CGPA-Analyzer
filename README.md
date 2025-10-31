@@ -146,14 +146,14 @@ cd CGPA-Analyzer
 
 #### 2. Backend Setup
 
-\`\`\`bash
+```bash
 cd server
 npm install
-\`\`\`
+```
 
 Create a \`.env\` file in the \`server\` directory:
 
-\`\`\`env
+```env
 DATABASE_URL="postgresql://username:password@localhost:5432/cgpa_calculator"
 JWT_SECRET="your-super-secret-jwt-key-change-this-in-production"
 NODE_ENV="development"
@@ -161,20 +161,20 @@ CLIENT_URL="http://localhost:5175"
 GOOGLE_CLIENT_ID="your-google-oauth-client-id"
 GOOGLE_CLIENT_SECRET="your-google-oauth-client-secret"
 GOOGLE_CALLBACK_URL="http://localhost:3000/api/auth/google/callback"
-\`\`\`
+```
 
 **Setup Database:**
 
-\`\`\`bash
+```bash
 npx prisma migrate dev
 npx prisma db seed
-\`\`\`
+```
 
 **Start Backend Server:**
 
-\`\`\`bash
+```bash
 npm run dev
-\`\`\`
+```
 
 The server will run on \`http://localhost:3000\`
 
@@ -182,22 +182,22 @@ The server will run on \`http://localhost:3000\`
 
 Open a new terminal:
 
-\`\`\`bash
+```bash
 cd client
 npm install
-\`\`\`
+```
 
 Create a \`.env\` file in the \`client\` directory (optional):
 
-\`\`\`env
+```env
 VITE_API_URL=http://localhost:3000
-\`\`\`
+```
 
 **Start Frontend Development Server:**
 
-\`\`\`bash
+```bash
 npm run dev
-\`\`\`
+```
 
 The client will run on \`http://localhost:5175\`
 
@@ -219,16 +219,16 @@ The application uses PostgreSQL with Prisma ORM. Key models include:
 
 Run migrations to set up the database:
 
-\`\`\`bash
+```bash
 cd server
 npx prisma migrate dev
-\`\`\`
+```
 
 View your database with Prisma Studio:
 
-\`\`\`bash
+```bash
 npx prisma studio
-\`\`\`
+```
 
 ## Configuration
 
@@ -290,32 +290,32 @@ npx prisma studio
 ### Build for Production
 
 **Frontend:**
-\`\`\`bash
+```bash
 cd client
 npm run build
-\`\`\`
+```
 
 **Backend:**
-\`\`\`bash
+```bash
 cd server
 npm start
-\`\`\`
+```
 
 ### Run Tests
 
-\`\`\`bash
+```bash
 cd server
 npm test
-\`\`\`
+```
 
 ### Code Quality
 
 The project uses ESLint for code quality. Run linting:
 
-\`\`\`bash
+```bash
 cd client
 npm run lint
-\`\`\`
+```
 
 ## Deployment
 
