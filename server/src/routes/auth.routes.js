@@ -27,7 +27,6 @@ authRouter.get('/google/callback', (req, res, next) => {
 		if (!strat) return res.redirect(process.env.CLIENT_URL || 'http://localhost:5173');
 		return passport.authenticate('google', { 
 			session: false,
-			prompt: 'select_account', // Always show account selection
 			failureRedirect: process.env.CLIENT_URL || 'http://localhost:5173'
 		})(req, res, next);
 	} catch (err) {
