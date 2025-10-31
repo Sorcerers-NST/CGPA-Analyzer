@@ -22,6 +22,12 @@ const Dashboard = () => {
         
         const data = await res.json();
         setUser(data);
+
+        // If user has default college, prompt them to complete profile
+        if (data.college?.name === 'Default College') {
+          // Show a banner or redirect to complete profile
+          console.log('User needs to complete profile');
+        }
       } catch (err) {
         console.error('Error fetching user:', err);
         navigate('/login');
@@ -89,6 +95,31 @@ const Dashboard = () => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 w-full">
         <div className="space-y-6 sm:space-y-8">
+          {/* Profile Completion Banner */}
+          {user?.college?.name === 'Default College' && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 sm:p-6">
+              <div className="flex items-start gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <div className="flex-1">
+                  <h3 className="text-sm sm:text-base font-semibold text-yellow-900 mb-1">
+                    Complete Your Profile
+                  </h3>
+                  <p className="text-xs sm:text-sm text-yellow-800 mb-3">
+                    You signed up with Google. Please select your college to get the most accurate CGPA calculations.
+                  </p>
+                  <button
+                    onClick={() => navigate('/complete-profile')}
+                    className="px-4 py-2 bg-yellow-600 text-white text-sm font-medium rounded-lg hover:bg-yellow-700 transition-all"
+                  >
+                    Select College
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Welcome Card */}
           <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 border border-gray-200">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">

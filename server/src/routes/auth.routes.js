@@ -23,22 +23,23 @@ authRouter.get('/google', (req, res, next) => {
 authRouter.get('/google/callback', (req, res, next) => {
 	try {
 		const strat = passport && typeof passport._strategy === 'function' && passport._strategy('google');
-		if (!strat) return res.redirect(process.env.CLIENT_URL || '/');
-		return passport.authenticate('google', { session: false, failureRedirect: process.env.CLIENT_URL || '/' })(req, res, next);
+		if (!strat) return res.redirect(process.env.CLIENT_URL || 'http://localhost:5173');
+		return passport.authenticate('google', { session: false, failureRedirect: process.env.CLIENT_URL || 'http://localhost:5173' })(req, res, next);
 	} catch (err) {
 		console.error('Error handling Google callback', err);
-		return res.redirect(process.env.CLIENT_URL || '/');
+		return res.redirect(process.env.CLIENT_URL || 'http://localhost:5173');
 	}
 }, async (req, res) => {
 	try {
 		const payload = req.user || {};
 		const { generateToken } = await import('../utils/generateToken.js');
 		generateToken(res, payload);
-		const redirectTo = process.env.CLIENT_URL || '/';
+		// Redirect to dashboard after successful OAuth
+		const redirectTo = `${process.env.CLIENT_URL || 'http://localhost:5173'}/dashboard`;
 		return res.redirect(redirectTo);
 	} catch (err) {
 		console.error('OAuth callback error', err);
-		return res.redirect(process.env.CLIENT_URL || '/');
+		return res.redirect(process.env.CLIENT_URL || 'http://localhost:5173');
 	}
 });
 

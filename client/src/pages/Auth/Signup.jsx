@@ -125,9 +125,13 @@ const Signup = () => {
   };
 
   const handleSocialSignup = (provider) => {
-    // TODO: Implement OAuth logic for Google/GitHub
-    console.log(`${provider} signup clicked`);
-    alert(`${provider} signup will be implemented with OAuth`);
+    if (provider === 'Google') {
+      // Redirect to Google OAuth
+      window.location.href = '/api/auth/google';
+    } else if (provider === 'GitHub') {
+      // GitHub OAuth not configured yet
+      setError('GitHub authentication is not yet configured');
+    }
   };
 
   return (
