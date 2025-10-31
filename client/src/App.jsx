@@ -8,13 +8,15 @@ import CompleteProfile from './pages/Auth/CompleteProfile.jsx'
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Landing />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/complete-profile" element={<CompleteProfile />} />
-    </Routes>
+    <div className="w-full min-h-screen overflow-x-hidden">
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/complete-profile" element={<CompleteProfile />} />
+      </Routes>
+    </div>
   )
 }
 

@@ -34,23 +34,23 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 w-full">
       {/* Navigation Bar */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6">
+      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
-              <span className="text-xl font-semibold tracking-tight text-gray-900">
+              <span className="text-lg sm:text-xl font-semibold tracking-tight text-gray-900">
                 CGPA Calculator
               </span>
             </div>
-            <div className="flex items-center gap-6">
-              <div className="text-sm text-gray-600">
+            <div className="flex items-center gap-3 sm:gap-6">
+              <div className="text-xs sm:text-sm text-gray-600 hidden sm:block">
                 Welcome, <span className="font-medium text-gray-900">{userName}</span>
               </div>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all"
+                className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-700 hover:text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all"
               >
                 Logout
               </button>
@@ -60,25 +60,25 @@ const Dashboard = () => {
       </nav>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="space-y-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 w-full">
+        <div className="space-y-6 sm:space-y-8">
           {/* Welcome Card */}
-          <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 border border-gray-200">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
               Welcome to Your Dashboard! 🎉
             </h1>
-            <p className="text-gray-600 mb-6">
+            <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
               Start tracking your academic performance and manage your semesters.
             </p>
             <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-              <p className="text-sm text-gray-600">
+              <p className="text-xs sm:text-sm text-gray-600 break-all">
                 <span className="font-medium">Email:</span> {userEmail}
               </p>
             </div>
           </div>
 
           {/* Quick Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 w-full">
             <div className="bg-white rounded-2xl shadow p-6 border border-gray-200">
               <div className="flex items-center justify-between">
                 <div>
@@ -126,23 +126,23 @@ const Dashboard = () => {
           </div>
 
           {/* Action Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-lg p-8 text-white">
-              <h3 className="text-2xl font-bold mb-3">Add New Semester</h3>
-              <p className="text-gray-300 mb-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 w-full">
+            <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-lg p-6 sm:p-8 text-white">
+              <h3 className="text-xl sm:text-2xl font-bold mb-2 sm:mb-3">Add New Semester</h3>
+              <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">
                 Start tracking your grades by adding your first semester data.
               </p>
-              <button className="px-6 py-3 bg-white text-gray-900 font-medium rounded-xl hover:bg-gray-100 transition-all">
+              <button className="w-full sm:w-auto px-6 py-3 bg-white text-gray-900 text-sm font-medium rounded-xl hover:bg-gray-100 transition-all">
                 Add Semester
               </button>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">View Reports</h3>
-              <p className="text-gray-600 mb-6">
+            <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 border border-gray-200">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">View Reports</h3>
+              <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
                 Access detailed analytics and export your academic performance.
               </p>
-              <button className="px-6 py-3 bg-gray-900 text-white font-medium rounded-xl hover:bg-gray-800 transition-all">
+              <button className="w-full sm:w-auto px-6 py-3 bg-gray-900 text-white text-sm font-medium rounded-xl hover:bg-gray-800 transition-all">
                 View Reports
               </button>
             </div>

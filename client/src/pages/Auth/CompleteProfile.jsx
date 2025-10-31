@@ -55,20 +55,20 @@ const CompleteProfile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-xl shadow-lg p-8">
-          <div className="flex items-center justify-center mb-6">
-            <img src={Logo} alt="CGPA Calculator" className="h-12 w-12 mr-3" />
-            <h1 className="text-2xl font-semibold text-center text-gray-900">Complete your profile</h1>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-8 sm:py-12 w-full">
+      <div className="w-full max-w-md mx-auto">
+        <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8">
+          <div className="flex flex-col sm:flex-row items-center justify-center mb-6 gap-3">
+            <img src={Logo} alt="CGPA Calculator" className="h-10 w-10 sm:h-12 sm:w-12" />
+            <h1 className="text-xl sm:text-2xl font-semibold text-center text-gray-900">Complete your profile</h1>
           </div>
 
-          {error && <div className="text-red-600 text-sm mb-4">{error}</div>}
+          {error && <div className="text-red-600 text-sm mb-4 text-center">{error}</div>}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">College</label>
-              <select value={selected} onChange={e => setSelected(e.target.value)} required className="w-full px-4 py-2.5 border border-gray-300 rounded-lg">
+              <select value={selected} onChange={e => setSelected(e.target.value)} required className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm sm:text-base">
                 <option value="">Select your college</option>
                 {colleges.map(c => (
                   <option key={c.id} value={c.id}>{c.name}</option>
@@ -76,7 +76,7 @@ const CompleteProfile = () => {
               </select>
             </div>
 
-            <button type="submit" disabled={loading} className="w-full bg-black text-white py-2.5 rounded-lg font-medium hover:bg-gray-900 transition">
+            <button type="submit" disabled={loading} className="w-full bg-black text-white py-2.5 rounded-lg text-sm sm:text-base font-medium hover:bg-gray-900 transition disabled:opacity-50">
               {loading ? 'Saving...' : 'Save and continue'}
             </button>
           </form>

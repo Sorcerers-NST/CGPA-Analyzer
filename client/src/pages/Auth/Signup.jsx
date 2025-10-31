@@ -65,17 +65,17 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 w-full">
       {/* Navigation Bar */}
-      <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6">
+      <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="flex items-center justify-between h-16">
             <Link to="/" className="flex items-center group">
-              <span className="text-xl font-semibold tracking-tight text-gray-900 group-hover:text-gray-600 transition-colors">
+              <span className="text-lg sm:text-xl font-semibold tracking-tight text-gray-900 group-hover:text-gray-600 transition-colors">
                 CGPA Calculator
               </span>
             </Link>
-            <div className="text-sm text-gray-600">
+            <div className="text-xs sm:text-sm text-gray-600">
               Already have an account?{' '}
               <Link 
                 to="/login" 
@@ -89,17 +89,17 @@ const Signup = () => {
       </nav>
 
       {/* Main Content */}
-      <div className="flex items-center justify-center px-4 py-16 sm:py-24">
-        <div className="w-full max-w-6xl">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <div className="flex items-center justify-center px-4 py-8 sm:py-16 lg:py-24 w-full">
+        <div className="w-full max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center w-full">
             
             {/* Left Side - Branding */}
-            <div className="hidden lg:block space-y-8 animate-fade-in">
+            <div className="hidden lg:block space-y-8 animate-fade-in w-full">
               <div className="space-y-4">
-                <h1 className="text-5xl font-bold tracking-tight text-gray-900 leading-tight">
+                <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 leading-tight">
                   Start Your Journey
                 </h1>
-                <p className="text-xl text-gray-600 leading-relaxed">
+                <p className="text-lg lg:text-xl text-gray-600 leading-relaxed">
                   Begin tracking your academic progress and stay organized throughout your college experience.
                 </p>
               </div>
@@ -156,15 +156,15 @@ const Signup = () => {
             </div>
 
             {/* Right Side - Signup Form */}
-            <div className="w-full">
-              <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 p-8 sm:p-12">
-                <div className="space-y-8">
+            <div className="w-full max-w-xl mx-auto lg:max-w-none">
+              <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 p-6 sm:p-8 lg:p-12 w-full">
+                <div className="space-y-6 sm:space-y-8 w-full">
                   {/* Header */}
                   <div className="text-center lg:text-left space-y-2">
-                    <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
                       Create account
                     </h2>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 text-sm sm:text-base">
                       Get started with your free account today
                     </p>
                   </div>
