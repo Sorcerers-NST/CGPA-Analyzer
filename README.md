@@ -139,10 +139,10 @@ Make sure you have the following installed:
 
 #### 1. Clone the Repository
 
-\`\`\`bash
+```bash
 git clone https://github.com/Sorcerers-NST/CGPA-Analyzer.git
 cd CGPA-Analyzer
-\`\`\`
+```
 
 #### 2. Backend Setup
 
