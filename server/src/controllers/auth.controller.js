@@ -126,3 +126,13 @@ export const loginUser = async (req, res) => {
       .json({ error: "Something went wrong. Please try again." });
   }
 };
+
+export const logoutUser = async (req, res) => {
+  try {
+    res.clearCookie('jwt', { path: '/' });
+    return res.json({ message: 'Logged out' });
+  } catch (err) {
+    console.error('Logout error:', err);
+    return res.status(500).json({ error: 'Unable to logout' });
+  }
+};

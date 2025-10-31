@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Logo from '../../assets/Logo.png'
+import GoogleLogo from '../../assets/google.svg'
 
 const Login = () => {
   const navigate = useNavigate();
@@ -57,7 +59,32 @@ const Login = () => {
   const handleForgotPassword = () => {
     // TODO: Implement forgot password logic
     alert('Forgot password feature will be implemented');
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    (async () => {
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ email, password }),
+        });
+        if (!res.ok) {
+          const txt = await res.text();
+          let err = txt;
+          try { err = JSON.parse(txt); } catch {}
+          console.error('Login failed', err);
+          return;
+        }
+        navigate('/');
+      } catch (err) {
+        console.error('Network error during login', err);
+      }
+    })();
   };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
@@ -75,6 +102,23 @@ const Login = () => {
               <Link 
                 to="/signup" 
                 className="font-medium text-gray-900 hover:text-gray-600 transition-colors"
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
+      <div className="w-full max-w-sm">
+        <div className="bg-white rounded-xl shadow-lg p-8">
+          <div className="flex items-center justify-center mb-6">
+            <img src={Logo} alt="CGPA Calculator" className="h-12 w-12 mr-3" />
+            <h1 className="text-2xl font-semibold text-center text-gray-900">
+              CGPA Calculator — Login
+            </h1>
+          </div>
+          
+          
+          <form onSubmit={handleSubmit} className="space-y-6">
+            
+            <div>
+              <label 
+                htmlFor="email" 
+                className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Sign up
               </Link>
@@ -116,6 +160,32 @@ const Login = () => {
                   <div className="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-white">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+            
+            <div>
+              <label 
+                htmlFor="password" 
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  required
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition duration-200 placeholder:text-gray-400 pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition"
+                >
+                  {showPassword ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
                     </svg>
                   </div>
                   <div>
@@ -297,6 +367,33 @@ const Login = () => {
               </p>
             </div>
           </div>
+            <button
+              type="submit"
+              className="w-full bg-black text-white py-2.5 rounded-lg font-medium hover:bg-gray-900 hover:scale-105 transition duration-200 transform"
+            >
+              Login
+            </button>
+              <div className="mt-3">
+                <a
+                  href="/api/auth/google"
+                  className="w-full inline-flex items-center justify-center gap-3 py-2.5 rounded-lg border border-gray-300 text-sm"
+                >
+                  <img src={GoogleLogo} alt="Google" className="h-5 w-5" />
+                  Continue with Google
+                </a>
+              </div>
+          </form>
+
+          
+          <p className="text-center text-sm text-gray-600 mt-6">
+            Don't have an account?{' '}
+            <Link 
+              to="/signup" 
+              className="text-black font-medium hover:underline transition"
+            >
+              Sign up
+            </Link>
+          </p>
         </div>
       </div>
     </div>

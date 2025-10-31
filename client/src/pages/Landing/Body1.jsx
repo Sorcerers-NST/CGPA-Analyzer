@@ -22,6 +22,7 @@ const Body1 = () => {
     <div className='bg-white'>
       {/* Hero Section */}
       <section id='home' className='max-w-6xl mx-auto px-6 py-32 text-center'>
+      <section className='max-w-6xl mx-auto px-6 py-32 text-center'>
         <div className='animate-fade-in'>
           <h1 className='text-6xl md:text-7xl font-bold tracking-tight text-gray-900 leading-tight'>
             Track Your CGPA with
@@ -41,7 +42,6 @@ const Body1 = () => {
         </div>
       </section>
 
-      {/* Divider */}
       <div className='max-w-6xl mx-auto px-6'>
         <div className='border-t border-gray-200'></div>
       </div>
@@ -57,9 +57,8 @@ const Body1 = () => {
           </p>
         </div>
 
-        {/* Feature Cards */}
         <div className='grid grid-cols-1 md:grid-cols-3 gap-8 mt-16'>
-          {/* Card 1 */}
+          
           <div className='group bg-gray-50 p-8 rounded-2xl border border-gray-200 hover:border-gray-300 hover:shadow-xl hover:scale-105 transition-all duration-300'>
             <div className='bg-white w-16 h-16 rounded-xl flex items-center justify-center shadow-sm mb-6'>
               <img src={CalculatorLogo} alt="Calculator Icon" className='w-8 h-8'/>
@@ -72,7 +71,7 @@ const Body1 = () => {
             </p>
           </div>
 
-          {/* Card 2 */}
+          
           <div className='group bg-gray-50 p-8 rounded-2xl border border-gray-200 hover:border-gray-300 hover:shadow-xl hover:scale-105 transition-all duration-300'>
             <div className='bg-white w-16 h-16 rounded-xl flex items-center justify-center shadow-sm mb-6'>
               <img src={BarLogo} alt="Chart Icon" className='w-10 h-10'/>
@@ -85,7 +84,7 @@ const Body1 = () => {
             </p>
           </div>
 
-          {/* Card 3 */}
+          
           <div className='group bg-gray-50 p-8 rounded-2xl border border-gray-200 hover:border-gray-300 hover:shadow-xl hover:scale-105 transition-all duration-300'>
             <div className='bg-white w-16 h-16 rounded-xl flex items-center justify-center shadow-sm mb-6'>
               <img src={DownloadLogo} alt="Download Icon" className='w-8 h-8'/>
@@ -100,7 +99,6 @@ const Body1 = () => {
         </div>
       </section>
 
-      {/* Bottom Divider */}
       <div className='max-w-6xl mx-auto px-6'>
         <div className='border-t border-gray-200'></div>
       </div>
