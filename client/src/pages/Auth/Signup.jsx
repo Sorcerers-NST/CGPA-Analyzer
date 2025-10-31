@@ -97,52 +97,60 @@ const Signup = () => {
             <div className="hidden lg:block space-y-8 animate-fade-in">
               <div className="space-y-4">
                 <h1 className="text-5xl font-bold tracking-tight text-gray-900 leading-tight">
-                  Start your journey
+                  Start Your Journey
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed">
-                  Join thousands of students who track their academic success with our platform.
+                  Begin tracking your academic progress and stay organized throughout your college experience.
                 </p>
               </div>
               
-              <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-8 space-y-6 shadow-2xl">
-                <div className="flex items-center gap-3">
-                  <div className="flex -space-x-2">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 border-2 border-white"></div>
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 border-2 border-white"></div>
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-pink-600 border-2 border-white"></div>
+              <div className="space-y-6 pt-8">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-white">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                   </div>
-                  <div className="text-white">
-                    <div className="font-semibold">10,000+ Students</div>
-                    <div className="text-sm text-gray-300">Trust our platform</div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">Free Forever</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">No hidden costs, no premium tiers - completely free to use</p>
                   </div>
                 </div>
                 
-                <div className="border-t border-gray-700 pt-6">
-                  <p className="text-gray-300 italic leading-relaxed">
-                    "This calculator completely transformed how I track my grades. The visualizations are incredible!"
-                  </p>
-                  <div className="mt-4 flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-600"></div>
-                    <div className="text-white">
-                      <div className="font-medium">Sarah Chen</div>
-                      <div className="text-sm text-gray-400">Computer Science, MIT</div>
-                    </div>
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-white">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">Secure & Private</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">Your academic data is encrypted and never shared</p>
                   </div>
                 </div>
-              </div>
+                
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-white">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">Quick Setup</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">Get started in under a minute - it's that simple</p>
+                  </div>
+                </div>
 
-              <div className="grid grid-cols-3 gap-4 pt-4">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-gray-900">99.9%</div>
-                  <div className="text-sm text-gray-600 mt-1">Uptime</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-gray-900">24/7</div>
-                  <div className="text-sm text-gray-600 mt-1">Support</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-gray-900">Free</div>
-                  <div className="text-sm text-gray-600 mt-1">Forever</div>
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-white">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">Works Everywhere</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">Access from any device - mobile, tablet, or desktop</p>
+                  </div>
                 </div>
               </div>
             </div>
