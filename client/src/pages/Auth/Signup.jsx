@@ -16,6 +16,8 @@ const Signup = () => {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showAddCollege, setShowAddCollege] = useState(false);
+  const [newCollegeName, setNewCollegeName] = useState('');
 
   const handleChange = (e) => {
     setFormData({
@@ -23,6 +25,44 @@ const Signup = () => {
       [e.target.name]: e.target.value
     });
     setError('');
+  };
+
+  const handleAddCollege = async (e) => {
+    e.preventDefault();
+    setError('');
+    if (!newCollegeName.trim()) {
+      setError('College name is required');
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await fetch('/api/colleges', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: newCollegeName.trim() })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        if (res.status === 409) {
+          // College already exists, we can use it
+          setFormData(prev => ({ ...prev, collegeId: data.college.id }));
+          setShowAddCollege(false);
+        } else {
+          setError(data.error || 'Failed to add college');
+        }
+        return;
+      }
+      // Add the new college to the list and select it
+      setColleges(prev => [...prev, data.college]);
+      setFormData(prev => ({ ...prev, collegeId: data.college.id }));
+      setShowAddCollege(false);
+      setNewCollegeName('');
+    } catch (err) {
+      console.error('Failed to add college:', err);
+      setError('Failed to add college. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -314,21 +354,62 @@ const Signup = () => {
                       >
                         College
                       </label>
-                      <select
-                        id="collegeId"
-                        name="collegeId"
-                        value={formData.collegeId}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-3.5 bg-gray-50 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent focus:bg-white transition-all duration-200 text-gray-900"
-                      >
-                        <option value="">Select your college</option>
-                        {colleges.map((college) => (
-                          <option key={college.id} value={college.id}>
-                            {college.name}
-                          </option>
-                        ))}
-                      </select>
+                      {!showAddCollege ? (
+                        <div className="space-y-2">
+                          <select
+                            id="collegeId"
+                            name="collegeId"
+                            value={formData.collegeId}
+                            onChange={handleChange}
+                            required
+                            className="w-full px-4 py-3.5 bg-gray-50 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent focus:bg-white transition-all duration-200 text-gray-900"
+                          >
+                            <option value="">Select your college</option>
+                            {colleges.map((college) => (
+                              <option key={college.id} value={college.id}>
+                                {college.name}
+                              </option>
+                            ))}
+                          </select>
+                          <button
+                            type="button"
+                            onClick={() => setShowAddCollege(true)}
+                            className="text-sm text-gray-600 hover:text-gray-900 font-medium mt-1"
+                          >
+                            Can't find your college? Add it here
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              value={newCollegeName}
+                              onChange={(e) => setNewCollegeName(e.target.value)}
+                              placeholder="Enter college name"
+                              className="flex-1 px-4 py-3.5 bg-gray-50 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent focus:bg-white transition-all duration-200 text-gray-900"
+                            />
+                            <button
+                              type="button"
+                              onClick={handleAddCollege}
+                              disabled={loading}
+                              className="px-4 py-3.5 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-50"
+                            >
+                              {loading ? 'Adding...' : 'Add'}
+                            </button>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setShowAddCollege(false);
+                              setNewCollegeName('');
+                            }}
+                            className="text-sm text-gray-600 hover:text-gray-900 font-medium"
+                          >
+                            ← Back to college selection
+                          </button>
+                        </div>
+                      )}
                     </div>
 
                     <div className="space-y-2">
