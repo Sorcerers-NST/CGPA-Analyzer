@@ -22,7 +22,6 @@ const Body1 = () => {
     <div className='bg-white'>
       {/* Hero Section */}
       <section id='home' className='max-w-6xl mx-auto px-6 py-32 text-center'>
-      <section className='max-w-6xl mx-auto px-6 py-32 text-center'>
         <div className='animate-fade-in'>
           <h1 className='text-6xl md:text-7xl font-bold tracking-tight text-gray-900 leading-tight'>
             Track Your CGPA with

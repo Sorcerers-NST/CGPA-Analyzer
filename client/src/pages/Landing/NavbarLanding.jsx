@@ -1,11 +1,10 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
 import Logo from '../../assets/Logo.png'
-import { Link } from 'react-router-dom'
 
 const NavbarLanding = () => {
   const navigate = useNavigate()
+  const [user, setUser] = useState(null)
 
   const handleLoginClick = () => {
     navigate('/login')
@@ -17,7 +16,6 @@ const NavbarLanding = () => {
       element.scrollIntoView({ behavior: 'smooth' })
     }
   }
-  const [user, setUser] = useState(null);
 
   const needsProfileCompletion = user && user.college && user.college.name === 'Default College'
 
@@ -56,7 +54,6 @@ const NavbarLanding = () => {
         <div className='flex items-center justify-between h-16'>
           {/* Logo */}
           <div className='flex items-center cursor-pointer' onClick={() => navigate('/')}>
-          <div className='flex items-center'>
             <img src={Logo} alt="CGPA Calculator" className='h-10 w-10'/>
             <span className='ml-2 text-xl font-semibold tracking-tight text-gray-900'>CGPA Calculator</span>
           </div>
@@ -74,13 +71,6 @@ const NavbarLanding = () => {
             >
               Features
             </button>
-            <button 
-              onClick={handleLoginClick}
-              className='px-5 py-2 bg-gray-900 text-white text-sm font-medium rounded-full hover:bg-white hover:text-gray-900 hover:ring-2 hover:ring-gray-900 transition-all duration-300 transform hover:scale-105'
-            >
-              Login
-            </button>
-            </a>
             <a href="#about" className='text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200'>
               About
             </a>
