@@ -1,61 +1,127 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Signup = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: '',
+    username: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    collegeId: ''
   });
+  const [colleges, setColleges] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+    setError('');
   };
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    // Fetch colleges from server
+    const fetchColleges = async () => {
+      try {
+        const res = await fetch('/api/colleges');
+        if (res.ok) {
+          const data = await res.json();
+          setColleges(data.colleges || []);
+        }
+      } catch (err) {
+        console.error('Failed to fetch colleges:', err);
+      }
+    };
+    fetchColleges();
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     
     // Validate passwords match
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match!');
+      setError('Passwords do not match!');
       return;
     }
 
     if (!agreedToTerms) {
-      alert('Please agree to the Terms and Privacy Policy');
+      setError('Please agree to the Terms and Privacy Policy');
       return;
     }
 
-    // Validate password length
-    if (formData.password.length < 6) {
-      alert('Password must be at least 6 characters long');
+    // Validate password requirements
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}$/;
+    if (!passwordRegex.test(formData.password)) {
+      setError('Password must be at least 8 characters with uppercase, lowercase, number, and special character');
+      return;
+    }
+
+    // Validate username
+    const usernameRegex = /^(?=.{3,30}$)(?!.*[.]{2})[a-zA-Z0-9]+(?:[._-][a-zA-Z0-9]+)*$/;
+    if (!usernameRegex.test(formData.username)) {
+      setError('Username must be 3-30 characters, alphanumeric with optional ._- separators');
+      return;
+    }
+
+    if (!formData.collegeId) {
+      setError('Please select your college');
       return;
     }
     
-    // TODO: Replace with actual API call to your backend
-    console.log('Signup attempt:', formData);
+    setLoading(true);
     
-    // Mock successful registration
-    // Store auth token (in real app, this comes from backend)
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('userEmail', formData.email);
-    localStorage.setItem('userName', formData.name);
-    
-    // Show success message
-    console.log('Signup successful! Redirecting to dashboard...');
-    
-    // Redirect to dashboard
-    setTimeout(() => {
-      navigate('/dashboard');
-    }, 500);
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+          collegeId: formData.collegeId
+        }),
+      });
+      
+      const data = await res.json();
+      
+      if (!res.ok) {
+        setError(data.error || 'Registration failed. Please try again.');
+        setLoading(false);
+        return;
+      }
+      
+      // Registration successful, now login
+      const loginRes = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        }),
+      });
+
+      if (loginRes.ok) {
+        // Redirect to dashboard
+        navigate('/dashboard');
+      } else {
+        // Registration succeeded but login failed, redirect to login page
+        navigate('/login');
+      }
+    } catch (err) {
+      console.error('Registration error:', err);
+      setError('Network error. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSocialSignup = (provider) => {
@@ -209,24 +275,32 @@ const Signup = () => {
 
                   {/* Form */}
                   <form onSubmit={handleSubmit} className="space-y-5">
-                    {/* Name Field */}
+                    {/* Error Message */}
+                    {error && (
+                      <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+                        {error}
+                      </div>
+                    )}
+
+                    {/* Username Field */}
                     <div className="space-y-2">
                       <label 
-                        htmlFor="name" 
+                        htmlFor="username" 
                         className="block text-sm font-medium text-gray-900"
                       >
-                        Full name
+                        Username
                       </label>
                       <input
-                        id="name"
-                        name="name"
+                        id="username"
+                        name="username"
                         type="text"
-                        value={formData.name}
+                        value={formData.username}
                         onChange={handleChange}
-                        placeholder="John Doe"
+                        placeholder="john_doe"
                         required
                         className="w-full px-4 py-3.5 bg-gray-50 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent focus:bg-white transition-all duration-200 placeholder:text-gray-400 text-gray-900"
                       />
+                      <p className="text-xs text-gray-500 mt-1">3-30 characters, letters, numbers, and ._- only</p>
                     </div>
 
                     {/* Email Field */}
@@ -247,6 +321,31 @@ const Signup = () => {
                         required
                         className="w-full px-4 py-3.5 bg-gray-50 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent focus:bg-white transition-all duration-200 placeholder:text-gray-400 text-gray-900"
                       />
+                    </div>
+
+                    {/* College Field */}
+                    <div className="space-y-2">
+                      <label 
+                        htmlFor="collegeId" 
+                        className="block text-sm font-medium text-gray-900"
+                      >
+                        College
+                      </label>
+                      <select
+                        id="collegeId"
+                        name="collegeId"
+                        value={formData.collegeId}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3.5 bg-gray-50 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent focus:bg-white transition-all duration-200 text-gray-900"
+                      >
+                        <option value="">Select your college</option>
+                        {colleges.map((college) => (
+                          <option key={college.id} value={college.id}>
+                            {college.name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
 
                     {/* Password Field */}
@@ -286,7 +385,7 @@ const Signup = () => {
                           )}
                         </button>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">Must be at least 6 characters</p>
+                      <p className="text-xs text-gray-500 mt-1">Must be at least 8 characters with uppercase, lowercase, number, and special character</p>
                     </div>
 
                     {/* Confirm Password Field */}
@@ -353,9 +452,10 @@ const Signup = () => {
                     {/* Submit Button */}
                     <button
                       type="submit"
-                      className="w-full bg-gray-900 text-white py-3.5 rounded-xl font-medium hover:bg-gray-800 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
+                      disabled={loading}
+                      className="w-full bg-gray-900 text-white py-3.5 rounded-xl font-medium hover:bg-gray-800 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
-                      Create account
+                      {loading ? 'Creating account...' : 'Create account'}
                     </button>
                   </form>
                 </div>

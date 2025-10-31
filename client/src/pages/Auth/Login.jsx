@@ -9,16 +9,21 @@ const Login = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+    setError('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setLoading(true);
     
     try {
       const res = await fetch('/api/auth/login', {
@@ -31,27 +36,21 @@ const Login = () => {
         }),
       });
       
+      const data = await res.json();
+      
       if (!res.ok) {
-        const txt = await res.text();
-        let err = txt;
-        try { err = JSON.parse(txt); } catch {}
-        console.error('Login failed', err);
-        alert('Login failed. Please check your credentials.');
+        setError(data.error || 'Login failed. Please check your credentials.');
+        setLoading(false);
         return;
       }
       
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('userEmail', formData.email);
-      
-      if (rememberMe) {
-        localStorage.setItem('rememberMe', 'true');
-      }
-      
+      // Login successful
       console.log('Login successful! Redirecting to dashboard...');
       navigate('/dashboard');
     } catch (err) {
       console.error('Network error during login', err);
-      alert('Network error. Please try again.');
+      setError('Network error. Please try again.');
+      setLoading(false);
     }
   };
 
@@ -104,6 +103,13 @@ const Login = () => {
                   </div>
 
                   <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Error Message */}
+                    {error && (
+                      <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+                        {error}
+                      </div>
+                    )}
+
                     <div className="space-y-2">
                       <label htmlFor="email" className="block text-sm font-medium text-gray-900">Email address</label>
                       <input
@@ -160,8 +166,12 @@ const Login = () => {
                       </label>
                     </div>
 
-                    <button type="submit" className="w-full bg-gray-900 text-white py-3.5 rounded-xl font-medium hover:bg-gray-800 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
-                      Sign in
+                    <button 
+                      type="submit" 
+                      disabled={loading}
+                      className="w-full bg-gray-900 text-white py-3.5 rounded-xl font-medium hover:bg-gray-800 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                    >
+                      {loading ? 'Signing in...' : 'Sign in'}
                     </button>
                   </form>
 

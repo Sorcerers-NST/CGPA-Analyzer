@@ -3,35 +3,60 @@ import { useEffect, useState } from 'react';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [userEmail, setUserEmail] = useState('');
-  const [userName, setUserName] = useState('');
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    if (!isLoggedIn) {
-      // Redirect to login if not authenticated
-      navigate('/login');
-      return;
-    }
+    // Fetch user data from server
+    const fetchUser = async () => {
+      try {
+        const res = await fetch('/api/users/me', { 
+          credentials: 'include' 
+        });
+        
+        if (!res.ok) {
+          // Not authenticated, redirect to login
+          navigate('/login');
+          return;
+        }
+        
+        const data = await res.json();
+        setUser(data);
+      } catch (err) {
+        console.error('Error fetching user:', err);
+        navigate('/login');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    // Get user info from localStorage
-    const email = localStorage.getItem('userEmail');
-    const name = localStorage.getItem('userName');
-    setUserEmail(email || 'user@example.com');
-    setUserName(name || 'User');
+    fetchUser();
   }, [navigate]);
 
-  const handleLogout = () => {
-    // Clear authentication data
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('userName');
-    localStorage.removeItem('rememberMe');
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { 
+        method: 'POST', 
+        credentials: 'include' 
+      });
+    } catch (err) {
+      console.error('Logout error', err);
+    }
     
     // Redirect to landing page
     navigate('/');
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 w-full">
@@ -45,15 +70,17 @@ const Dashboard = () => {
               </span>
             </div>
             <div className="flex items-center gap-3 sm:gap-6">
-              <div className="text-xs sm:text-sm text-gray-600 hidden sm:block">
-                Welcome, <span className="font-medium text-gray-900">{userName}</span>
+              <div className="flex items-center gap-6">
+              <div className="text-sm text-gray-600">
+                Welcome, <span className="font-medium text-gray-900">{user?.username || 'User'}</span>
               </div>
               <button
                 onClick={handleLogout}
-                className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-700 hover:text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all"
+                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all"
               >
                 Logout
               </button>
+            </div>
             </div>
           </div>
         </div>
@@ -70,9 +97,12 @@ const Dashboard = () => {
             <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
               Start tracking your academic performance and manage your semesters.
             </p>
-            <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+            <div className="bg-gray-50 rounded-xl p-4 border border-gray-200 space-y-2">
               <p className="text-xs sm:text-sm text-gray-600 break-all">
-                <span className="font-medium">Email:</span> {userEmail}
+                <span className="font-medium">Email:</span> {user?.email || 'N/A'}
+              </p>
+              <p className="text-xs sm:text-sm text-gray-600">
+                <span className="font-medium">College:</span> {user?.college?.name || 'Not set'}
               </p>
             </div>
           </div>
