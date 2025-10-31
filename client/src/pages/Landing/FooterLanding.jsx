@@ -22,7 +22,7 @@ const FooterLanding = () => {
         
         <div className='text-center'>
           <p className='text-sm text-gray-500'>
-            &copy; 2024 CGPA Calculator. All Rights Reserved.
+            &copy; 2025 CGPA Calculator. All Rights Reserved.
           </p>
         </div>
       </div>
