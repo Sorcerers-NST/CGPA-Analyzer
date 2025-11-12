@@ -5,6 +5,7 @@ import Login from './pages/Auth/Login.jsx'
 import Signup from './pages/Auth/Signup.jsx'
 import Dashboard from './pages/Dashboard/Dashboard.jsx'
 import CompleteProfile from './pages/Auth/CompleteProfile.jsx'
+import SemesterView from './pages/Semester/SemesterView.jsx'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/complete-profile" element={<CompleteProfile />} />
+        <Route path="/semester/:id" element={<SemesterView />} />
       </Routes>
     </div>
   )
