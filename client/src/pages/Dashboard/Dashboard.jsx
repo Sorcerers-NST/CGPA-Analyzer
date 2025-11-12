@@ -1,5 +1,6 @@
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { getAllSemesters, createSemester, calculateSemesterCGPA } from '../../services/semesterApi';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -13,6 +14,9 @@ const Dashboard = () => {
     completedCourses: 0,
   });
   const [quote, setQuote] = useState();
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newSemesterNumber, setNewSemesterNumber] = useState('');
+  const [creatingSemester, setCreatingSemester] = useState(false);
 
   useEffect(() => {
     const fetchQuotes = async () => {
@@ -60,8 +64,47 @@ const Dashboard = () => {
         totalCredits: 0,
         completedCourses: 0,
       });
+      fetchSemesters();
     }
   }, [user]);
+
+  const fetchSemesters = async () => {
+    try {
+      const response = await getAllSemesters();
+      const semestersData = response.data || [];
+      setSemesters(semestersData);
+
+      // Calculate overall statistics
+      let totalCredits = 0;
+      let totalCourses = 0;
+      let totalWeightedGPA = 0;
+
+      for (const semester of semestersData) {
+        if (semester.subjects) {
+          totalCourses += semester.subjects.length;
+
+          // Calculate credits and weighted GPA
+          semester.subjects.forEach((subject) => {
+            if (subject.gradePoint !== null && subject.gradePoint !== undefined) {
+              totalCredits += subject.credits;
+              totalWeightedGPA += subject.gradePoint * subject.credits;
+            }
+          });
+        }
+      }
+
+      const overallCGPA = totalCredits > 0 ? totalWeightedGPA / totalCredits : null;
+
+      setStats({
+        cgpa: overallCGPA,
+        totalSemesters: semestersData.length,
+        totalCredits: totalCredits,
+        completedCourses: totalCourses,
+      });
+    } catch (error) {
+      console.error('Error fetching semesters:', error);
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -76,7 +119,37 @@ const Dashboard = () => {
   };
 
   const handleAddSemester = () => {
-    alert("Add semester feature - coming soon!");
+    setShowAddModal(true);
+  };
+
+  const handleCreateSemester = async (e) => {
+    e.preventDefault();
+    
+    if (!newSemesterNumber) {
+      alert('Please enter a semester number');
+      return;
+    }
+
+    try {
+      setCreatingSemester(true);
+      console.log('Creating semester with number:', newSemesterNumber);
+      
+      const response = await createSemester({ semesterNumber: parseInt(newSemesterNumber) });
+      console.log('Semester created successfully:', response);
+      
+      setShowAddModal(false);
+      setNewSemesterNumber('');
+      await fetchSemesters(); // Refresh the list
+    } catch (error) {
+      console.error('Error creating semester:', error);
+      alert(error.message || 'Failed to create semester. Please check the console for details.');
+    } finally {
+      setCreatingSemester(false);
+    }
+  };
+
+  const handleSemesterClick = (semesterId) => {
+    navigate(`/semester/${semesterId}`);
   };
 
   const handleViewReports = () => {
@@ -474,7 +547,100 @@ const Dashboard = () => {
             </button>
           </div>
         )}
+
+        {semesters.length > 0 && (
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h2 className="text-xl font-semibold text-gray-900">Your Semesters</h2>
+            </div>
+            <div className="divide-y divide-gray-200">
+              {semesters.map((semester) => (
+                <div
+                  key={semester.id}
+                  onClick={() => handleSemesterClick(semester.id)}
+                  className="p-6 hover:bg-gray-50 cursor-pointer transition-colors"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                        Semester {semester.semesterNumber}
+                      </h3>
+                      <div className="flex items-center gap-4 text-sm text-gray-600">
+                        <span className="flex items-center gap-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                          </svg>
+                          {semester.subjects?.length || 0} subjects
+                        </span>
+                        {semester.startDate && (
+                          <span>{new Date(semester.startDate).toLocaleDateString()}</span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="text-right">
+                        <p className="text-sm text-gray-600 mb-1">SGPA</p>
+                        <p className="text-2xl font-bold text-gray-900">
+                          {semester.sgpa?.toFixed(2) || '--'}
+                        </p>
+                      </div>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* Add Semester Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Add New Semester</h2>
+            <form onSubmit={handleCreateSemester}>
+              <div className="mb-4">
+                <label htmlFor="semesterNumber" className="block text-sm font-medium text-gray-700 mb-2">
+                  Semester Number
+                </label>
+                <input
+                  type="number"
+                  id="semesterNumber"
+                  value={newSemesterNumber}
+                  onChange={(e) => setNewSemesterNumber(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                  placeholder="e.g., 1, 2, 3..."
+                  min="1"
+                  required
+                />
+              </div>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowAddModal(false);
+                    setNewSemesterNumber('');
+                  }}
+                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50"
+                  disabled={creatingSemester}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 px-4 py-2 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 disabled:opacity-50"
+                  disabled={creatingSemester}
+                >
+                  {creatingSemester ? 'Creating...' : 'Create'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,0 +1,152 @@
+{
+  "info": {
+    "name": "CGPA Analyzer - Semester API",
+    "description": "Collection for testing Semester endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Semester",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"semesterNumber\": 1,\n  \"startDate\": \"2024-01-15\",\n  \"endDate\": \"2024-05-30\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/v1/semesters/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "v1", "semesters", ""]
+        },
+        "description": "Create a new semester for the logged-in user"
+      }
+    },
+    {
+      "name": "Get All Semesters",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/v1/semesters/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "v1", "semesters", ""]
+        },
+        "description": "Get all semesters for the logged-in user with subjects"
+      }
+    },
+    {
+      "name": "Get Semester by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/v1/semesters/:id",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "v1", "semesters", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "Semester ID"
+            }
+          ]
+        },
+        "description": "Get a single semester by ID with all subjects"
+      }
+    },
+    {
+      "name": "Update Semester",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"semesterNumber\": 1,\n  \"startDate\": \"2024-01-20\",\n  \"endDate\": \"2024-06-01\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/v1/semesters/:id",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "v1", "semesters", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "Semester ID"
+            }
+          ]
+        },
+        "description": "Update semester data (number, dates, etc.)"
+      }
+    },
+    {
+      "name": "Calculate Semester CGPA",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/v1/semesters/:id/cgpa",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "v1", "semesters", ":id", "cgpa"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "Semester ID"
+            }
+          ]
+        },
+        "description": "Calculate CGPA/SGPA for a semester based on subjects"
+      }
+    },
+    {
+      "name": "Delete Semester",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/v1/semesters/:id",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "v1", "semesters", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "Semester ID"
+            }
+          ]
+        },
+        "description": "Delete a semester and all its subjects"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}

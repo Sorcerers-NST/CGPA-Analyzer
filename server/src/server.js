@@ -6,6 +6,7 @@ import cors from "cors";
 import allRoutes from "./routes/index.js";
 import passport from 'passport'
 import setupGooglePassport from './config/passportGoogle.js'
+import { errorHandler } from './middlewares/error.middleware.js'
 
 const app = express();
 
@@ -22,6 +23,9 @@ setupGooglePassport()
 app.use(passport.initialize())
 
 app.use(allRoutes);
+
+// Global error handler - MUST be after all routes
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
