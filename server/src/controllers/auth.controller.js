@@ -116,7 +116,11 @@ export const loginUser = async (req, res) => {
     if (!checkPass) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
-    generateToken(res, { username: user.username, email: user.email });
+    generateToken(res, { 
+      id: user.id.toString(), 
+      username: user.username, 
+      email: user.email 
+    });
 
     return res.json({ message: "Login successful" });
   } catch (err) {
