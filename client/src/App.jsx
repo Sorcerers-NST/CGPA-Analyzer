@@ -1,27 +1,37 @@
 import { Routes, Route } from 'react-router-dom'
 import './App.css'
+import Home from './pages/Home/Home.jsx'
 import Landing from './pages/Landing/Landing.jsx'
 import Login from './pages/Auth/Login.jsx'
 import Signup from './pages/Auth/Signup.jsx'
-import Dashboard from './pages/Dashboard/Dashboard.jsx'
+import DashboardNew from './pages/Dashboard/DashboardNew.jsx'
 import CompleteProfile from './pages/Auth/CompleteProfile.jsx'
 import SemesterView from './pages/Semester/SemesterView.jsx'
 import { AuthProvider } from './contexts/AuthContext.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
+import AppLayout from './components/layout/AppLayout.jsx'
+import PublicLayout from './components/layout/PublicLayout.jsx'
 
 function App() {
   return (
     <AuthProvider>
       <div className="w-full min-h-screen overflow-x-hidden">
         <Routes>
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={
+            <PublicLayout>
+              <Home />
+            </PublicLayout>
+          } />
+          <Route path="/landing" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route 
             path="/dashboard" 
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <AppLayout>
+                  <DashboardNew />
+                </AppLayout>
               </ProtectedRoute>
             } 
           />
@@ -37,7 +47,9 @@ function App() {
             path="/semester/:id" 
             element={
               <ProtectedRoute>
-                <SemesterView />
+                <AppLayout>
+                  <SemesterView />
+                </AppLayout>
               </ProtectedRoute>
             } 
           />
