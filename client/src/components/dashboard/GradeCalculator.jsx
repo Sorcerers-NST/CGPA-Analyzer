@@ -44,7 +44,6 @@ const GradeCalculator = ({ currentCGPA, totalCredits }) => {
 
   return (
     <>
-      {/* Trigger Button */}
       <motion.button
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}

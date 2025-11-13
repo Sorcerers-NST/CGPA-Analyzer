@@ -1,0 +1,8 @@
+The Dashboard file needs to be cleaned up. Here's what to do:
+
+1. Remove lines 253-290 (the incomplete quote div section)
+2. Update DashboardHeader to accept onOpenCommandPalette prop
+3. Add CommandPalette and AnimatePresence to imports
+4. Add command palette state and keyboard shortcut
+
+The new components are ready in the dashboard folder!
