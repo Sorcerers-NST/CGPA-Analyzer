@@ -6,6 +6,15 @@ import { useAuth } from '../../contexts/AuthContext';
 import DashboardHeader from '../../components/dashboard/DashboardHeader';
 import CGPACard from '../../components/dashboard/CGPACard';
 import SemesterCard from '../../components/dashboard/SemesterCard';
+// import QuickStats from '../../components/dashboard/QuickStats';
+// import GradeDistribution from '../../components/dashboard/GradeDistribution';
+// import GradeCalculator from '../../components/dashboard/GradeCalculator';
+// import RecentActivity from '../../components/dashboard/RecentActivity';
+// import ExportData from '../../components/dashboard/ExportData';
+// import SearchFilter from '../../components/dashboard/SearchFilter';
+// import SemesterComparison from '../../components/dashboard/SemesterComparison';
+// import GoalTracker from '../../components/dashboard/GoalTracker';
+// import PerformanceAnalytics from '../../components/dashboard/PerformanceAnalytics';
 
 /**
  * Dashboard Component
@@ -14,7 +23,7 @@ import SemesterCard from '../../components/dashboard/SemesterCard';
  */
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, logout } = useAuth();
   const [loading, setLoading] = useState(true);
   const [semesters, setSemesters] = useState([]);
   const [stats, setStats] = useState({
@@ -224,29 +233,73 @@ const Dashboard = () => {
           />
         </div>
 
+        {/* Analytics Grid - Quick Stats, Distribution, Activity */}
+        {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+          <QuickStats stats={stats} />
+          <GradeDistribution semesters={semesters} />
+          <RecentActivity semesters={semesters} />
+        </div> */}
+
+        {/* Grade Calculator */}
+        {/* <div className="mb-12">
+          <GradeCalculator 
+            currentCGPA={stats.cgpa} 
+            totalCredits={stats.totalCredits} 
+          />
+        </div> */}
+
+        {/* Search & Goal Tracker Grid */}
+        {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+          <SearchFilter semesters={semesters} />
+          <GoalTracker currentCGPA={stats.cgpa} semesters={semesters} />
+        </div> */}
+
+        {/* Semester Comparison */}
+        {/* {semesters.length > 0 && (
+          <div className="mb-12">
+            <SemesterComparison semesters={semesters} />
+          </div>
+        )} */}
+
+        {/* Performance Analytics */}
+        {/* {semesters.length > 0 && (
+          <div className="mb-12">
+            <PerformanceAnalytics semesters={semesters} />
+          </div>
+        )} */}
+
         {/* Semester Overview Section */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-semibold text-black">Your Semesters</h2>
-            <button
-              onClick={handleAddSemester}
-              className="flex items-center space-x-2 px-4 py-2.5 bg-black text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors shadow-sm hover:shadow-md"
-            >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 4v16m8-8H4"
+            <div className="flex items-center gap-3">
+              {/* {semesters.length > 0 && (
+                <ExportData 
+                  semesters={semesters} 
+                  cgpa={stats.cgpa} 
+                  user={user} 
                 />
-              </svg>
-              <span>Add Semester</span>
-            </button>
+              )} */}
+              <button
+                onClick={handleAddSemester}
+                className="flex items-center space-x-2 px-4 py-2.5 bg-black text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors shadow-sm hover:shadow-md"
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+                <span>Add Semester</span>
+              </button>
+            </div>
           </div>
 
           {/* Empty State */}

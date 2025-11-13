@@ -3,11 +3,12 @@ import './App.css'
 import Landing from './pages/Landing/Landing.jsx'
 import Login from './pages/Auth/Login.jsx'
 import Signup from './pages/Auth/Signup.jsx'
-import Dashboard from './pages/Dashboard/Dashboard.jsx'
+import DashboardNew from './pages/Dashboard/DashboardNew.jsx'
 import CompleteProfile from './pages/Auth/CompleteProfile.jsx'
 import SemesterView from './pages/Semester/SemesterView.jsx'
 import { AuthProvider } from './contexts/AuthContext.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
+import AppLayout from './components/layout/AppLayout.jsx'
 
 function App() {
   return (
@@ -21,7 +22,9 @@ function App() {
             path="/dashboard" 
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <AppLayout>
+                  <DashboardNew />
+                </AppLayout>
               </ProtectedRoute>
             } 
           />
@@ -37,7 +40,9 @@ function App() {
             path="/semester/:id" 
             element={
               <ProtectedRoute>
-                <SemesterView />
+                <AppLayout>
+                  <SemesterView />
+                </AppLayout>
               </ProtectedRoute>
             } 
           />
