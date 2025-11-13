@@ -4,7 +4,7 @@ import Home from './pages/Home/Home.jsx'
 import Landing from './pages/Landing/Landing.jsx'
 import Login from './pages/Auth/Login.jsx'
 import Signup from './pages/Auth/Signup.jsx'
-import DashboardNew from './pages/Dashboard/DashboardNew.jsx'
+import Dashboard from './pages/Dashboard/Dashboard.jsx'
 import CompleteProfile from './pages/Auth/CompleteProfile.jsx'
 import SemesterView from './pages/Semester/SemesterView.jsx'
 import { AuthProvider } from './contexts/AuthContext.jsx'
@@ -30,7 +30,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <AppLayout>
-                  <DashboardNew />
+                  <Dashboard />
                 </AppLayout>
               </ProtectedRoute>
             } 
