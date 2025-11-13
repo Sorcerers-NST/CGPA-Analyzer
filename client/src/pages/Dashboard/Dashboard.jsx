@@ -21,8 +21,9 @@ const Dashboard = () => {
     cgpa: null,
     totalSemesters: 0,
     totalCredits: 0,
-    completedCourses: 0
+    completedCourses: 0,
   });
+  const [quote, setQuote] = useState();
   const [showAddModal, setShowAddModal] = useState(false);
   const [newSemesterNumber, setNewSemesterNumber] = useState('');
   const [creatingSemester, setCreatingSemester] = useState(false);
@@ -76,6 +77,15 @@ const Dashboard = () => {
 
   const handleLogout = async () => {
     await logout();
+    try {
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (err) {
+      console.error("Logout error", err);
+    }
+    navigate("/");
   };
 
   const handleAddSemester = () => {
@@ -131,6 +141,12 @@ const Dashboard = () => {
         credits: totalCredits,
       };
     });
+  const handleViewReports = () => {
+    alert("Reports feature - coming soon!");
+  };
+
+  const handleExportData = () => {
+    alert("Export data feature - coming soon!");
   };
 
   // Loading state
@@ -223,6 +239,32 @@ const Dashboard = () => {
             semesterData={chartData}
           />
         </div>
+        <div>
+          {quote ? (
+            <div className="bg-white rounded-xl shadow p-6 border border-gray-200 mb-6">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6 text-white"
+                  >
+                    <path
+                      d="M.036 3A3.504 3.504 0 0 1 4 .036v2.049A1.506 1.506 0 0 0 2.085 3H6v6H0V3h.036zm15.928 7H16v6h-6v-6h3.915A1.496 1.496 0 0 0 12 9.086v-2.05A3.504 3.504 0 0 1 15.964 10zM14 12h-2v2h2v-2zM2 5v2h2V5H2z"
+                      fillRule="evenodd"
+                    />
+                  </svg>
+                </div>
+
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-600">
+                    Quote of the Day
+                  </p>
+
+                  <blockquote className="mt-2 text-gray-900 italic text-base sm:text-lg leading-relaxed">
+                    “{quote.quote}”
+                  </blockquote>
 
         {/* Semester Overview Section */}
         <div className="mb-8">
