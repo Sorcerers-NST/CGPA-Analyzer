@@ -95,7 +95,7 @@ export const createUser = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   try {
-    let { email, password } = req.body;
+    let { email, password, rememberMe } = req.body;
     email = email.trim().toLowerCase();
     if (!email || !password) {
       return res
@@ -116,15 +116,23 @@ export const loginUser = async (req, res) => {
     if (!checkPass) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
+    
     generateToken(res, { 
       id: user.id.toString(), 
       username: user.username, 
       email: user.email 
-    });
+    }, rememberMe);
 
-    return res.json({ message: "Login successful" });
+    return res.json({ 
+      message: "Login successful",
+      user: {
+        id: user.id.toString(),
+        username: user.username,
+        email: user.email
+      }
+    });
   } catch (err) {
-    console.error("User creation error:", err);
+    console.error("Login error:", err);
     return res
       .status(500)
       .json({ error: "Something went wrong. Please try again." });
@@ -133,8 +141,13 @@ export const loginUser = async (req, res) => {
 
 export const logoutUser = async (req, res) => {
   try {
-    res.clearCookie('jwt', { path: '/' });
-    return res.json({ message: 'Logged out' });
+    res.clearCookie('jwt', { 
+      path: '/',
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+    });
+    return res.json({ message: 'Logged out successfully' });
   } catch (err) {
     console.error('Logout error:', err);
     return res.status(500).json({ error: 'Unable to logout' });

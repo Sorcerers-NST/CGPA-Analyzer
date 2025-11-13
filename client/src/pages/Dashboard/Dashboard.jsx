@@ -1,10 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getAllSemesters, createSemester, calculateSemesterCGPA } from '../../services/semesterApi';
+import { useAuth } from '../../contexts/AuthContext';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  const { user, logout, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(true);
   const [semesters, setSemesters] = useState([]);
   const [stats, setStats] = useState({
@@ -18,30 +19,11 @@ const Dashboard = () => {
   const [creatingSemester, setCreatingSemester] = useState(false);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await fetch('/api/users/me', { credentials: 'include' });
-        if (!res.ok) {
-          navigate('/login');
-          return;
-        }
-        const data = await res.json();
-        setUser(data);
-      } catch (err) {
-        console.error('Error fetching user:', err);
-        navigate('/login');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUser();
-  }, [navigate]);
-
-  useEffect(() => {
-    if (user) {
+    if (user && !authLoading) {
       fetchSemesters();
+      setLoading(false);
     }
-  }, [user]);
+  }, [user, authLoading]);
 
   const fetchSemesters = async () => {
     try {
@@ -82,12 +64,7 @@ const Dashboard = () => {
   };
 
   const handleLogout = async () => {
-    try {
-      await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
-    } catch (err) {
-      console.error('Logout error', err);
-    }
-    navigate('/');
+    await logout();
   };
 
   const handleAddSemester = () => {
@@ -132,7 +109,7 @@ const Dashboard = () => {
     alert('Export data feature - coming soon!');
   };
 
-  if (loading) {
+  if (loading || authLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">

@@ -1,14 +1,10 @@
-// Semester API Service
+import apiClient from './apiClient';
+
 const BASE_URL = '/api/v1/semesters';
 
-/**
- * Fetch all semesters for the logged-in user
- */
 export const getAllSemesters = async () => {
   try {
-    const response = await fetch(BASE_URL, {
-      credentials: 'include',
-    });
+    const response = await apiClient(BASE_URL);
     
     if (!response.ok) {
       throw new Error('Failed to fetch semesters');
@@ -22,14 +18,9 @@ export const getAllSemesters = async () => {
   }
 };
 
-/**
- * Fetch a single semester by ID
- */
 export const getSemesterById = async (semesterId) => {
   try {
-    const response = await fetch(`${BASE_URL}/${semesterId}`, {
-      credentials: 'include',
-    });
+    const response = await apiClient(`${BASE_URL}/${semesterId}`);
     
     if (!response.ok) {
       throw new Error('Failed to fetch semester');
@@ -43,19 +34,12 @@ export const getSemesterById = async (semesterId) => {
   }
 };
 
-/**
- * Create a new semester
- */
 export const createSemester = async (semesterData) => {
   try {
     console.log('API: Creating semester with data:', semesterData);
     
-    const response = await fetch(BASE_URL, {
+    const response = await apiClient(BASE_URL, {
       method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify(semesterData),
     });
     
@@ -76,17 +60,11 @@ export const createSemester = async (semesterData) => {
   }
 };
 
-/**
- * Update an existing semester
- */
+
 export const updateSemester = async (semesterId, updateData) => {
   try {
-    const response = await fetch(`${BASE_URL}/${semesterId}`, {
+    const response = await apiClient(`${BASE_URL}/${semesterId}`, {
       method: 'PUT',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify(updateData),
     });
     
@@ -103,14 +81,10 @@ export const updateSemester = async (semesterId, updateData) => {
   }
 };
 
-/**
- * Delete a semester
- */
 export const deleteSemester = async (semesterId) => {
   try {
-    const response = await fetch(`${BASE_URL}/${semesterId}`, {
+    const response = await apiClient(`${BASE_URL}/${semesterId}`, {
       method: 'DELETE',
-      credentials: 'include',
     });
     
     if (!response.ok) {
@@ -126,14 +100,9 @@ export const deleteSemester = async (semesterId) => {
   }
 };
 
-/**
- * Calculate CGPA for a semester
- */
 export const calculateSemesterCGPA = async (semesterId) => {
   try {
-    const response = await fetch(`${BASE_URL}/${semesterId}/cgpa`, {
-      credentials: 'include',
-    });
+    const response = await apiClient(`${BASE_URL}/${semesterId}/cgpa`);
     
     if (!response.ok) {
       throw new Error('Failed to calculate CGPA');

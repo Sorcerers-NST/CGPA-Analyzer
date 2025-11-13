@@ -1,3 +1,5 @@
+import apiClient from './apiClient';
+
 const API_BASE_URL = '/api/v1/subjects';
 
 /**
@@ -8,12 +10,8 @@ const API_BASE_URL = '/api/v1/subjects';
 export const createSubject = async (subjectData) => {
   console.log('Creating subject:', subjectData);
   
-  const response = await fetch(API_BASE_URL, {
+  const response = await apiClient(API_BASE_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
     body: JSON.stringify(subjectData),
   });
 
@@ -35,9 +33,8 @@ export const createSubject = async (subjectData) => {
 export const getSubjectsBySemester = async (semesterId) => {
   console.log('Fetching subjects for semester:', semesterId);
   
-  const response = await fetch(`${API_BASE_URL}/semester/${semesterId}`, {
+  const response = await apiClient(`${API_BASE_URL}/semester/${semesterId}`, {
     method: 'GET',
-    credentials: 'include',
   });
 
   const data = await response.json();
@@ -58,9 +55,8 @@ export const getSubjectsBySemester = async (semesterId) => {
 export const getSubjectById = async (subjectId) => {
   console.log('Fetching subject:', subjectId);
   
-  const response = await fetch(`${API_BASE_URL}/${subjectId}`, {
+  const response = await apiClient(`${API_BASE_URL}/${subjectId}`, {
     method: 'GET',
-    credentials: 'include',
   });
 
   const data = await response.json();
@@ -82,12 +78,8 @@ export const getSubjectById = async (subjectId) => {
 export const updateSubject = async (subjectId, updateData) => {
   console.log('Updating subject:', subjectId, updateData);
   
-  const response = await fetch(`${API_BASE_URL}/${subjectId}`, {
+  const response = await apiClient(`${API_BASE_URL}/${subjectId}`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
     body: JSON.stringify(updateData),
   });
 
@@ -109,9 +101,8 @@ export const updateSubject = async (subjectId, updateData) => {
 export const deleteSubject = async (subjectId) => {
   console.log('Deleting subject:', subjectId);
   
-  const response = await fetch(`${API_BASE_URL}/${subjectId}`, {
+  const response = await apiClient(`${API_BASE_URL}/${subjectId}`, {
     method: 'DELETE',
-    credentials: 'include',
   });
 
   const data = await response.json();
@@ -123,3 +114,4 @@ export const deleteSubject = async (subjectId) => {
   console.log('Subject deleted:', data);
   return data;
 };
+
