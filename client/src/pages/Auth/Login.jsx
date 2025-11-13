@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login, isAuthenticated, loading: authLoading } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -11,6 +13,13 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, authLoading, navigate]);
 
   const handleChange = (e) => {
     setFormData({
@@ -26,20 +35,10 @@ const Login = () => {
     setLoading(true);
     
     try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ 
-          email: formData.email, 
-          password: formData.password 
-        }),
-      });
+      const result = await login(formData.email, formData.password, rememberMe);
       
-      const data = await res.json();
-      
-      if (!res.ok) {
-        setError(data.error || 'Login failed. Please check your credentials.');
+      if (!result.success) {
+        setError(result.error || 'Login failed. Please check your credentials.');
         setLoading(false);
         return;
       }

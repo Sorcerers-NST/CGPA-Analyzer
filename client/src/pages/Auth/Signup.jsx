@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 
 const Signup = () => {
   const navigate = useNavigate();
+  const { login, isAuthenticated, loading: authLoading } = useAuth();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -18,6 +20,13 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [showAddCollege, setShowAddCollege] = useState(false);
   const [newCollegeName, setNewCollegeName] = useState('');
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, authLoading, navigate]);
 
   const handleChange = (e) => {
     setFormData({
@@ -134,17 +143,10 @@ const Signup = () => {
         return;
       }
       
-      const loginRes = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password
-        }),
-      });
-
-      if (loginRes.ok) {
+      // Auto-login after successful registration
+      const loginResult = await login(formData.email, formData.password, false);
+      
+      if (loginResult.success) {
         navigate('/dashboard');
       } else {
         navigate('/login');
