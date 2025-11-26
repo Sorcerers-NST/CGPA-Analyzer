@@ -7,6 +7,8 @@ import Signup from './pages/Auth/Signup.jsx'
 import DashboardNew from './pages/Dashboard/DashboardNew.jsx'
 import CompleteProfile from './pages/Auth/CompleteProfile.jsx'
 import SemesterView from './pages/Semester/SemesterView.jsx'
+import Profile from './pages/Profile/Profile.jsx'
+import Settings from './pages/Settings/Settings.jsx'
 import { AuthProvider } from './contexts/AuthContext.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import AppLayout from './components/layout/AppLayout.jsx'
@@ -49,6 +51,26 @@ function App() {
               <ProtectedRoute>
                 <AppLayout>
                   <SemesterView />
+                </AppLayout>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/profile" 
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <Profile />
+                </AppLayout>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/settings" 
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <Settings />
                 </AppLayout>
               </ProtectedRoute>
             } 
