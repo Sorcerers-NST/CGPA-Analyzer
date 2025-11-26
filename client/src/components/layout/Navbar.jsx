@@ -46,6 +46,7 @@ const Navbar = ({ onCommandOpen }) => {
     if (path === '/dashboard') return 'Dashboard';
     if (path === '/analytics') return 'Analytics';
     if (path === '/settings') return 'Settings';
+    if (path === '/profile') return 'Profile';
     if (path.startsWith('/semester/')) return 'Semester Details';
     return '';
   };
@@ -162,7 +163,7 @@ const Navbar = ({ onCommandOpen }) => {
                         icon={<FiUser className="w-4 h-4" />}
                         label="Profile"
                         onClick={() => {
-                          navigate('/settings');
+                          navigate('/profile');
                           setUserMenuOpen(false);
                         }}
                       />
