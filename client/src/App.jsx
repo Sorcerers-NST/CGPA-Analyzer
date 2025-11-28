@@ -13,6 +13,7 @@ import { AuthProvider } from './contexts/AuthContext.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import AppLayout from './components/layout/AppLayout.jsx'
 import PublicLayout from './components/layout/PublicLayout.jsx'
+import HomeRedirect from './components/HomeRedirect.jsx'
 
 function App() {
   return (
@@ -20,9 +21,11 @@ function App() {
       <div className="w-full min-h-screen overflow-x-hidden">
         <Routes>
           <Route path="/" element={
-            <PublicLayout>
-              <Home />
-            </PublicLayout>
+            <HomeRedirect>
+              <PublicLayout>
+                <Home />
+              </PublicLayout>
+            </HomeRedirect>
           } />
           <Route path="/landing" element={<Landing />} />
           <Route path="/login" element={<Login />} />
