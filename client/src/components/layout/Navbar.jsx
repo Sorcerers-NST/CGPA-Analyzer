@@ -82,11 +82,6 @@ const Navbar = ({ onCommandOpen }) => {
             </div>
           </div>
 
-          {/* Center: Page Title (on internal pages) */}
-          <div className="hidden lg:block">
-            <h1 className="text-sm font-medium text-gray-600">{getPageTitle()}</h1>
-          </div>
-
           {/* Right: Actions */}
           <div className="flex items-center gap-2">
             {/* Command Palette Trigger */}
@@ -96,7 +91,7 @@ const Navbar = ({ onCommandOpen }) => {
               title="Open command palette (Cmd+K)"
             >
               <FiCommand className="w-4 h-4" />
-              <span className="text-xs">⌘K</span>
+              K
             </button>
 
             {/* Notifications */}

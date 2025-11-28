@@ -8,7 +8,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { FiSearch, FiHome, FiBarChart2, FiSettings, FiPlus, FiBook } from 'react-icons/fi';
 import { useDebounce } from '../../hooks/useDebounce';
 
@@ -16,11 +16,15 @@ const CommandPalette = ({ isOpen, onClose }) => {
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
   const inputRef = useRef(null);
   const debouncedQuery = useDebounce(query, 150);
 
+  // Check if we're on a semester page
+  const isOnSemesterPage = location.pathname.startsWith('/semester/');
+
   // Define all commands
-  const commands = [
+  const allCommands = [
     {
       id: 'dashboard',
       title: 'Go to Dashboard',
@@ -70,9 +74,18 @@ const CommandPalette = ({ isOpen, onClose }) => {
         const event = new CustomEvent('open-add-subject');
         window.dispatchEvent(event);
       },
-      keywords: ['add', 'subject', 'course', 'new', 'create']
+      keywords: ['add', 'subject', 'course', 'new', 'create'],
+      showOnlyOn: 'semester' // Only show on semester pages
     }
   ];
+
+  // Filter commands based on current page
+  const commands = allCommands.filter(cmd => {
+    if (cmd.showOnlyOn === 'semester') {
+      return isOnSemesterPage;
+    }
+    return true;
+  });
 
   // Fuzzy search
   const filteredCommands = commands.filter(cmd => {
