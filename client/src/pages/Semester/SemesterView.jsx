@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { getSemesterById, calculateSemesterCGPA } from '../../services/semesterApi';
 import { createSubject, updateSubject, deleteSubject } from '../../services/subjectApi';
-import DashboardHeader from '../../components/dashboard/DashboardHeader';
 import SemesterHeader from '../../components/semester/SemesterHeader';
 import SGPABox from '../../components/semester/SGPABox';
 import SubjectCard from '../../components/semester/SubjectCard';
@@ -41,6 +40,16 @@ const SemesterView = () => {
   useEffect(() => {
     fetchSemesterData();
   }, [id]);
+
+  // Listen for command palette "Add Subject" event
+  useEffect(() => {
+    const handleAddSubjectEvent = () => {
+      handleAddSubject();
+    };
+
+    window.addEventListener('open-add-subject', handleAddSubjectEvent);
+    return () => window.removeEventListener('open-add-subject', handleAddSubjectEvent);
+  }, []);
 
   const fetchSemesterData = async () => {
     try {
@@ -161,7 +170,6 @@ const SemesterView = () => {
   if (error || !semester) {
     return (
       <div className="min-h-screen bg-white">
-        <DashboardHeader />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -199,9 +207,6 @@ const SemesterView = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      <DashboardHeader />
-
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back Button */}
