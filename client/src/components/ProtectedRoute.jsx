@@ -1,8 +1,9 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
+const ProtectedRoute = ({ children, requireProfileSetup = true }) => {
+  const { isAuthenticated, loading, user } = useAuth();
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -17,6 +18,16 @@ const ProtectedRoute = ({ children }) => {
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
+  }
+
+  // If profile is not completed and we're not on the profile-setup page, redirect to profile-setup
+  if (requireProfileSetup && user && !user.profileCompleted && location.pathname !== '/profile-setup') {
+    return <Navigate to="/profile-setup" replace />;
+  }
+
+  // If profile is completed and user tries to access profile-setup, redirect to dashboard
+  if (!requireProfileSetup && user && user.profileCompleted && location.pathname === '/profile-setup') {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return children;

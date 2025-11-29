@@ -15,6 +15,10 @@ export const getUser = async (req, res) => {
         email: true,
         collegeId: true,
         college: { select: { id: true, name: true } },
+        profileCompleted: true,
+        bio: true,
+        university: true,
+        graduationYear: true,
       },
     });
 
@@ -27,6 +31,10 @@ export const getUser = async (req, res) => {
       email: user.email,
       collegeId: user.collegeId ? user.collegeId.toString() : null,
       college: user.college ? { id: user.college.id.toString(), name: user.college.name } : null,
+      profileCompleted: user.profileCompleted,
+      bio: user.bio,
+      university: user.university,
+      graduationYear: user.graduationYear,
     };
 
     return res.status(200).json(formatted);
@@ -71,5 +79,69 @@ export const updateUserCollege = async (req, res) => {
   } catch (err) {
     console.error('Error updating user college:', err);
     return res.status(500).json({ error: 'Unable to update college' });
+  }
+};
+
+export const completeProfile = async (req, res) => {
+  try {
+    if (!req.user || !req.user.email) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const email = req.user.email;
+    const { username, bio, university, graduationYear } = req.body;
+
+    if (!username || !university) {
+      return res.status(400).json({ error: 'Username and university are required' });
+    }
+
+    // Check if username is already taken by another user
+    const existingUser = await prisma.user.findFirst({
+      where: { 
+        username,
+        NOT: { email }
+      }
+    });
+
+    if (existingUser) {
+      return res.status(409).json({ error: 'Username is already taken' });
+    }
+
+    const updated = await prisma.user.update({
+      where: { email },
+      data: { 
+        username,
+        bio: bio || null,
+        university: university || null,
+        graduationYear: graduationYear || null,
+        profileCompleted: true
+      },
+      select: { 
+        username: true, 
+        email: true, 
+        collegeId: true, 
+        college: { select: { id: true, name: true } },
+        profileCompleted: true,
+        bio: true,
+        university: true,
+        graduationYear: true,
+      },
+    });
+
+    const formatted = {
+      username: updated.username,
+      email: updated.email,
+      collegeId: updated.collegeId ? updated.collegeId.toString() : null,
+      college: updated.college ? { id: updated.college.id.toString(), name: updated.college.name } : null,
+      profileCompleted: updated.profileCompleted,
+      bio: updated.bio,
+      university: updated.university,
+      graduationYear: updated.graduationYear,
+    };
+
+    return res.json({ user: formatted, message: 'Profile completed successfully' });
+  } catch (err) {
+    console.error('Error completing profile:', err);
+    return res.status(500).json({ error: 'Unable to complete profile' });
   }
 };
