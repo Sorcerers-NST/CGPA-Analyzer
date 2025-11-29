@@ -4,7 +4,7 @@
  * Global sticky navigation with:
  * - Logo/brand on left
  * - Breadcrumbs/page title in center
- * - Command trigger, notifications, user menu on right
+ * - Command trigger, user menu on right
  * 
  * Height: 64px, minimal, clean
  */
@@ -12,16 +12,14 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiCommand, FiBell, FiUser, FiSettings, FiLogOut, FiMenu, FiX } from 'react-icons/fi';
+import { FiCommand, FiUser, FiSettings, FiLogOut, FiMenu, FiX } from 'react-icons/fi';
 import { useAuth } from '../../contexts/AuthContext';
 
 const Navbar = ({ onCommandOpen }) => {
   const { user, logout } = useAuth();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const userMenuRef = useRef(null);
-  const notifRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -30,9 +28,6 @@ const Navbar = ({ onCommandOpen }) => {
     const handleClickOutside = (event) => {
       if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
         setUserMenuOpen(false);
-      }
-      if (notifRef.current && !notifRef.current.contains(event.target)) {
-        setNotificationsOpen(false);
       }
     };
 
@@ -93,40 +88,6 @@ const Navbar = ({ onCommandOpen }) => {
               <FiCommand className="w-4 h-4" />
               K
             </button>
-
-            {/* Notifications */}
-            <div ref={notifRef} className="relative">
-              <button
-                onClick={() => setNotificationsOpen(!notificationsOpen)}
-                className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-                title="Notifications"
-              >
-                <FiBell className="w-5 h-5" />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
-              </button>
-
-              {/* Notifications Dropdown */}
-              <AnimatePresence>
-                {notificationsOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.95, y: -10 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.15 }}
-                    className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden"
-                  >
-                    <div className="px-4 py-3 border-b border-gray-100">
-                      <h3 className="font-semibold text-sm">Notifications</h3>
-                    </div>
-                    <div className="max-h-96 overflow-y-auto">
-                      <div className="p-8 text-center text-sm text-gray-500">
-                        No new notifications
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
 
             {/* User Menu */}
             <div ref={userMenuRef} className="relative">
