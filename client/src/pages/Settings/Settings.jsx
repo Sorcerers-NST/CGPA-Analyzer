@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FiMoon, FiSun, FiBell, FiLock, FiTrash2, FiShield, FiToggleLeft, FiToggleRight } from 'react-icons/fi';
+import { FiMoon, FiSun, FiLock, FiTrash2, FiShield } from 'react-icons/fi';
 
 const Settings = () => {
   const [settings, setSettings] = useState({
@@ -90,22 +90,6 @@ const Settings = () => {
               </button>
             </div>
           </div>
-        </Section>
-
-        <Section title="Notifications" icon={<FiBell className="w-5 h-5" />}>
-          <Toggle
-            label="Email Notifications"
-            description="Receive updates and alerts via email"
-            checked={settings.emailNotifications}
-            onChange={() => toggleSetting('emailNotifications')}
-          />
-          <div className="border-t border-gray-100" />
-          <Toggle
-            label="Push Notifications"
-            description="Receive real-time notifications on your device"
-            checked={settings.pushNotifications}
-            onChange={() => toggleSetting('pushNotifications')}
-          />
         </Section>
 
         <Section title="Privacy & Security" icon={<FiShield className="w-5 h-5" />}>

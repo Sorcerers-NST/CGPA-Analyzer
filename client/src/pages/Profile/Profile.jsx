@@ -9,9 +9,9 @@ const Profile = () => {
   const [formData, setFormData] = useState({
     username: user?.username || '',
     email: user?.email || '',
-    bio: 'Computer Science Student | CGPA Enthusiast',
-    university: 'University of Technology',
-    graduationYear: '2025'
+    bio: user?.bio || 'Computer Science Student | CGPA Enthusiast',
+    university: user?.university || 'University of Technology',
+    graduationYear: user?.graduationYear || '2025'
   });
 
   const handleChange = (e) => {

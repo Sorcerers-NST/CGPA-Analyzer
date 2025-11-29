@@ -5,10 +5,11 @@ import Landing from './pages/Landing/Landing.jsx'
 import Login from './pages/Auth/Login.jsx'
 import Signup from './pages/Auth/Signup.jsx'
 import DashboardNew from './pages/Dashboard/DashboardNew.jsx'
-import CompleteProfile from './pages/Auth/CompleteProfile.jsx'
+import ProfileSetup from './pages/Auth/ProfileSetup.jsx'
 import SemesterView from './pages/Semester/SemesterView.jsx'
 import Profile from './pages/Profile/Profile.jsx'
 import Settings from './pages/Settings/Settings.jsx'
+import Analytics from './pages/Analytics/Analytics.jsx'
 import { AuthProvider } from './contexts/AuthContext.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import AppLayout from './components/layout/AppLayout.jsx'
@@ -41,10 +42,10 @@ function App() {
             } 
           />
           <Route 
-            path="/complete-profile" 
+            path="/profile-setup" 
             element={
-              <ProtectedRoute>
-                <CompleteProfile />
+              <ProtectedRoute requireProfileSetup={false}>
+                <ProfileSetup />
               </ProtectedRoute>
             } 
           />
@@ -74,6 +75,16 @@ function App() {
               <ProtectedRoute>
                 <AppLayout>
                   <Settings />
+                </AppLayout>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/analytics" 
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <Analytics />
                 </AppLayout>
               </ProtectedRoute>
             } 

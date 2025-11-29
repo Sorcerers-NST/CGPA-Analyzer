@@ -6,16 +6,26 @@ function SemesterComparison({ semesters }) {
   // Prepare comparison data
   const comparisonData = useMemo(() => {
     return semesters.map(sem => {
-      const totalCredits = sem.subjects?.reduce((sum, sub) => sum + sub.credits, 0) || 0;
-      const totalSubjects = sem.subjects?.length || 0;
+      const subjects = sem.subjects || [];
+      const completedSubjects = subjects.filter(s => s.gradePoint != null);
+      
+      const totalCredits = completedSubjects.reduce((sum, sub) => sum + sub.credits, 0);
+      const semWeightedGPA = completedSubjects.reduce((sum, sub) => 
+        sum + (sub.gradePoint * sub.credits), 0
+      );
+      
+      const calculatedSGPA = totalCredits > 0 ? semWeightedGPA / totalCredits : 0;
+      const sgpa = sem.sgpa || parseFloat(calculatedSGPA.toFixed(2));
+      
+      const totalSubjects = subjects.length;
       
       return {
-        name: sem.name.replace('Semester', 'Sem'),
-        sgpa: sem.sgpa || 0,
+        name: sem.name ? sem.name.replace('Semester', 'Sem') : `Sem ${sem.semesterNumber}`,
+        sgpa: sgpa,
         credits: totalCredits,
         subjects: totalSubjects,
-        avgGradePoint: sem.subjects && sem.subjects.length > 0
-          ? (sem.subjects.reduce((sum, sub) => sum + sub.gradePoint, 0) / sem.subjects.length).toFixed(2)
+        avgGradePoint: completedSubjects.length > 0
+          ? (completedSubjects.reduce((sum, sub) => sum + sub.gradePoint, 0) / completedSubjects.length).toFixed(2)
           : 0
       };
     });
@@ -25,7 +35,7 @@ function SemesterComparison({ semesters }) {
   const insights = useMemo(() => {
     if (semesters.length === 0) return null;
 
-    const sgpas = semesters.map(s => s.sgpa || 0).filter(s => s > 0);
+    const sgpas = comparisonData.map(s => s.sgpa).filter(s => s > 0);
     if (sgpas.length === 0) return null;
 
     const highest = Math.max(...sgpas);
@@ -42,8 +52,8 @@ function SemesterComparison({ semesters }) {
       else if (recentAvg < olderAvg - 0.2) trend = 'declining';
     }
 
-    const bestSemester = semesters.find(s => s.sgpa === highest);
-    const worstSemester = semesters.find(s => s.sgpa === lowest);
+    const bestSemester = comparisonData.find(s => s.sgpa === highest);
+    const worstSemester = comparisonData.find(s => s.sgpa === lowest);
 
     return {
       highest,
