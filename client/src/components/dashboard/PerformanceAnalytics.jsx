@@ -15,18 +15,24 @@ function PerformanceAnalytics({ semesters }) {
 
     const trendData = semesters.map((sem, index) => {
       // Calculate semester stats
-      const semCredits = sem.subjects?.reduce((sum, sub) => sum + sub.credits, 0) || 0;
-      const semWeightedGPA = sem.subjects?.reduce((sum, sub) => 
+      const subjects = sem.subjects || [];
+      const completedSubjects = subjects.filter(s => s.gradePoint != null);
+      
+      const semCredits = completedSubjects.reduce((sum, sub) => sum + sub.credits, 0);
+      const semWeightedGPA = completedSubjects.reduce((sum, sub) => 
         sum + (sub.gradePoint * sub.credits), 0
-      ) || 0;
+      );
+      
+      const calculatedSGPA = semCredits > 0 ? semWeightedGPA / semCredits : 0;
+      const sgpa = sem.sgpa || parseFloat(calculatedSGPA.toFixed(2));
 
       totalCredits += semCredits;
       totalWeightedGPA += semWeightedGPA;
       cumulativeCGPA = totalCredits > 0 ? totalWeightedGPA / totalCredits : 0;
 
       return {
-        name: sem.name.replace('Semester', 'S'),
-        sgpa: sem.sgpa || 0,
+        name: sem.name ? sem.name.replace('Semester', 'S') : `S${sem.semesterNumber}`,
+        sgpa: sgpa,
         cgpa: parseFloat(cumulativeCGPA.toFixed(2)),
         credits: semCredits,
       };
@@ -42,7 +48,8 @@ function PerformanceAnalytics({ semesters }) {
     };
 
     // 1. Consistency (variance in SGPA)
-    const sgpas = semesters.map(s => s.sgpa || 0).filter(s => s > 0);
+    // 1. Consistency (variance in SGPA)
+    const sgpas = trendData.map(d => d.sgpa).filter(s => s > 0);
     if (sgpas.length > 0) {
       const avg = sgpas.reduce((a, b) => a + b) / sgpas.length;
       const variance = sgpas.reduce((sum, val) => sum + Math.pow(val - avg, 2), 0) / sgpas.length;

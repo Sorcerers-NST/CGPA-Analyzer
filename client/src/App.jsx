@@ -9,6 +9,7 @@ import CompleteProfile from './pages/Auth/CompleteProfile.jsx'
 import SemesterView from './pages/Semester/SemesterView.jsx'
 import Profile from './pages/Profile/Profile.jsx'
 import Settings from './pages/Settings/Settings.jsx'
+import Analytics from './pages/Analytics/Analytics.jsx'
 import { AuthProvider } from './contexts/AuthContext.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import AppLayout from './components/layout/AppLayout.jsx'
@@ -74,6 +75,16 @@ function App() {
               <ProtectedRoute>
                 <AppLayout>
                   <Settings />
+                </AppLayout>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/analytics" 
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <Analytics />
                 </AppLayout>
               </ProtectedRoute>
             } 
