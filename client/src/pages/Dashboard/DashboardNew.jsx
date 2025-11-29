@@ -10,11 +10,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { getAllSemesters, createSemester } from '../../services/semesterApi';
 import { useModal } from '../../hooks/useModal';
-import { useToast } from '../../hooks/useToast';
 import Button from '../../components/ui/Button';
 import Modal from '../../components/ui/Modal';
 import Input from '../../components/ui/Input';
-import { ToastContainer } from '../../components/ui/Toast';
 
 // Imported Components
 import DashboardHero from '../../components/dashboard/DashboardHero';
@@ -29,9 +27,9 @@ const DashboardNew = () => {
   const [cgpa, setCgpa] = useState(null);
   const [semesterNumber, setSemesterNumber] = useState('');
   const [creating, setCreating] = useState(false);
+  const [error, setError] = useState(null);
   
   const addSemesterModal = useModal();
-  const toast = useToast();
 
   // Fetch semesters on mount
   useEffect(() => {
@@ -48,12 +46,14 @@ const DashboardNew = () => {
   const fetchSemesters = async () => {
     try {
       setLoading(true);
+      setError(null);
       const response = await getAllSemesters();
       const data = response.data || [];
       setSemesters(data);
       calculateCGPA(data);
     } catch (error) {
-      toast.error('Failed to load semesters');
+      setError('Failed to load semesters');
+      console.error('Failed to load semesters:', error);
     } finally {
       setLoading(false);
     }
@@ -80,19 +80,19 @@ const DashboardNew = () => {
     e.preventDefault();
     
     if (!semesterNumber) {
-      toast.error('Please enter a semester number');
+      setError('Please enter a semester number');
       return;
     }
 
     try {
       setCreating(true);
+      setError(null);
       await createSemester({ semesterNumber: parseInt(semesterNumber) });
-      toast.success('Semester created successfully');
       addSemesterModal.close();
       setSemesterNumber('');
       fetchSemesters();
     } catch (error) {
-      toast.error(error.message || 'Failed to create semester');
+      setError(error.message || 'Failed to create semester');
     } finally {
       setCreating(false);
     }
@@ -116,6 +116,13 @@ const DashboardNew = () => {
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+        {/* Error Message */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
+            {error}
+          </div>
+        )}
+
         {/* CGPA Card */}
         <DashboardStats 
           loading={loading} 
@@ -161,9 +168,6 @@ const DashboardNew = () => {
           />
         </form>
       </Modal>
-
-      {/* Toast Notifications */}
-      <ToastContainer toasts={toast.toasts} onRemove={toast.removeToast} />
     </div>
   );
 };
