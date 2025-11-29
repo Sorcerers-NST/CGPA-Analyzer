@@ -22,7 +22,7 @@ const Analytics = () => {
     try {
       setLoading(true);
       const response = await getAllSemesters();
-      const data = response.data || [];
+      const data = response.data && Array.isArray(response.data) ? response.data : [];
       setSemesters(data);
     } catch (error) {
       toast.error('Failed to load semesters data');
