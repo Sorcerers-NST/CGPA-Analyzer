@@ -5,7 +5,8 @@ import { FiMoon, FiSun, FiLock, FiTrash2, FiShield } from 'react-icons/fi';
 const Settings = () => {
   const [settings, setSettings] = useState({
     theme: 'light',
-    publicProfile: true,
+    emailNotifications: true,
+    pushNotifications: false,
     twoFactor: false
   });
 
@@ -92,13 +93,6 @@ const Settings = () => {
         </Section>
 
         <Section title="Privacy & Security" icon={<FiShield className="w-5 h-5" />}>
-          <Toggle
-            label="Public Profile"
-            description="Allow others to view your academic profile"
-            checked={settings.publicProfile}
-            onChange={() => toggleSetting('publicProfile')}
-          />
-          <div className="border-t border-gray-100" />
           <Toggle
             label="Two-Factor Authentication"
             description="Add an extra layer of security to your account"
