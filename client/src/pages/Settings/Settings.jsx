@@ -1,17 +1,52 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiMoon, FiSun, FiLock, FiTrash2, FiShield } from 'react-icons/fi';
+import { useAuth } from '../../contexts/AuthContext';
+import Modal from '../../components/ui/Modal';
+import { useModal } from '../../hooks/useModal';
 
 const Settings = () => {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+  const deleteModal = useModal();
   const [settings, setSettings] = useState({
     theme: 'light',
     emailNotifications: true,
     pushNotifications: false,
     twoFactor: false
   });
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
 
   const toggleSetting = (key) => {
     setSettings(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      setDeleteLoading(true);
+      setDeleteError('');
+      
+      const response = await fetch('/api/users/delete-account', {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to delete account');
+      }
+
+      // Logout and redirect to home
+      await logout();
+      navigate('/');
+    } catch (error) {
+      setDeleteError(error.message);
+    } finally {
+      setDeleteLoading(false);
+    }
   };
 
   const Section = ({ title, icon, children }) => (
@@ -122,7 +157,10 @@ const Settings = () => {
                 <p className="text-sm text-red-700 mt-1">
                   Once you delete your account, there is no going back. Please be certain.
                 </p>
-                <button className="mt-4 px-4 py-2 bg-white border border-red-200 text-red-600 text-sm font-medium rounded-lg hover:bg-red-50 transition-colors">
+                <button 
+                  onClick={deleteModal.open}
+                  className="mt-4 px-4 py-2 bg-white border border-red-200 text-red-600 text-sm font-medium rounded-lg hover:bg-red-50 transition-colors"
+                >
                   Delete Account
                 </button>
               </div>
@@ -130,6 +168,52 @@ const Settings = () => {
           </div>
         </div>
       </motion.div>
+
+      {/* Delete Account Confirmation Modal */}
+      <Modal
+        isOpen={deleteModal.isOpen}
+        onClose={deleteModal.close}
+        title="Delete Account"
+        size="md"
+      >
+        <div className="space-y-4">
+          {deleteError && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+              {deleteError}
+            </div>
+          )}
+          
+          <div className="space-y-3">
+            <p className="text-gray-900 font-medium">Are you absolutely sure?</p>
+            <p className="text-sm text-gray-600">
+              This action cannot be undone. This will permanently delete your account and remove all your data from our servers including:
+            </p>
+            <ul className="text-sm text-gray-600 list-disc list-inside space-y-1 ml-2">
+              <li>All your semester records</li>
+              <li>Subject grades and CGPA history</li>
+              <li>Profile information</li>
+              <li>Account credentials</li>
+            </ul>
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <button
+              onClick={deleteModal.close}
+              disabled={deleteLoading}
+              className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleDeleteAccount}
+              disabled={deleteLoading}
+              className="flex-1 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+            >
+              {deleteLoading ? 'Deleting...' : 'Yes, Delete My Account'}
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
