@@ -79,6 +79,16 @@ function App() {
               </ProtectedRoute>
             } 
           />
+          <Route 
+            path="/analytics" 
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <Analytics />
+                </AppLayout>
+              </ProtectedRoute>
+            } 
+          />
         </Routes>
       </div>
     </AuthProvider>
