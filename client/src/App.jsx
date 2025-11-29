@@ -5,7 +5,7 @@ import Landing from './pages/Landing/Landing.jsx'
 import Login from './pages/Auth/Login.jsx'
 import Signup from './pages/Auth/Signup.jsx'
 import DashboardNew from './pages/Dashboard/DashboardNew.jsx'
-import CompleteProfile from './pages/Auth/CompleteProfile.jsx'
+import ProfileSetup from './pages/Auth/ProfileSetup.jsx'
 import SemesterView from './pages/Semester/SemesterView.jsx'
 import Profile from './pages/Profile/Profile.jsx'
 import Settings from './pages/Settings/Settings.jsx'
@@ -42,10 +42,10 @@ function App() {
             } 
           />
           <Route 
-            path="/complete-profile" 
+            path="/profile-setup" 
             element={
-              <ProtectedRoute>
-                <CompleteProfile />
+              <ProtectedRoute requireProfileSetup={false}>
+                <ProfileSetup />
               </ProtectedRoute>
             } 
           />
