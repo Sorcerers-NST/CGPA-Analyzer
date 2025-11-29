@@ -145,3 +145,76 @@ export const completeProfile = async (req, res) => {
     return res.status(500).json({ error: 'Unable to complete profile' });
   }
 };
+
+export const deleteAccount = async (req, res) => {
+  try {
+    if (!req.user || !req.user.email) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const email = req.user.email;
+
+    // Get user with ID
+    const user = await prisma.user.findFirst({
+      where: { email },
+      select: { id: true }
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const userId = user.id;
+
+    // Delete all user data in transaction
+    await prisma.$transaction(async (tx) => {
+      // Delete CGPARecords
+      await tx.cGPARecord.deleteMany({
+        where: { userId }
+      });
+
+      // Delete Leaderboard entries
+      await tx.leaderboard.deleteMany({
+        where: { userId }
+      });
+
+      // Get all semesters to delete subjects
+      const semesters = await tx.semester.findMany({
+        where: { userId },
+        select: { id: true }
+      });
+
+      const semesterIds = semesters.map(s => s.id);
+
+      // Delete all subjects in all semesters
+      if (semesterIds.length > 0) {
+        await tx.subject.deleteMany({
+          where: { semesterId: { in: semesterIds } }
+        });
+      }
+
+      // Delete all semesters
+      await tx.semester.deleteMany({
+        where: { userId }
+      });
+
+      // Finally, delete the user
+      await tx.user.delete({
+        where: { id: userId }
+      });
+    });
+
+    // Clear cookie
+    res.clearCookie('jwt', {
+      path: '/',
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+    });
+
+    return res.json({ message: 'Account deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting account:', err);
+    return res.status(500).json({ error: 'Unable to delete account' });
+  }
+};
