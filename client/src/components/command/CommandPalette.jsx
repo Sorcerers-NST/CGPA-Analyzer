@@ -1,11 +1,3 @@
-/**
- * Command Palette - cal.com style
- * 
- * Keyboard-first global search (Cmd+K)
- * Fuzzy search for pages, actions
- * Navigate with arrow keys, execute with Enter
- */
-
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -20,10 +12,9 @@ const CommandPalette = ({ isOpen, onClose }) => {
   const inputRef = useRef(null);
   const debouncedQuery = useDebounce(query, 150);
 
-  // Check if we're on a semester page
   const isOnSemesterPage = location.pathname.startsWith('/semester/');
 
-  // Define all commands
+
   const allCommands = [
     {
       id: 'dashboard',
@@ -56,7 +47,6 @@ const CommandPalette = ({ isOpen, onClose }) => {
       icon: <FiPlus className="w-5 h-5" />,
       action: () => {
         navigate('/dashboard');
-        // Trigger add semester modal
         setTimeout(() => {
           const event = new CustomEvent('open-add-semester');
           window.dispatchEvent(event);
@@ -70,16 +60,14 @@ const CommandPalette = ({ isOpen, onClose }) => {
       subtitle: 'Add a new subject to current semester',
       icon: <FiBook className="w-5 h-5" />,
       action: () => {
-        // This will be triggered in context
         const event = new CustomEvent('open-add-subject');
         window.dispatchEvent(event);
       },
       keywords: ['add', 'subject', 'course', 'new', 'create'],
-      showOnlyOn: 'semester' // Only show on semester pages
+      showOnlyOn: 'semester' 
     }
   ];
 
-  // Filter commands based on current page
   const commands = allCommands.filter(cmd => {
     if (cmd.showOnlyOn === 'semester') {
       return isOnSemesterPage;
