@@ -6,11 +6,11 @@ import {
   updateTemplate,
   deleteTemplate
 } from '../controllers/assessmentTemplate.controller.js';
-import { authenticateToken } from '../middlewares/auth.middleware.js';
+import { authMiddleware } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 // All routes require authentication
-router.use(authenticateToken);
+router.use(authMiddleware);
 
 // Create new template
 router.post('/', createTemplate);

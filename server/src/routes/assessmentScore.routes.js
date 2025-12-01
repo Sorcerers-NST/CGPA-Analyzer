@@ -5,11 +5,11 @@ import {
   getScoresBySubject,
   getPredictionsBySemester
 } from '../controllers/assessmentScore.controller.js';
-import { authenticateToken } from '../middlewares/auth.middleware.js';
+import { authMiddleware } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 // All routes require authentication
-router.use(authenticateToken);
+router.use(authMiddleware);
 
 // Create subject assessment (link subject to template)
 router.post('/subject-assessment', createSubjectAssessment);
