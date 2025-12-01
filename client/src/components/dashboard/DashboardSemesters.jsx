@@ -5,7 +5,7 @@ import { SkeletonCard } from '../ui/Skeleton';
 import SemesterCardNew from './SemesterCardNew';
 import EmptyStateNew from './EmptyStateNew';
 
-const DashboardSemesters = ({ loading, semesters, onAdd, onSemesterClick }) => {
+const DashboardSemesters = ({ loading, semesters, onAdd, onSemesterClick, onDelete }) => {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -46,6 +46,7 @@ const DashboardSemesters = ({ loading, semesters, onAdd, onSemesterClick }) => {
               semester={semester}
               index={index}
               onClick={() => onSemesterClick(semester.id)}
+              onDelete={onDelete}
             />
           ))}
         </motion.div>

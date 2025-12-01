@@ -8,7 +8,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { getAllSemesters, createSemester } from '../../services/semesterApi';
+import { getAllSemesters, createSemester, deleteSemester } from '../../services/semesterApi';
 import { useModal } from '../../hooks/useModal';
 import Button from '../../components/ui/Button';
 import Modal from '../../components/ui/Modal';
@@ -98,6 +98,18 @@ const DashboardNew = () => {
     }
   };
 
+  const handleDeleteSemester = async (semesterId) => {
+    try {
+      setError(null);
+      await deleteSemester(semesterId);
+      // Refresh semesters after successful deletion
+      fetchSemesters();
+    } catch (error) {
+      setError(error.message || 'Failed to delete semester');
+      console.error('Failed to delete semester:', error);
+    }
+  };
+
   // Calculate stats
   const stats = {
     totalSemesters: semesters.length,
@@ -136,6 +148,7 @@ const DashboardNew = () => {
           semesters={semesters}
           onAdd={addSemesterModal.open}
           onSemesterClick={(id) => navigate(`/semester/${id}`)}
+          onDelete={handleDeleteSemester}
         />
       </div>
 
