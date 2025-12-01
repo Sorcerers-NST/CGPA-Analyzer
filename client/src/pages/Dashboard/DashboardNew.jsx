@@ -53,8 +53,36 @@ const DashboardNew = () => {
       setError(null);
       const response = await getAllSemesters();
       const data = response.data || [];
-      setSemesters(data);
-      calculateCGPA(data);
+      
+      // Calculate SGPA for each semester
+      const semestersWithSGPA = data.map(semester => {
+        const subjects = semester.subjects || [];
+        
+        // Filter subjects that have gradePoint
+        const completedSubjects = subjects.filter(
+          subject => subject.gradePoint !== null && subject.gradePoint !== undefined
+        );
+        
+        if (completedSubjects.length === 0) {
+          return { ...semester, sgpa: 0 };
+        }
+        
+        // Calculate SGPA
+        let weightedSum = 0;
+        let totalCredits = 0;
+        
+        completedSubjects.forEach(subject => {
+          weightedSum += subject.gradePoint * subject.credits;
+          totalCredits += subject.credits;
+        });
+        
+        const sgpa = totalCredits > 0 ? weightedSum / totalCredits : 0;
+        
+        return { ...semester, sgpa };
+      });
+      
+      setSemesters(semestersWithSGPA);
+      calculateCGPA(semestersWithSGPA);
     } catch (error) {
       setError('Failed to load semesters');
       console.error('Failed to load semesters:', error);
