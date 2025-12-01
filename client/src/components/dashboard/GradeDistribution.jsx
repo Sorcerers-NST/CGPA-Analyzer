@@ -105,10 +105,14 @@ const GradeDistribution = ({ semesters }) => {
           </Pie>
           <Tooltip 
             contentStyle={{ 
-              backgroundColor: '#000', 
-              border: 'none', 
+              backgroundColor: '#fff', 
+              border: '1px solid #e5e7eb', 
               borderRadius: '8px',
-              color: '#fff'
+              color: '#000',
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+            }}
+            itemStyle={{
+              color: '#000'
             }}
           />
         </PieChart>
