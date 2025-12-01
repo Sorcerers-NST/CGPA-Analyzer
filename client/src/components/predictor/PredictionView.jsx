@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { assessmentScoreService } from '../../services/assessmentService';
-import semesterService from '../../services/semesterService';
+import { getAllSemesters } from '../../services/semesterApi';
 
 const PredictionView = () => {
   const [semesters, setSemesters] = useState([]);
@@ -22,7 +22,7 @@ const PredictionView = () => {
 
   const fetchSemesters = async () => {
     try {
-      const response = await semesterService.getSemesters();
+      const response = await getAllSemesters();
       if (response.success) {
         setSemesters(response.data);
       }

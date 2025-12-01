@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { assessmentTemplateService, assessmentScoreService } from '../../services/assessmentService';
-import semesterService from '../../services/semesterService';
+import { getAllSemesters } from '../../services/semesterApi';
 
 const ScoreTracker = () => {
   const [semesters, setSemesters] = useState([]);
@@ -34,7 +34,7 @@ const ScoreTracker = () => {
 
   const fetchSemesters = async () => {
     try {
-      const response = await semesterService.getSemesters();
+      const response = await getAllSemesters();
       if (response.success) {
         setSemesters(response.data);
       }
