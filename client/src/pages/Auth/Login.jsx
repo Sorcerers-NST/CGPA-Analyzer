@@ -65,18 +65,18 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-navy-900 dark:via-navy-900 dark:to-navy-800 w-full transition-colors duration-200">
-      <nav className="bg-white/80 dark:bg-navy-800/80 backdrop-blur-md border-b border-gray-200 dark:border-navy-700 sticky top-0 z-50 w-full transition-colors duration-200">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 w-full">
+      <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50 w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="flex items-center justify-between h-16">
             <Link to="/" className="flex items-center group">
-              <span className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">
+              <span className="text-xl font-semibold tracking-tight text-gray-900 group-hover:text-gray-600 transition-colors">
                 CGPA Calculator
               </span>
             </Link>
-            <div className="text-sm text-gray-600 dark:text-gray-400">
+            <div className="text-sm text-gray-600">
               Don't have an account?{' '}
-              <Link to="/signup" className="font-medium text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+              <Link to="/signup" className="font-medium text-gray-900 hover:text-gray-600 transition-colors">
                 Sign up
               </Link>
             </div>
@@ -89,17 +89,17 @@ const Login = () => {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center w-full">
             <div className="hidden lg:block space-y-8 w-full">
               <div className="space-y-4">
-                <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">Welcome back</h1>
-                <p className="text-lg lg:text-xl text-gray-600 dark:text-gray-400">Sign in to continue tracking your academic performance.</p>
+                <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">Welcome back</h1>
+                <p className="text-lg lg:text-xl text-gray-600">Sign in to continue tracking your academic performance.</p>
               </div>
             </div>
 
             <div className="w-full max-w-xl mx-auto lg:max-w-none">
-              <div className="bg-white dark:bg-navy-800 rounded-3xl shadow-2xl border border-gray-200 dark:border-navy-700 p-6 sm:p-8 lg:p-12 w-full transition-colors duration-200">
+              <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 p-6 sm:p-8 lg:p-12 w-full">
                 <div className="space-y-6 sm:space-y-8 w-full">
                   <div className="text-center lg:text-left space-y-2">
-                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Sign in</h2>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">Enter your credentials to access your account</p>
+                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">Sign in</h2>
+                    <p className="text-gray-600 text-sm sm:text-base">Enter your credentials to access your account</p>
                   </div>
 
                   <form onSubmit={handleSubmit} className="space-y-6">
@@ -110,7 +110,7 @@ const Login = () => {
                     )}
 
                     <div className="space-y-2">
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-900 dark:text-white">Email address</label>
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-900">Email address</label>
                       <input
                         id="email"
                         name="email"
@@ -119,14 +119,14 @@ const Login = () => {
                         onChange={handleChange}
                         placeholder="you@example.com"
                         required
-                        className="w-full px-4 py-3.5 bg-gray-50 dark:bg-navy-900 border border-gray-300 dark:border-navy-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 dark:focus:ring-white focus:border-transparent focus:bg-white dark:focus:bg-navy-900 transition-all duration-200 placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white"
+                        className="w-full px-4 py-3.5 bg-gray-50 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent focus:bg-white transition-all duration-200 placeholder:text-gray-400 text-gray-900"
                       />
                     </div>
 
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <label htmlFor="password" className="block text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                        <button type="button" onClick={handleForgotPassword} className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                        <label htmlFor="password" className="block text-sm font-medium text-gray-900">Password</label>
+                        <button type="button" onClick={handleForgotPassword} className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
                           Forgot password?
                         </button>
                       </div>
@@ -139,12 +139,12 @@ const Login = () => {
                           onChange={handleChange}
                           placeholder="Enter your password"
                           required
-                          className="w-full px-4 py-3.5 bg-gray-50 dark:bg-navy-900 border border-gray-300 dark:border-navy-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 dark:focus:ring-white focus:border-transparent focus:bg-white dark:focus:bg-navy-900 transition-all duration-200 placeholder:text-gray-400 dark:placeholder:text-gray-500 pr-12 text-gray-900 dark:text-white"
+                          className="w-full px-4 py-3.5 bg-gray-50 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent focus:bg-white transition-all duration-200 placeholder:text-gray-400 pr-12 text-gray-900"
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
                         >
                           {showPassword ? '👁️' : '👁️‍🗨️'}
                         </button>
@@ -158,9 +158,9 @@ const Login = () => {
                         type="checkbox"
                         checked={rememberMe}
                         onChange={(e) => setRememberMe(e.target.checked)}
-                        className="h-4 w-4 rounded border-gray-300 dark:border-navy-700 text-gray-900 dark:text-white focus:ring-gray-900 dark:focus:ring-white cursor-pointer"
+                        className="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900 cursor-pointer"
                       />
-                      <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
+                      <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700 cursor-pointer">
                         Remember me for 30 days
                       </label>
                     </div>
@@ -168,7 +168,7 @@ const Login = () => {
                     <button 
                       type="submit" 
                       disabled={loading}
-                      className="w-full bg-white dark:bg-white text-black dark:text-black py-3.5 rounded-xl font-medium hover:bg-gray-100 dark:hover:bg-gray-200 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                      className="w-full bg-gray-900 text-white py-3.5 rounded-xl font-medium hover:bg-gray-800 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
                       {loading ? 'Signing in...' : 'Sign in'}
                     </button>
@@ -176,10 +176,10 @@ const Login = () => {
 
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-gray-200 dark:border-navy-700"></div>
+                      <div className="w-full border-t border-gray-200"></div>
                     </div>
                     <div className="relative flex justify-center text-sm">
-                      <span className="px-4 bg-white dark:bg-navy-800 text-gray-500 dark:text-gray-400">Or continue with</span>
+                      <span className="px-4 bg-white text-gray-500">Or continue with</span>
                     </div>
                   </div>
 
@@ -187,24 +187,24 @@ const Login = () => {
                     <button
                       type="button"
                       onClick={() => handleSocialLogin('Google')}
-                      className="flex items-center justify-center gap-3 px-4 py-3 bg-white dark:bg-navy-900 border border-gray-300 dark:border-navy-700 rounded-xl hover:bg-gray-50 dark:hover:bg-navy-700 hover:border-gray-400 dark:hover:border-navy-600 transition-all duration-200"
+                      className="flex items-center justify-center gap-3 px-4 py-3 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
                     >
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Google</span>
+                      <span className="text-sm font-medium text-gray-700">Google</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => handleSocialLogin('GitHub')}
-                      className="flex items-center justify-center gap-3 px-4 py-3 bg-white dark:bg-navy-900 border border-gray-300 dark:border-navy-700 rounded-xl hover:bg-gray-50 dark:hover:bg-navy-700 hover:border-gray-400 dark:hover:border-navy-600 transition-all duration-200"
+                      className="flex items-center justify-center gap-3 px-4 py-3 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
                     >
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">GitHub</span>
+                      <span className="text-sm font-medium text-gray-700">GitHub</span>
                     </button>
                   </div>
                 </div>
               </div>
 
-              <p className="text-center text-sm text-gray-600 dark:text-gray-400 mt-6 lg:hidden">
+              <p className="text-center text-sm text-gray-600 mt-6 lg:hidden">
                 Don't have an account?{' '}
-                <Link to="/signup" className="font-medium text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+                <Link to="/signup" className="font-medium text-gray-900 hover:text-gray-600 transition-colors">
                   Sign up
                 </Link>
               </p>

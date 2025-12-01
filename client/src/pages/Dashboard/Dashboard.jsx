@@ -161,14 +161,14 @@ const Dashboard = () => {
   // Loading state
   if (loading || authLoading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-navy-900 flex items-center justify-center transition-colors duration-200">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="text-center"
         >
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-black dark:border-white"></div>
-          <p className="mt-4 text-gray-600 dark:text-gray-400 text-sm">Loading your dashboard...</p>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
+          <p className="mt-4 text-gray-600 text-sm">Loading your dashboard...</p>
         </motion.div>
       </div>
     );
@@ -177,7 +177,7 @@ const Dashboard = () => {
   const chartData = prepareChartData();
 
   return (
-    <div className="min-h-screen bg-white dark:bg-navy-900 transition-colors duration-200">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <DashboardHeader />
 
@@ -188,12 +188,12 @@ const Dashboard = () => {
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-8 bg-gray-50 dark:bg-navy-800 border border-gray-200 dark:border-navy-700 rounded-xl p-6 transition-colors duration-200"
+            className="mb-8 bg-gray-50 border border-gray-200 rounded-xl p-6"
           >
             <div className="flex items-start space-x-4">
               <div className="flex-shrink-0">
                 <svg
-                  className="w-6 h-6 text-gray-600 dark:text-gray-400"
+                  className="w-6 h-6 text-gray-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -207,15 +207,15 @@ const Dashboard = () => {
                 </svg>
               </div>
               <div className="flex-1">
-                <h3 className="text-sm font-semibold text-black dark:text-white mb-1">
+                <h3 className="text-sm font-semibold text-black mb-1">
                   Complete Your Profile
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                <p className="text-sm text-gray-600 mb-3">
                   Select your college to get accurate CGPA calculations.
                 </p>
                 <button
                   onClick={() => navigate('/complete-profile')}
-                  className="px-4 py-2 bg-white dark:bg-white text-black dark:text-black text-sm font-medium rounded-lg hover:bg-gray-100 dark:hover:bg-gray-200 transition-colors"
+                  className="px-4 py-2 bg-black text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors"
                 >
                   Select College
                 </button>
@@ -231,14 +231,14 @@ const Dashboard = () => {
           transition={{ duration: 0.4 }}
           className="mb-12"
         >
-          <h1 className="text-4xl font-bold text-black dark:text-white mb-2">
+          <h1 className="text-4xl font-bold text-black mb-2">
             Welcome back, {user?.username} 👋
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">Here's your academic overview.</p>
+          <p className="text-gray-600">Here's your academic overview.</p>
         </motion.div>
 
         {/* Divider */}
-        <div className="border-t border-gray-200 dark:border-navy-700 mb-12"></div>
+        <div className="border-t border-gray-200 mb-12"></div>
 
         {/* CGPA Summary Card */}
         <div className="mb-12">
@@ -313,7 +313,7 @@ const Dashboard = () => {
         {/* Semester Overview Section */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-semibold text-black dark:text-white">Your Semesters</h2>
+            <h2 className="text-2xl font-semibold text-black">Your Semesters</h2>
             <div className="flex items-center gap-3">
               {/* {semesters.length > 0 && (
                 <ExportData 
@@ -324,7 +324,7 @@ const Dashboard = () => {
               )} */}
               <button
                 onClick={handleAddSemester}
-                className="flex items-center space-x-2 px-4 py-2.5 bg-white dark:bg-white text-black dark:text-black text-sm font-medium rounded-lg hover:bg-gray-100 dark:hover:bg-gray-200 transition-colors shadow-sm hover:shadow-md"
+                className="flex items-center space-x-2 px-4 py-2.5 bg-black text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors shadow-sm hover:shadow-md"
               >
                 <svg
                   className="w-4 h-4"
@@ -350,11 +350,11 @@ const Dashboard = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="bg-gray-50 dark:bg-navy-800 rounded-xl border-2 border-dashed border-gray-300 dark:border-navy-700 p-12 text-center transition-colors duration-200"
+              className="bg-gray-50 rounded-xl border-2 border-dashed border-gray-300 p-12 text-center"
             >
-              <div className="w-16 h-16 bg-gray-200 dark:bg-navy-700 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg
-                  className="w-8 h-8 text-gray-400 dark:text-gray-500"
+                  className="w-8 h-8 text-gray-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -367,16 +367,16 @@ const Dashboard = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-black dark:text-white mb-2">
+              <h3 className="text-xl font-semibold text-black mb-2">
                 No semesters yet
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
+              <p className="text-gray-600 mb-6 max-w-md mx-auto">
                 Start by adding your first semester to track your academic performance
                 and calculate your CGPA.
               </p>
               <button
                 onClick={handleAddSemester}
-                className="px-6 py-3 bg-white dark:bg-white text-black dark:text-black font-medium rounded-lg hover:bg-gray-100 dark:hover:bg-gray-200 transition-colors inline-flex items-center space-x-2 shadow-md hover:shadow-lg"
+                className="px-6 py-3 bg-black text-white font-medium rounded-lg hover:bg-gray-800 transition-colors inline-flex items-center space-x-2 shadow-md hover:shadow-lg"
               >
                 <svg
                   className="w-5 h-5"
@@ -412,9 +412,9 @@ const Dashboard = () => {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-gray-200 dark:border-navy-700 mt-20">
+      <footer className="border-t border-gray-200 mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-center text-sm text-gray-500">
             © 2025 CGPA Analyzer. All rights reserved.
           </p>
         </div>
@@ -434,15 +434,15 @@ const Dashboard = () => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.95, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="bg-white dark:bg-navy-800 rounded-xl max-w-md w-full p-8 shadow-2xl transition-colors duration-200"
+            className="bg-white rounded-xl max-w-md w-full p-8 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-2xl font-bold text-black dark:text-white mb-6">Add New Semester</h2>
+            <h2 className="text-2xl font-bold text-black mb-6">Add New Semester</h2>
             <form onSubmit={handleCreateSemester}>
               <div className="mb-6">
                 <label
                   htmlFor="semesterNumber"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  className="block text-sm font-medium text-gray-700 mb-2"
                 >
                   Semester Number
                 </label>
@@ -451,7 +451,7 @@ const Dashboard = () => {
                   id="semesterNumber"
                   value={newSemesterNumber}
                   onChange={(e) => setNewSemesterNumber(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-navy-700 rounded-lg focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent transition-all text-black dark:text-white bg-white dark:bg-navy-900"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all text-black"
                   placeholder="e.g., 1, 2, 3..."
                   min="1"
                   required
@@ -464,14 +464,14 @@ const Dashboard = () => {
                     setShowAddModal(false);
                     setNewSemesterNumber('');
                   }}
-                  className="flex-1 px-4 py-3 border border-gray-300 dark:border-navy-700 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-navy-700 transition-colors"
+                  className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
                   disabled={creatingSemester}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-3 bg-white dark:bg-white text-black dark:text-black font-medium rounded-lg hover:bg-gray-100 dark:hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
+                  className="flex-1 px-4 py-3 bg-black text-white font-medium rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
                   disabled={creatingSemester}
                 >
                   {creatingSemester ? 'Creating...' : 'Create'}

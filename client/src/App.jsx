@@ -11,7 +11,6 @@ import Profile from './pages/Profile/Profile.jsx'
 import Settings from './pages/Settings/Settings.jsx'
 import Analytics from './pages/Analytics/Analytics.jsx'
 import { AuthProvider } from './contexts/AuthContext.jsx'
-import { ThemeProvider } from './contexts/ThemeContext.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import AppLayout from './components/layout/AppLayout.jsx'
 import PublicLayout from './components/layout/PublicLayout.jsx'
@@ -19,9 +18,8 @@ import HomeRedirect from './components/HomeRedirect.jsx'
 
 function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <div className="w-full min-h-screen overflow-x-hidden bg-white dark:bg-navy-900 transition-colors duration-200">
+    <AuthProvider>
+      <div className="w-full min-h-screen overflow-x-hidden">
         <Routes>
           <Route path="/" element={
             <HomeRedirect>
@@ -94,7 +92,6 @@ function App() {
         </Routes>
       </div>
     </AuthProvider>
-    </ThemeProvider>
   )
 }
 
