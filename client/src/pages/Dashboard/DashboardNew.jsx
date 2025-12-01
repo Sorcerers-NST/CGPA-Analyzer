@@ -177,7 +177,7 @@ const DashboardNew = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-navy-950 transition-colors duration-200">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <DashboardHero username={user?.username} />
 
@@ -185,7 +185,7 @@ const DashboardNew = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
         {/* Error Message */}
         {error && (
-          <div className="bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900/50 text-red-800 dark:text-red-300 px-4 py-3 rounded-lg">
+          <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
             {error}
           </div>
         )}
