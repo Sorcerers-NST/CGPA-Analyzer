@@ -1,4 +1,4 @@
-import prisma from '../config/prisma.config.js';
+import prisma from '../../db.config.js';
 
 // Helper function to calculate grade based on percentage and grading scale
 const calculateGrade = async (percentage, collegeId) => {

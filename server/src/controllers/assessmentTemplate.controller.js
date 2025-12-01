@@ -1,4 +1,4 @@
-import prisma from '../config/prisma.config.js';
+import prisma from '../../db.config.js';
 
 // Create assessment template with components
 const createTemplate = async (req, res) => {
