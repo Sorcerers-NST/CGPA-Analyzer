@@ -153,15 +153,29 @@ export const deleteAccount = async (req, res) => {
     }
 
     const email = req.user.email;
+    const { password } = req.body;
 
-    // Get user with ID
+    // Verify password is provided
+    if (!password) {
+      return res.status(400).json({ error: 'Password is required to delete account' });
+    }
+
+    // Get user with password for verification
     const user = await prisma.user.findFirst({
       where: { email },
-      select: { id: true }
+      select: { id: true, password: true }
     });
 
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Verify password
+    const bcrypt = await import('bcrypt');
+    const isMatch = await bcrypt.compare(password, user.password);
+    
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Incorrect password' });
     }
 
     const userId = user.id;
@@ -218,3 +232,89 @@ export const deleteAccount = async (req, res) => {
     return res.status(500).json({ error: 'Unable to delete account' });
   }
 };
+
+/**
+ * Request password change verification code
+ * POST /api/users/request-password-change
+ */
+export const requestPasswordChangeVerification = async (req, res) => {
+  try {
+    if (!req.user || !req.user.email) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const email = req.user.email;
+    const { currentPassword } = req.body;
+
+    if (!currentPassword) {
+      return res.status(400).json({ error: 'Current password is required' });
+    }
+
+    // Import password change service
+    const { requestPasswordChangeCode } = await import('../services/passwordChange.service.js');
+    
+    const result = await requestPasswordChangeCode(email, currentPassword);
+
+    return res.json({ success: true, message: result.message });
+  } catch (err) {
+    console.error('Error requesting password change verification:', err);
+    
+    if (err.message === 'Current password is incorrect') {
+      return res.status(401).json({ error: err.message });
+    }
+    
+    if (err.message === 'User not found') {
+      return res.status(404).json({ error: err.message });
+    }
+    
+    return res.status(500).json({ error: 'Unable to send verification code' });
+  }
+};
+
+/**
+ * Change password with verification code
+ * PUT /api/users/change-password-verified
+ */
+export const changePasswordWithVerification = async (req, res) => {
+  try {
+    if (!req.user || !req.user.email) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const email = req.user.email;
+    const { verificationCode, newPassword } = req.body;
+
+    if (!verificationCode || !newPassword) {
+      return res.status(400).json({ error: 'Verification code and new password are required' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ error: 'New password must be at least 6 characters long' });
+    }
+
+    // Import password change service
+    const { verifyCodeAndChangePassword } = await import('../services/passwordChange.service.js');
+    
+    const result = await verifyCodeAndChangePassword(email, verificationCode, newPassword);
+
+    return res.json({ success: true, message: result.message });
+  } catch (err) {
+    console.error('Error changing password with verification:', err);
+    
+    if (err.message === 'Invalid verification code') {
+      return res.status(400).json({ error: err.message });
+    }
+    
+    if (err.message === 'Verification code has expired. Please request a new code.') {
+      return res.status(400).json({ error: err.message });
+    }
+    
+    if (err.message === 'No verification code found. Please request a new code.') {
+      return res.status(400).json({ error: err.message });
+    }
+    
+    return res.status(500).json({ error: 'Unable to change password' });
+  }
+};
+
+
