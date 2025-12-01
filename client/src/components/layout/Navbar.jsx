@@ -12,13 +12,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiCommand, FiUser, FiSettings, FiLogOut, FiMenu, FiX, FiMoon, FiSun } from 'react-icons/fi';
+import { FiCommand, FiUser, FiSettings, FiLogOut, FiMenu, FiX } from 'react-icons/fi';
 import { useAuth } from '../../contexts/AuthContext';
-import { useTheme } from '../../contexts/ThemeContext';
 
 const Navbar = ({ onCommandOpen }) => {
   const { user, logout } = useAuth();
-  const { theme, toggleTheme } = useTheme();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
@@ -61,16 +59,16 @@ const Navbar = ({ onCommandOpen }) => {
   };
 
   return (
-    <nav className="sticky top-0 z-40 bg-white dark:bg-navy-800 border-b border-gray-100 dark:border-navy-700 transition-colors duration-200">
+    <nav className="sticky top-0 z-40 bg-white border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Left: Logo */}
           <div className="flex items-center gap-8">
             <Link to="/dashboard" className="flex items-center gap-2 group">
-              <div className="w-8 h-8 bg-white dark:bg-white rounded-lg flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-200 transition-colors border-2 border-gray-200 dark:border-white">
-                <span className="text-black dark:text-black font-bold text-sm">CA</span>
+              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center hover:bg-gray-100 transition-colors border-2 border-gray-200">
+                <span className="text-black font-bold text-sm">CA</span>
               </div>
-              <span className="font-semibold text-gray-900 dark:text-white tracking-tight">CGPA Analyzer</span>
+              <span className="font-semibold text-gray-900 tracking-tight">CGPA Analyzer</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -83,24 +81,10 @@ const Navbar = ({ onCommandOpen }) => {
 
           {/* Right: Actions */}
           <div className="flex items-center gap-2">
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg bg-gray-100 dark:bg-navy-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-navy-600 transition-colors"
-              aria-label="Toggle theme"
-              title="Toggle theme"
-            >
-              {theme === 'dark' ? (
-                <FiSun className="w-4 h-4" />
-              ) : (
-                <FiMoon className="w-4 h-4" />
-              )}
-            </button>
-
             {/* Command Palette Trigger */}
             <button
               onClick={onCommandOpen}
-              className="hidden sm:flex items-center gap-2 px-3 py-1.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-navy-700 rounded-lg transition-colors"
+              className="hidden sm:flex items-center gap-2 px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
               title="Open command palette (Cmd+K)"
             >
               <FiCommand className="w-4 h-4" />
@@ -111,9 +95,9 @@ const Navbar = ({ onCommandOpen }) => {
             <div ref={userMenuRef} className="relative">
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="flex items-center gap-2 p-1.5 hover:bg-gray-100 dark:hover:bg-navy-700 rounded-lg transition-colors"
+                className="flex items-center gap-2 p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
               >
-                <div className="w-8 h-8 bg-white dark:bg-white text-black dark:text-black rounded-lg flex items-center justify-center text-xs font-medium border-2 border-gray-200 dark:border-white">
+                <div className="w-8 h-8 bg-white text-black rounded-lg flex items-center justify-center text-xs font-medium border-2 border-gray-200">
                   {getUserInitials()}
                 </div>
               </button>
@@ -126,11 +110,11 @@ const Navbar = ({ onCommandOpen }) => {
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute right-0 mt-2 w-64 bg-white dark:bg-navy-800 rounded-xl shadow-xl border border-gray-100 dark:border-navy-700 overflow-hidden transition-colors duration-200"
+                    className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden"
                   >
-                    <div className="px-4 py-3 border-b border-gray-100 dark:border-navy-700">
-                      <p className="font-semibold text-sm text-gray-900 dark:text-white">{user?.username}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user?.email}</p>
+                    <div className="px-4 py-3 border-b border-gray-100">
+                      <p className="font-semibold text-sm text-gray-900">{user?.username}</p>
+                      <p className="text-xs text-gray-500 truncate">{user?.email}</p>
                     </div>
                     <div className="py-2">
                       <MenuLink
@@ -150,7 +134,7 @@ const Navbar = ({ onCommandOpen }) => {
                         }}
                       />
                     </div>
-                    <div className="py-2 border-t border-gray-100 dark:border-navy-700">
+                    <div className="py-2 border-t border-gray-100">
                       <MenuLink
                         icon={<FiLogOut className="w-4 h-4" />}
                         label="Log out"
@@ -165,7 +149,7 @@ const Navbar = ({ onCommandOpen }) => {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-navy-700 rounded-lg transition-colors"
+              className="md:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
             >
               {mobileMenuOpen ? <FiX className="w-5 h-5" /> : <FiMenu className="w-5 h-5" />}
             </button>
@@ -180,7 +164,7 @@ const Navbar = ({ onCommandOpen }) => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t border-gray-100 dark:border-navy-700 bg-white dark:bg-navy-800 transition-colors duration-200"
+            className="md:hidden border-t border-gray-100 bg-white"
           >
             <div className="px-4 py-4 space-y-2">
               <MobileNavLink to="/dashboard" label="Dashboard" onClick={() => setMobileMenuOpen(false)} />
@@ -206,8 +190,8 @@ const NavLink = ({ to, label }) => {
       className={`
         px-3 py-2 text-sm font-medium rounded-lg transition-colors
         ${isActive 
-          ? 'bg-gray-100 dark:bg-navy-700 text-gray-900 dark:text-white' 
-          : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-navy-700 hover:text-gray-900 dark:hover:text-white'
+          ? 'bg-gray-100 text-gray-900' 
+          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
         }
       `}
     >
@@ -228,8 +212,8 @@ const MobileNavLink = ({ to, label, onClick }) => {
       className={`
         block px-3 py-2 text-sm font-medium rounded-lg transition-colors
         ${isActive 
-          ? 'bg-gray-100 dark:bg-navy-700 text-gray-900 dark:text-white' 
-          : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-navy-700 hover:text-gray-900 dark:hover:text-white'
+          ? 'bg-gray-100 text-gray-900' 
+          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
         }
       `}
     >
@@ -242,7 +226,7 @@ const MobileNavLink = ({ to, label, onClick }) => {
 const MenuLink = ({ icon, label, onClick }) => (
   <button
     onClick={onClick}
-    className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-navy-700 transition-colors"
+    className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
   >
     {icon}
     <span>{label}</span>
