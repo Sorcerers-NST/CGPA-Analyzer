@@ -40,6 +40,7 @@ const Navbar = ({ onCommandOpen }) => {
     const path = location.pathname;
     if (path === '/dashboard') return 'Dashboard';
     if (path === '/analytics') return 'Analytics';
+    if (path === '/predictor') return 'Predictor';
     if (path === '/settings') return 'Settings';
     if (path === '/profile') return 'Profile';
     if (path.startsWith('/semester/')) return 'Semester Details';
@@ -74,6 +75,7 @@ const Navbar = ({ onCommandOpen }) => {
             <div className="hidden md:flex items-center gap-1">
               <NavLink to="/dashboard" label="Dashboard" />
               <NavLink to="/analytics" label="Analytics" />
+              <NavLink to="/predictor" label="Predictor" />
             </div>
           </div>
 
@@ -167,6 +169,7 @@ const Navbar = ({ onCommandOpen }) => {
             <div className="px-4 py-4 space-y-2">
               <MobileNavLink to="/dashboard" label="Dashboard" onClick={() => setMobileMenuOpen(false)} />
               <MobileNavLink to="/analytics" label="Analytics" onClick={() => setMobileMenuOpen(false)} />
+              <MobileNavLink to="/predictor" label="Predictor" onClick={() => setMobileMenuOpen(false)} />
               <MobileNavLink to="/settings" label="Settings" onClick={() => setMobileMenuOpen(false)} />
             </div>
           </motion.div>

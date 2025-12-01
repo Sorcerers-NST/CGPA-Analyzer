@@ -10,6 +10,7 @@ import SemesterView from './pages/Semester/SemesterView.jsx'
 import Profile from './pages/Profile/Profile.jsx'
 import Settings from './pages/Settings/Settings.jsx'
 import Analytics from './pages/Analytics/Analytics.jsx'
+import Predictor from './pages/Predictor/Predictor.jsx'
 import { AuthProvider } from './contexts/AuthContext.jsx'
 import { ThemeProvider } from './contexts/ThemeContext.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
@@ -91,6 +92,16 @@ function App() {
               </ProtectedRoute>
             } 
           />
+          <Route 
+            path="/predictor" 
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <Predictor />
+                </AppLayout>
+              </ProtectedRoute>
+            } 
+          />
         </Routes>
       </div>
     </AuthProvider>
@@ -99,3 +110,4 @@ function App() {
 }
 
 export default App
+
