@@ -27,16 +27,16 @@ const SemesterCard = ({ semester, index }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.1 }}
       whileHover={{ scale: 1.02, y: -4 }}
-      className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 cursor-pointer"
+      className="bg-white dark:bg-navy-800 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 dark:border-navy-700 cursor-pointer"
       onClick={() => navigate(`/semester/${semester.id}`)}
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="text-lg font-semibold text-black">
+          <h3 className="text-lg font-semibold text-black dark:text-white">
             Semester {semester.semesterNumber}
           </h3>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
             {semester.startDate 
               ? new Date(semester.startDate).getFullYear()
               : 'Academic Year'}
@@ -44,8 +44,8 @@ const SemesterCard = ({ semester, index }) => {
         </div>
 
         {/* SGPA Badge */}
-        <div className="bg-black text-white px-4 py-2 rounded-lg">
-          <p className="text-xs font-medium text-gray-300">SGPA</p>
+        <div className="bg-white dark:bg-white text-black dark:text-black px-4 py-2 rounded-lg border-2 border-gray-200 dark:border-white">t-black px-4 py-2 rounded-lg border-2 border-gray-200 dark:border-white">
+          <p className="text-xs font-medium text-gray-600 dark:text-gray-600">SGPA</p>
           <p className="text-xl font-bold">{sgpa.toFixed(2)}</p>
         </div>
       </div>
@@ -53,32 +53,32 @@ const SemesterCard = ({ semester, index }) => {
       {/* Progress Bar */}
       <div className="mb-4">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-xs font-medium text-gray-600">Progress</span>
-          <span className="text-xs font-medium text-gray-900">
+          <span className="text-xs font-medium text-gray-600 dark:text-gray-400">Progress</span>
+          <span className="text-xs font-medium text-gray-900 dark:text-white">
             {Math.round(progress)}%
           </span>
         </div>
-        <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+        <div className="w-full bg-gray-100 dark:bg-navy-700 rounded-full h-2 overflow-hidden">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.8, delay: index * 0.1 + 0.2 }}
-            className="bg-black h-full rounded-full"
+            className="bg-white dark:bg-white h-full rounded-full"
           />
         </div>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 gap-4 mb-4">
-        <div className="bg-gray-50 rounded-md p-3">
-          <p className="text-xs text-gray-600">Courses</p>
-          <p className="text-lg font-semibold text-black mt-1">
+        <div className="bg-gray-50 dark:bg-navy-700 rounded-md p-3">
+          <p className="text-xs text-gray-600 dark:text-gray-400">Courses</p>
+          <p className="text-lg font-semibold text-black dark:text-white mt-1">
             {subjectCount}
           </p>
         </div>
-        <div className="bg-gray-50 rounded-md p-3">
-          <p className="text-xs text-gray-600">Credits</p>
-          <p className="text-lg font-semibold text-black mt-1">
+        <div className="bg-gray-50 dark:bg-navy-700 rounded-md p-3">
+          <p className="text-xs text-gray-600 dark:text-gray-400">Credits</p>
+          <p className="text-lg font-semibold text-black dark:text-white mt-1">
             {credits}
           </p>
         </div>
@@ -90,7 +90,7 @@ const SemesterCard = ({ semester, index }) => {
           e.stopPropagation();
           navigate(`/semester/${semester.id}`);
         }}
-        className="w-full py-2.5 bg-black text-white text-sm font-medium rounded-md hover:bg-gray-800 transition-colors duration-200 flex items-center justify-center space-x-2"
+        className="w-full py-2.5 bg-white dark:bg-white text-black dark:text-black text-sm font-medium rounded-md hover:bg-gray-100 dark:hover:bg-gray-200 transition-colors duration-200 flex items-center justify-center space-x-2"
       >
         <span>View Details</span>
         <svg

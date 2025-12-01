@@ -153,14 +153,14 @@ const SemesterView = () => {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-white dark:bg-navy-900 flex items-center justify-center transition-colors duration-200">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="text-center"
         >
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
-          <p className="mt-4 text-gray-600 text-sm">Loading semester...</p>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-black dark:border-white"></div>
+          <p className="mt-4 text-gray-600 dark:text-gray-400 text-sm">Loading semester...</p>
         </motion.div>
       </div>
     );
@@ -169,16 +169,16 @@ const SemesterView = () => {
   // Error state
   if (error || !semester) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-white dark:bg-navy-900 transition-colors duration-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center"
           >
-            <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-gray-200 dark:bg-navy-700 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg
-                className="w-8 h-8 text-gray-400"
+                className="w-8 h-8 text-gray-400 dark:text-gray-500"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -191,11 +191,11 @@ const SemesterView = () => {
                 />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-black mb-2">Error Loading Semester</h2>
-            <p className="text-gray-600 mb-6">{error || 'Semester not found'}</p>
+            <h2 className="text-2xl font-bold text-black dark:text-white mb-2">Error Loading Semester</h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">{error || 'Semester not found'}</p>
             <button
               onClick={() => navigate('/dashboard')}
-              className="px-6 py-3 bg-black text-white font-medium rounded-lg hover:bg-gray-800 transition-colors shadow-md"
+              className="px-6 py-3 bg-white dark:bg-white text-black dark:text-black font-medium rounded-lg hover:bg-gray-100 dark:hover:bg-gray-200 transition-colors shadow-md"
             >
               Back to Dashboard
             </button>
@@ -206,7 +206,7 @@ const SemesterView = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-navy-900 transition-colors duration-200">
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back Button */}
@@ -214,7 +214,7 @@ const SemesterView = () => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           onClick={() => navigate('/dashboard')}
-          className="flex items-center space-x-2 text-gray-600 hover:text-black transition-colors mb-6"
+          className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors mb-6"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -243,7 +243,7 @@ const SemesterView = () => {
         {/* Subjects Section */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-semibold text-black">Subjects</h2>
+            <h2 className="text-2xl font-semibold text-black dark:text-white">Subjects</h2>
           </div>
 
           {/* Empty State */}
@@ -252,11 +252,11 @@ const SemesterView = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="bg-gray-50 rounded-xl border-2 border-dashed border-gray-300 p-12 text-center"
+              className="bg-gray-50 dark:bg-navy-800 rounded-xl border-2 border-dashed border-gray-300 dark:border-navy-700 p-12 text-center transition-colors duration-200"
             >
-              <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-gray-200 dark:bg-navy-700 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg
-                  className="w-8 h-8 text-gray-400"
+                  className="w-8 h-8 text-gray-400 dark:text-gray-500"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -269,15 +269,15 @@ const SemesterView = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-black mb-2">
+              <h3 className="text-xl font-semibold text-black dark:text-white mb-2">
                 No subjects yet
               </h3>
-              <p className="text-gray-600 mb-6 max-w-md mx-auto">
+              <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
                 Add subjects to this semester to track your grades and calculate SGPA.
               </p>
               <button
                 onClick={handleAddSubject}
-                className="px-6 py-3 bg-black text-white font-medium rounded-lg hover:bg-gray-800 transition-colors inline-flex items-center space-x-2 shadow-md hover:shadow-lg"
+                className="px-6 py-3 bg-white dark:bg-white text-black dark:text-black font-medium rounded-lg hover:bg-gray-100 dark:hover:bg-gray-200 transition-colors inline-flex items-center space-x-2 shadow-md hover:shadow-lg"
               >
                 <svg
                   className="w-5 h-5"
@@ -315,9 +315,9 @@ const SemesterView = () => {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-gray-200 mt-20">
+      <footer className="border-t border-gray-200 dark:border-navy-700 mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <p className="text-center text-sm text-gray-500">
+          <p className="text-center text-sm text-gray-500 dark:text-gray-400">
             © 2025 CGPA Analyzer. All rights reserved.
           </p>
         </div>
@@ -356,13 +356,13 @@ const SemesterView = () => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.95, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="bg-white rounded-xl max-w-md w-full p-8 shadow-2xl"
+            className="bg-white dark:bg-navy-800 rounded-xl max-w-md w-full p-8 shadow-2xl transition-colors duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="text-center">
-              <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-red-50 dark:bg-red-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg
-                  className="w-8 h-8 text-red-600"
+                  className="w-8 h-8 text-red-600 dark:text-red-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -375,8 +375,8 @@ const SemesterView = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-black mb-2">Delete Subject?</h3>
-              <p className="text-gray-600 mb-6">
+              <h3 className="text-2xl font-bold text-black dark:text-white mb-2">Delete Subject?</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
                 Are you sure you want to delete <strong>{deletingSubject?.name}</strong>? 
                 This action cannot be undone.
               </p>
@@ -386,14 +386,14 @@ const SemesterView = () => {
                     setShowDeleteConfirm(false);
                     setDeletingSubject(null);
                   }}
-                  className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex-1 px-4 py-3 border border-gray-300 dark:border-navy-700 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-navy-700 transition-colors"
                   disabled={isDeleting}
                 >
                   Cancel
                 </button>
                 <button
                   onClick={confirmDelete}
-                  className="flex-1 px-4 py-3 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 shadow-md"
+                  className="flex-1 px-4 py-3 bg-red-600 dark:bg-red-600 text-white dark:text-white font-medium rounded-lg hover:bg-red-700 dark:hover:bg-red-700 transition-colors disabled:opacity-50 shadow-md"
                   disabled={isDeleting}
                 >
                   {isDeleting ? 'Deleting...' : 'Delete'}

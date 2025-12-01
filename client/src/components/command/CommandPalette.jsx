@@ -159,22 +159,22 @@ const CommandPalette = ({ isOpen, onClose }) => {
           initial={{ opacity: 0, scale: 0.98, y: -10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.98 }}
-          transition={{ duration: 0.15, ease: 'easeOut' }}
-          className="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden"
+          transition={{ duration: 0.15 }}
+          className="relative w-full max-w-2xl bg-white dark:bg-navy-800 rounded-xl shadow-2xl overflow-hidden transition-colors duration-200"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Search Input */}
-          <div className="flex items-center gap-3 px-4 py-4 border-b border-gray-100">
-            <FiSearch className="w-5 h-5 text-gray-400" />
+          <div className="flex items-center gap-3 px-4 py-4 border-b border-gray-100 dark:border-navy-700">
+            <FiSearch className="w-5 h-5 text-gray-400 dark:text-gray-500" />
             <input
               ref={inputRef}
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search for pages, actions..."
-              className="flex-1 text-sm bg-transparent border-none outline-none placeholder-gray-400"
+              className="flex-1 text-sm bg-transparent border-none outline-none placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-white"
             />
-            <kbd className="px-2 py-1 text-xs font-medium text-gray-500 bg-gray-100 rounded">
+            <kbd className="px-2 py-1 text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-navy-700 rounded">
               ESC
             </kbd>
           </div>
@@ -192,24 +192,24 @@ const CommandPalette = ({ isOpen, onClose }) => {
                       w-full flex items-center gap-3 px-4 py-3 text-left transition-colors
                       ${
                         index === selectedIndex
-                          ? 'bg-gray-100'
-                          : 'hover:bg-gray-50'
+                          ? 'bg-gray-100 dark:bg-navy-700'
+                          : 'hover:bg-gray-50 dark:hover:bg-navy-700'
                       }
                     `}
                   >
-                    <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-gray-100 rounded-lg text-gray-600">
+                    <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-gray-100 dark:bg-navy-700 rounded-lg text-gray-600 dark:text-gray-400">
                       {command.icon}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">
+                      <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
                         {command.title}
                       </p>
-                      <p className="text-xs text-gray-500 truncate">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                         {command.subtitle}
                       </p>
                     </div>
                     {index === selectedIndex && (
-                      <kbd className="px-2 py-1 text-xs font-medium text-gray-500 bg-white border border-gray-200 rounded">
+                      <kbd className="px-2 py-1 text-xs font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-navy-800 border border-gray-200 dark:border-navy-600 rounded">
                         ↵
                       </kbd>
                     )}
@@ -217,14 +217,14 @@ const CommandPalette = ({ isOpen, onClose }) => {
                 ))}
               </div>
             ) : (
-              <div className="py-12 text-center text-gray-500">
+              <div className="py-12 text-center text-gray-500 dark:text-gray-400">
                 <p className="text-sm">No results found</p>
               </div>
             )}
           </div>
 
           {/* Footer Hint */}
-          <div className="px-4 py-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+          <div className="px-4 py-3 border-t border-gray-100 dark:border-navy-700 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
             <span>Navigate with ↑↓ arrows</span>
             <span>Press Enter to select</span>
           </div>
