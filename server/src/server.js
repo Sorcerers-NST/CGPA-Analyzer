@@ -4,8 +4,6 @@ dotenv.config();
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import allRoutes from "./routes/index.js";
-import passport from "passport";
-import setupGooglePassport from "./config/passportGoogle.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 
 const app = express();
@@ -20,11 +18,10 @@ const allowedOrigins = [
   "https://cgpa-analyzer.vercel.app",
   "https://cgpa-analyzer-0c2q.onrender.com",
   process.env.CLIENT_URL,
-].filter(Boolean); // Remove undefined values
+].filter(Boolean);
 
 const corsOptions = {
   origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps or curl)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -38,12 +35,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-setupGooglePassport();
-app.use(passport.initialize());
-
 app.use(allRoutes);
 
-// Global error handler - MUST be after all routes
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
