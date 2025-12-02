@@ -1,75 +1,28 @@
-import apiClient from "./apiClient";
+import axios from "../config/axios";
 
 const API_BASE_URL = "/api/v1/subjects";
 
 export const createSubject = async (subjectData) => {
-  const response = await apiClient(API_BASE_URL, {
-    method: "POST",
-    body: JSON.stringify(subjectData),
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.error || "Failed to create subject");
-  }
-
-  return data;
+  const response = await axios.post(API_BASE_URL, subjectData);
+  return response.data;
 };
 
 export const getSubjectsBySemester = async (semesterId) => {
-  const response = await apiClient(`${API_BASE_URL}/semester/${semesterId}`, {
-    method: "GET",
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.error || "Failed to fetch subjects");
-  }
-
-  return data;
+  const response = await axios.get(`${API_BASE_URL}/semester/${semesterId}`);
+  return response.data;
 };
 
 export const getSubjectById = async (subjectId) => {
-  const response = await apiClient(`${API_BASE_URL}/${subjectId}`, {
-    method: "GET",
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.error || "Failed to fetch subject");
-  }
-
-  return data;
+  const response = await axios.get(`${API_BASE_URL}/${subjectId}`);
+  return response.data;
 };
 
 export const updateSubject = async (subjectId, updateData) => {
-  const response = await apiClient(`${API_BASE_URL}/${subjectId}`, {
-    method: "PUT",
-    body: JSON.stringify(updateData),
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.error || "Failed to update subject");
-  }
-
-  return data;
+  const response = await axios.put(`${API_BASE_URL}/${subjectId}`, updateData);
+  return response.data;
 };
 
 export const deleteSubject = async (subjectId) => {
-  const response = await apiClient(`${API_BASE_URL}/${subjectId}`, {
-    method: "DELETE",
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.error || "Failed to delete subject");
-  }
-
-  return data;
+  const response = await axios.delete(`${API_BASE_URL}/${subjectId}`);
+  return response.data;
 };

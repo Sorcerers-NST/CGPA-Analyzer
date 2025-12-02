@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { FiUser, FiBook, FiCalendar, FiFileText } from 'react-icons/fi';
+import axios from '../../config/axios';
 
 const ProfileSetup = () => {
   const navigate = useNavigate();
@@ -40,26 +41,16 @@ const ProfileSetup = () => {
     }
 
     try {
-      const response = await fetch('/api/users/complete-profile', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(formData)
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to update profile');
-      }
+      const response = await axios.put('/api/users/complete-profile', formData);
 
       // Update user context
-      updateUser({ ...user, ...data.user, profileCompleted: true });
+      updateUser({ ...user, ...response.data.user, profileCompleted: true });
       
       // Navigate to dashboard
       navigate('/dashboard');
     } catch (err) {
-      setError(err.message);
+      console.error('Profile update error:', err);
+      setError(err.response?.data?.error || 'Failed to update profile. Please try again.');
     } finally {
       setLoading(false);
     }

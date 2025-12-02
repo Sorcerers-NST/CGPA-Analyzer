@@ -1,37 +1,28 @@
-import axios from "axios";
-
-const API_URL =
-  import.meta.env.VITE_API_URL || "https://cgpa-analyzer-gr3n.onrender.com";
-
-// Create axios instance with credentials
-const api = axios.create({
-  baseURL: API_URL,
-  withCredentials: true,
-});
+import axios from "../config/axios";
 
 // Assessment Template APIs
 export const assessmentTemplateService = {
   // Create new template
   createTemplate: async (templateData) => {
-    const response = await api.post("/api/assessment-templates", templateData);
+    const response = await axios.post("/api/assessment-templates", templateData);
     return response.data;
   },
 
   // Get all templates
   getTemplates: async () => {
-    const response = await api.get("/api/assessment-templates");
+    const response = await axios.get("/api/assessment-templates");
     return response.data;
   },
 
   // Get template by ID
   getTemplateById: async (id) => {
-    const response = await api.get(`/api/assessment-templates/${id}`);
+    const response = await axios.get(`/api/assessment-templates/${id}`);
     return response.data;
   },
 
   // Update template
   updateTemplate: async (id, templateData) => {
-    const response = await api.put(
+    const response = await axios.put(
       `/api/assessment-templates/${id}`,
       templateData
     );
@@ -40,7 +31,7 @@ export const assessmentTemplateService = {
 
   // Delete template
   deleteTemplate: async (id) => {
-    const response = await api.delete(`/api/assessment-templates/${id}`);
+    const response = await axios.delete(`/api/assessment-templates/${id}`);
     return response.data;
   },
 };
@@ -49,7 +40,7 @@ export const assessmentTemplateService = {
 export const assessmentScoreService = {
   // Create subject assessment (link subject to template)
   createSubjectAssessment: async (data) => {
-    const response = await api.post(
+    const response = await axios.post(
       "/api/assessment-scores/subject-assessment",
       data
     );
@@ -58,13 +49,13 @@ export const assessmentScoreService = {
 
   // Add or update score
   addScore: async (scoreData) => {
-    const response = await api.post("/api/assessment-scores", scoreData);
+    const response = await axios.post("/api/assessment-scores", scoreData);
     return response.data;
   },
 
   // Get scores for a subject
   getScoresBySubject: async (subjectId) => {
-    const response = await api.get(
+    const response = await axios.get(
       `/api/assessment-scores/subject/${subjectId}`
     );
     return response.data;
@@ -72,7 +63,7 @@ export const assessmentScoreService = {
 
   // Get all predictions for a semester
   getPredictionsBySemester: async (semesterId) => {
-    const response = await api.get(
+    const response = await axios.get(
       `/api/assessment-scores/predictions/${semesterId}`
     );
     return response.data;

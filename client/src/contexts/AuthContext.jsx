@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import apiClient from '../services/apiClient';
+import axios from '../config/axios';
 
 const AuthContext = createContext(null);
 
@@ -20,18 +20,13 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuth = async () => {
     try {
-      const response = await apiClient('/api/users/me', { skipAuthRedirect: true });
+      const response = await axios.get('/api/users/me', { 
+        skipAuthRedirect: true 
+      });
 
-      if (response.ok) {
-        const userData = await response.json();
-        setUser(userData);
-        setIsAuthenticated(true);
-        localStorage.setItem('isAuthenticated', 'true');
-      } else {
-        setUser(null);
-        setIsAuthenticated(false);
-        localStorage.removeItem('isAuthenticated');
-      }
+      setUser(response.data);
+      setIsAuthenticated(true);
+      localStorage.setItem('isAuthenticated', 'true');
     } catch (error) {
       console.error('Auth check failed:', error);
       setUser(null);
@@ -75,35 +70,27 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password, rememberMe = false) => {
     try {
-      const response = await apiClient('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, rememberMe }),
+      console.log('Login attempt:', { email, rememberMe });
+      const response = await axios.post('/api/auth/login', {
+        email,
+        password,
+        rememberMe,
       });
 
-      let data = {};
-      try {
-        data = await response.json();
-      } catch (err) {
-        data = {};
-      }
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
-      }
-
+      console.log('Login response:', response.data);
       await checkAuth();
+      console.log('After checkAuth, isAuthenticated:', isAuthenticated);
       return { success: true };
     } catch (error) {
-      return { success: false, error: error.message };
+      console.error('Login error:', error);
+      const message = error.response?.data?.error || error.message || 'Login failed';
+      return { success: false, error: message };
     }
   };
 
   const logout = async () => {
     try {
-      await apiClient('/api/auth/logout', {
-        method: 'POST',
-      });
+      await axios.post('/api/auth/logout');
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
@@ -116,26 +103,11 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (userData) => {
     try {
-      const response = await apiClient('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userData),
-      });
-
-      let data = {};
-      try {
-        data = await response.json();
-      } catch (err) {
-        data = {};
-      }
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Signup failed');
-      }
-
-      return { success: true, data };
+      const response = await axios.post('/api/auth/register', userData);
+      return { success: true, data: response.data };
     } catch (error) {
-      return { success: false, error: error.message };
+      const message = error.response?.data?.error || error.message || 'Signup failed';
+      return { success: false, error: message };
     }
   };
 

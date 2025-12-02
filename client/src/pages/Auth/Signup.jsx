@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import axios from '../../config/axios';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -45,30 +46,21 @@ const Signup = () => {
     }
     setLoading(true);
     try {
-      const res = await fetch('/api/colleges', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: newCollegeName.trim() })
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        if (res.status === 409) {
-          // College already exists, we can use it
-          setFormData(prev => ({ ...prev, collegeId: data.college.id }));
-          setShowAddCollege(false);
-        } else {
-          setError(data.error || 'Failed to add college');
-        }
-        return;
-      }
+      const res = await axios.post('/api/colleges', { name: newCollegeName.trim() });
       // Add the new college to the list and select it
-      setColleges(prev => [...prev, data.college]);
-      setFormData(prev => ({ ...prev, collegeId: data.college.id }));
+      setColleges(prev => [...prev, res.data.college]);
+      setFormData(prev => ({ ...prev, collegeId: res.data.college.id }));
       setShowAddCollege(false);
       setNewCollegeName('');
     } catch (err) {
       console.error('Failed to add college:', err);
-      setError('Failed to add college. Please try again.');
+      if (err.response?.status === 409) {
+        // College already exists, we can use it
+        setFormData(prev => ({ ...prev, collegeId: err.response.data.college.id }));
+        setShowAddCollege(false);
+      } else {
+        setError(err.response?.data?.error || 'Failed to add college. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -77,11 +69,8 @@ const Signup = () => {
   useEffect(() => {
     const fetchColleges = async () => {
       try {
-        const res = await fetch('/api/colleges');
-        if (res.ok) {
-          const data = await res.json();
-          setColleges(data.colleges || []);
-        }
+        const res = await axios.get('/api/colleges');
+        setColleges(res.data.colleges || []);
       } catch (err) {
         console.error('Failed to fetch colleges:', err);
       }
@@ -123,25 +112,12 @@ const Signup = () => {
     setLoading(true);
     
     try {
-      const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-          collegeId: formData.collegeId
-        }),
+      await axios.post('/api/auth/register', {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+        collegeId: formData.collegeId
       });
-      
-      const data = await res.json();
-      
-      if (!res.ok) {
-        setError(data.error || 'Registration failed. Please try again.');
-        setLoading(false);
-        return;
-      }
       
       // Auto-login after successful registration
       const loginResult = await login(formData.email, formData.password, false);
@@ -153,7 +129,8 @@ const Signup = () => {
       }
     } catch (err) {
       console.error('Registration error:', err);
-      setError('Network error. Please try again.');
+      const errorMessage = err.response?.data?.error || 'Registration failed. Please try again.';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
