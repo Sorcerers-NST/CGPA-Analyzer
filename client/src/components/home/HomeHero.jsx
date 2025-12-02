@@ -1,10 +1,3 @@
-/**
- * HomeHero - cal.com style
- * 
- * Minimalist hero with large headline, subtext, and CTA buttons
- * Generous white space, fade-in animation
- */
-
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import Button from '../ui/Button';

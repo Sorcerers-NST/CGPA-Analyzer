@@ -1,14 +1,3 @@
-/**
- * Navbar - cal.com style
- * 
- * Global sticky navigation with:
- * - Logo/brand on left
- * - Breadcrumbs/page title in center
- * - Command trigger, user menu on right
- * 
- * Height: 64px, minimal, clean
- */
-
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -40,6 +29,7 @@ const Navbar = ({ onCommandOpen }) => {
     const path = location.pathname;
     if (path === '/dashboard') return 'Dashboard';
     if (path === '/analytics') return 'Analytics';
+    if (path === '/predictor') return 'Predictor';
     if (path === '/settings') return 'Settings';
     if (path === '/profile') return 'Profile';
     if (path.startsWith('/semester/')) return 'Semester Details';
@@ -64,8 +54,8 @@ const Navbar = ({ onCommandOpen }) => {
           {/* Left: Logo */}
           <div className="flex items-center gap-8">
             <Link to="/dashboard" className="flex items-center gap-2 group">
-              <div className="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center group-hover:bg-gray-800 transition-colors">
-                <span className="text-white font-bold text-sm">CA</span>
+              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center hover:bg-gray-100 transition-colors border-2 border-gray-200">
+                <span className="text-black font-bold text-sm">CA</span>
               </div>
               <span className="font-semibold text-gray-900 tracking-tight">CGPA Analyzer</span>
             </Link>
@@ -74,6 +64,7 @@ const Navbar = ({ onCommandOpen }) => {
             <div className="hidden md:flex items-center gap-1">
               <NavLink to="/dashboard" label="Dashboard" />
               <NavLink to="/analytics" label="Analytics" />
+              <NavLink to="/predictor" label="Predictor" />
             </div>
           </div>
 
@@ -95,7 +86,7 @@ const Navbar = ({ onCommandOpen }) => {
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
                 className="flex items-center gap-2 p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
               >
-                <div className="w-8 h-8 bg-gray-900 text-white rounded-lg flex items-center justify-center text-xs font-medium">
+                <div className="w-8 h-8 bg-white text-black rounded-lg flex items-center justify-center text-xs font-medium border-2 border-gray-200">
                   {getUserInitials()}
                 </div>
               </button>
@@ -167,6 +158,7 @@ const Navbar = ({ onCommandOpen }) => {
             <div className="px-4 py-4 space-y-2">
               <MobileNavLink to="/dashboard" label="Dashboard" onClick={() => setMobileMenuOpen(false)} />
               <MobileNavLink to="/analytics" label="Analytics" onClick={() => setMobileMenuOpen(false)} />
+              <MobileNavLink to="/predictor" label="Predictor" onClick={() => setMobileMenuOpen(false)} />
               <MobileNavLink to="/settings" label="Settings" onClick={() => setMobileMenuOpen(false)} />
             </div>
           </motion.div>

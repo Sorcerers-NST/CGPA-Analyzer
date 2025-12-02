@@ -1,9 +1,3 @@
-/**
- * PublicLayout - Layout wrapper for public pages
- * 
- * Includes public navbar
- */
-
 import PublicNavbar from './PublicNavbar';
 
 const PublicLayout = ({ children, showNavbar = true }) => {

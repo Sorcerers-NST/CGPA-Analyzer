@@ -1,9 +1,3 @@
-/**
- * AppLayout - Main layout wrapper
- * 
- * Includes Navbar and Command Palette with keyboard shortcuts
- */
-
 import { useState, useEffect } from 'react';
 import { useKeyboardShortcut } from '../../hooks/useKeyboardShortcut';
 import Navbar from '../layout/Navbar';
@@ -16,7 +10,7 @@ const AppLayout = ({ children }) => {
   useKeyboardShortcut('k', () => setCommandOpen(true), { meta: true });
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-navy-900 transition-colors duration-200">
       <Navbar onCommandOpen={() => setCommandOpen(true)} />
       <main className="min-h-[calc(100vh-64px)]">
         {children}

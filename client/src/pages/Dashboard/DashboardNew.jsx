@@ -1,14 +1,7 @@
-/**
- * Dashboard - cal.com style
- * 
- * Clean, minimalist dashboard with generous white space
- * Focus on typography hierarchy and subtle interactions
- */
-
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { getAllSemesters, createSemester } from '../../services/semesterApi';
+import { getAllSemesters, createSemester, deleteSemester, updateSemester } from '../../services/semesterApi';
 import { useModal } from '../../hooks/useModal';
 import Button from '../../components/ui/Button';
 import Modal from '../../components/ui/Modal';
@@ -18,6 +11,7 @@ import Input from '../../components/ui/Input';
 import DashboardHero from '../../components/dashboard/DashboardHero';
 import DashboardStats from '../../components/dashboard/DashboardStats';
 import DashboardSemesters from '../../components/dashboard/DashboardSemesters';
+import EditSemesterModal from '../../components/dashboard/EditSemesterModal';
 
 const DashboardNew = () => {
   const { user } = useAuth();
@@ -28,6 +22,9 @@ const DashboardNew = () => {
   const [semesterNumber, setSemesterNumber] = useState('');
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState(null);
+  const [selectedSemester, setSelectedSemester] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [updating, setUpdating] = useState(false);
   
   const addSemesterModal = useModal();
 
@@ -49,8 +46,36 @@ const DashboardNew = () => {
       setError(null);
       const response = await getAllSemesters();
       const data = response.data || [];
-      setSemesters(data);
-      calculateCGPA(data);
+      
+      // Calculate SGPA for each semester
+      const semestersWithSGPA = data.map(semester => {
+        const subjects = semester.subjects || [];
+        
+        // Filter subjects that have gradePoint
+        const completedSubjects = subjects.filter(
+          subject => subject.gradePoint !== null && subject.gradePoint !== undefined
+        );
+        
+        if (completedSubjects.length === 0) {
+          return { ...semester, sgpa: 0 };
+        }
+        
+        // Calculate SGPA
+        let weightedSum = 0;
+        let totalCredits = 0;
+        
+        completedSubjects.forEach(subject => {
+          weightedSum += subject.gradePoint * subject.credits;
+          totalCredits += subject.credits;
+        });
+        
+        const sgpa = totalCredits > 0 ? weightedSum / totalCredits : 0;
+        
+        return { ...semester, sgpa };
+      });
+      
+      setSemesters(semestersWithSGPA);
+      calculateCGPA(semestersWithSGPA);
     } catch (error) {
       setError('Failed to load semesters');
       console.error('Failed to load semesters:', error);
@@ -98,6 +123,41 @@ const DashboardNew = () => {
     }
   };
 
+  const handleDeleteSemester = async (semesterId) => {
+    try {
+      setError(null);
+      await deleteSemester(semesterId);
+      // Refresh semesters after successful deletion
+      fetchSemesters();
+    } catch (error) {
+      setError(error.message || 'Failed to delete semester');
+      console.error('Failed to delete semester:', error);
+    }
+  };
+
+  const handleEditSemester = (semester) => {
+    setSelectedSemester(semester);
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdateSemester = async (updateData) => {
+    if (!selectedSemester) return;
+
+    try {
+      setUpdating(true);
+      setError(null);
+      await updateSemester(selectedSemester.id, updateData);
+      setIsEditModalOpen(false);
+      setSelectedSemester(null);
+      fetchSemesters();
+    } catch (error) {
+      setError(error.message || 'Failed to update semester');
+      console.error('Failed to update semester:', error);
+    } finally {
+      setUpdating(false);
+    }
+  };
+
   // Calculate stats
   const stats = {
     totalSemesters: semesters.length,
@@ -136,6 +196,8 @@ const DashboardNew = () => {
           semesters={semesters}
           onAdd={addSemesterModal.open}
           onSemesterClick={(id) => navigate(`/semester/${id}`)}
+          onDelete={handleDeleteSemester}
+          onEdit={handleEditSemester}
         />
       </div>
 
@@ -168,6 +230,18 @@ const DashboardNew = () => {
           />
         </form>
       </Modal>
+
+      {/* Edit Semester Modal */}
+      <EditSemesterModal
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setSelectedSemester(null);
+        }}
+        onSubmit={handleUpdateSemester}
+        semester={selectedSemester}
+        isLoading={updating}
+      />
     </div>
   );
 };

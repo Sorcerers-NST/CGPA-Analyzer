@@ -1,9 +1,3 @@
-/**
- * Skeleton Component - cal.com style
- * 
- * Loading placeholder with pulse animation
- */
-
 const Skeleton = ({
   className = '',
   variant = 'text',

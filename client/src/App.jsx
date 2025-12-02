@@ -4,12 +4,15 @@ import Home from './pages/Home/Home.jsx'
 import Landing from './pages/Landing/Landing.jsx'
 import Login from './pages/Auth/Login.jsx'
 import Signup from './pages/Auth/Signup.jsx'
+import ForgotPassword from './pages/Auth/ForgotPassword.jsx'
+import ResetPassword from './pages/Auth/ResetPassword.jsx'
 import DashboardNew from './pages/Dashboard/DashboardNew.jsx'
 import ProfileSetup from './pages/Auth/ProfileSetup.jsx'
 import SemesterView from './pages/Semester/SemesterView.jsx'
 import Profile from './pages/Profile/Profile.jsx'
 import Settings from './pages/Settings/Settings.jsx'
 import Analytics from './pages/Analytics/Analytics.jsx'
+import Predictor from './pages/Predictor/Predictor.jsx'
 import { AuthProvider } from './contexts/AuthContext.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import AppLayout from './components/layout/AppLayout.jsx'
@@ -31,6 +34,8 @@ function App() {
           <Route path="/landing" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route 
             path="/dashboard" 
             element={
@@ -89,6 +94,16 @@ function App() {
               </ProtectedRoute>
             } 
           />
+          <Route 
+            path="/predictor" 
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <Predictor />
+                </AppLayout>
+              </ProtectedRoute>
+            } 
+          />
         </Routes>
       </div>
     </AuthProvider>
@@ -96,3 +111,4 @@ function App() {
 }
 
 export default App
+

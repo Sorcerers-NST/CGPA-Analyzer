@@ -1,9 +1,3 @@
-/**
- * useModal Hook
- * 
- * Manages modal open/close state
- */
-
 import { useState, useCallback } from 'react';
 
 export function useModal(initialState = false) {

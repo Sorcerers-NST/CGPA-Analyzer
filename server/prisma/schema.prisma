@@ -19,6 +19,7 @@ model User {
   semesters  Semester[]
   cgpaRecords CGPARecord[]
   leaderboardEntries Leaderboard[]
+  predictorSemesters PredictorSemester[]
   
   // Profile completion fields
   profileCompleted Boolean @default(false)
@@ -69,6 +70,7 @@ model Subject {
   gradePoint  Float?
   semester    Semester  @relation(fields: [semesterId], references: [id])
   semesterId  BigInt
+  subjectAssessments SubjectAssessment[]
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -112,6 +114,99 @@ model Leaderboard {
 
   createdAt   DateTime  @default(now())
 }
+
+model AssessmentTemplate {
+  id          BigInt    @id @default(autoincrement())
+  name        String
+  description String?
+  userId      BigInt
+  components  AssessmentComponent[]
+  subjectAssessments SubjectAssessment[]
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model AssessmentComponent {
+  id          BigInt    @id @default(autoincrement())
+  name        String
+  weightage   Float     // Percentage (e.g., 20 for 20%)
+  maxScore    Float     // Maximum score for this component
+  template    AssessmentTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  templateId  BigInt
+  scores      AssessmentScore[]
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model SubjectAssessment {
+  id                  BigInt    @id @default(autoincrement())
+  subject             Subject   @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  subjectId           BigInt
+  template            AssessmentTemplate @relation(fields: [templateId], references: [id])
+  templateId          BigInt
+  predictedGrade      String?
+  predictedGradePoint Float?
+  scores              AssessmentScore[]
+
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  @@unique([subjectId, templateId])
+}
+
+model AssessmentScore {
+  id                  BigInt    @id @default(autoincrement())
+  component           AssessmentComponent @relation(fields: [componentId], references: [id], onDelete: Cascade)
+  componentId         BigInt
+  subjectAssessment   SubjectAssessment @relation(fields: [subjectAssessmentId], references: [id], onDelete: Cascade)
+  subjectAssessmentId BigInt
+  scoreObtained       Float
+  maxScore            Float     // Can be different from component maxScore if needed
+
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  @@unique([componentId, subjectAssessmentId])
+}
+
+model PredictorSemester {
+  id          BigInt    @id @default(autoincrement())
+  userId      BigInt
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String    // e.g., "Semester 5 - Spring 2024"
+  targetCGPA  Float
+  subjects    PredictorSubject[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model PredictorSubject {
+  id          BigInt    @id @default(autoincrement())
+  semesterId  BigInt
+  semester    PredictorSemester @relation(fields: [semesterId], references: [id], onDelete: Cascade)
+  name        String
+  credits     Float
+  components  PredictorComponent[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model PredictorComponent {
+  id            BigInt    @id @default(autoincrement())
+  subjectId     BigInt
+  subject       PredictorSubject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  name          String    // e.g., "Mid Sem", "End Sem"
+  maxMarks      Float
+  obtainedMarks Float?    // null = pending, number = completed
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
 
 enum Role {
   STUDENT

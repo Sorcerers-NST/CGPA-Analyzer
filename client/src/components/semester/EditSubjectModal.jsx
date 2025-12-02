@@ -1,11 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
-/**
- * EditSubjectModal Component
- * Modal for editing existing subjects
- * Clean, minimalist design
- */
 const EditSubjectModal = ({ isOpen, onClose, onSubmit, subject, isLoading }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -16,16 +11,20 @@ const EditSubjectModal = ({ isOpen, onClose, onSubmit, subject, isLoading }) => 
 
   const [errors, setErrors] = useState({});
 
-  // Grade options (10-point scale)
-  const gradeOptions = [
-    { grade: 'O', point: 10 },
-    { grade: 'A+', point: 9 },
-    { grade: 'A', point: 8 },
-    { grade: 'B+', point: 7 },
-    { grade: 'B', point: 6 },
-    { grade: 'C', point: 5 },
-    { grade: 'D', point: 4 },
-    { grade: 'F', point: 0 },
+  // Grade point options (10-point scale)
+  // A+ is highest, F for anything below 5
+  const gradePointOptions = [
+    { point: 10, grade: 'A+' },
+    { point: 9, grade: 'A' },
+    { point: 8, grade: 'B+' },
+    { point: 7, grade: 'B' },
+    { point: 6, grade: 'C+' },
+    { point: 5, grade: 'C' },
+    { point: 4, grade: 'F' },
+    { point: 3, grade: 'F' },
+    { point: 2, grade: 'F' },
+    { point: 1, grade: 'F' },
+    { point: 0, grade: 'F' },
   ];
 
   // Populate form when subject changes
@@ -49,11 +48,11 @@ const EditSubjectModal = ({ isOpen, onClose, onSubmit, subject, isLoading }) => 
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
 
-    // Auto-fill grade point when grade is selected
-    if (name === 'grade') {
-      const selectedGrade = gradeOptions.find(g => g.grade === value);
-      if (selectedGrade) {
-        setFormData(prev => ({ ...prev, gradePoint: selectedGrade.point.toString() }));
+    // Auto-fill grade when grade point is selected
+    if (name === 'gradePoint') {
+      const selectedOption = gradePointOptions.find(g => g.point.toString() === value);
+      if (selectedOption) {
+        setFormData(prev => ({ ...prev, grade: selectedOption.grade }));
       }
     }
   };
@@ -69,12 +68,8 @@ const EditSubjectModal = ({ isOpen, onClose, onSubmit, subject, isLoading }) => 
       newErrors.credits = 'Valid credits required';
     }
 
-    if (!formData.grade) {
-      newErrors.grade = 'Grade is required';
-    }
-
-    if (!formData.gradePoint || parseFloat(formData.gradePoint) < 0 || parseFloat(formData.gradePoint) > 10) {
-      newErrors.gradePoint = 'Valid grade point required (0-10)';
+    if (!formData.gradePoint) {
+      newErrors.gradePoint = 'Grade point is required';
     }
 
     setErrors(newErrors);
@@ -158,46 +153,31 @@ const EditSubjectModal = ({ isOpen, onClose, onSubmit, subject, isLoading }) => 
               {errors.credits && <p className="text-red-500 text-xs mt-1">{errors.credits}</p>}
             </div>
 
-            {/* Grade */}
-            <div className="mb-5">
-              <label htmlFor="grade" className="block text-sm font-medium text-gray-700 mb-2">
-                Grade
-              </label>
-              <select
-                id="grade"
-                name="grade"
-                value={formData.grade}
-                onChange={handleChange}
-                className={`w-full px-4 py-3 border ${errors.grade ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all text-black`}
-              >
-                <option value="">Select Grade</option>
-                {gradeOptions.map(option => (
-                  <option key={option.grade} value={option.grade}>
-                    {option.grade} - {option.point} GP
-                  </option>
-                ))}
-              </select>
-              {errors.grade && <p className="text-red-500 text-xs mt-1">{errors.grade}</p>}
-            </div>
-
             {/* Grade Point */}
             <div className="mb-6">
               <label htmlFor="gradePoint" className="block text-sm font-medium text-gray-700 mb-2">
                 Grade Point
               </label>
-              <input
-                type="number"
+              <select
                 id="gradePoint"
                 name="gradePoint"
                 value={formData.gradePoint}
                 onChange={handleChange}
-                step="0.1"
-                min="0"
-                max="10"
                 className={`w-full px-4 py-3 border ${errors.gradePoint ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all text-black`}
-                placeholder="e.g., 9.0"
-              />
+              >
+                <option value="">Select Grade Point</option>
+                {gradePointOptions.map(option => (
+                  <option key={option.point} value={option.point}>
+                    {option.point} - {option.grade}
+                  </option>
+                ))}
+              </select>
               {errors.gradePoint && <p className="text-red-500 text-xs mt-1">{errors.gradePoint}</p>}
+              {formData.grade && (
+                <p className="text-gray-600 text-sm mt-2">
+                  Grade: <strong className="text-black">{formData.grade}</strong>
+                </p>
+              )}
             </div>
 
             {/* Buttons */}

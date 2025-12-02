@@ -1,10 +1,5 @@
 import { motion } from 'framer-motion';
 
-/**
- * QuickStats Component
- * Visual progress indicators and key metrics
- * Real-time performance insights
- */
 const QuickStats = ({ stats }) => {
   const { cgpa, totalSemesters, totalCredits, completedCourses } = stats;
 
