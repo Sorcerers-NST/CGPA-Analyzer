@@ -1,23 +1,23 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [
     react({
       babel: {
-        plugins: [['babel-plugin-react-compiler']],
+        plugins: [["babel-plugin-react-compiler"]],
       },
     }),
   ],
   server: {
     port: 5175,
     proxy: {
-      '/api': {
-        target: process.env.BACKEND_URL || 'http://localhost:3000',
+      "/api": {
+        target: process.env.BACKEND_URL || "https://cgpa-analyzer.onrender.com",
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace(/^\/api/, '/api'),
+        rewrite: (path) => path.replace(/^\/api/, "/api"),
       },
     },
   },
-})
+});
