@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = "https://cgpa-analyzer.onrender.com";
+const API_URL =
+  import.meta.env.VITE_API_URL || "https://cgpa-analyzer-gr3n.onrender.com";
 
 // Create axios instance with credentials
 const api = axios.create({
