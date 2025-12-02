@@ -1,10 +1,3 @@
-/**
- * CollegesSection - cal.com style
- * 
- * Placeholder section showing product adoption
- * NO fake testimonials, just clean college name placeholders
- */
-
 import { motion } from 'framer-motion';
 
 const collegeNames = [

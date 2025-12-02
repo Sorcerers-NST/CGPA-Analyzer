@@ -1,8 +1,6 @@
-const prisma = require('../generated/prisma');
+const prisma = require("../generated/prisma");
 
-/**
- * Get all predictor semesters for the authenticated user
- */
+// Get all predictor semesters for authenticated user
 const getAllPredictors = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -16,20 +14,20 @@ const getAllPredictors = async (req, res) => {
           },
         },
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
 
     res.json({
       success: true,
-      data: predictors.map(p => ({
+      data: predictors.map((p) => ({
         ...p,
         id: p.id.toString(),
         userId: p.userId.toString(),
-        subjects: p.subjects.map(s => ({
+        subjects: p.subjects.map((s) => ({
           ...s,
           id: s.id.toString(),
           semesterId: s.semesterId.toString(),
-          components: s.components.map(c => ({
+          components: s.components.map((c) => ({
             ...c,
             id: c.id.toString(),
             subjectId: c.subjectId.toString(),
@@ -38,17 +36,14 @@ const getAllPredictors = async (req, res) => {
       })),
     });
   } catch (error) {
-    console.error('Error fetching predictors:', error);
+    console.error("Error fetching predictors:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to fetch predictors',
+      error: "Failed to fetch predictors",
     });
   }
 };
 
-/**
- * Get a single predictor by ID
- */
 const getPredictorById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -71,7 +66,7 @@ const getPredictorById = async (req, res) => {
     if (!predictor) {
       return res.status(404).json({
         success: false,
-        error: 'Predictor not found',
+        error: "Predictor not found",
       });
     }
 
@@ -81,11 +76,11 @@ const getPredictorById = async (req, res) => {
         ...predictor,
         id: predictor.id.toString(),
         userId: predictor.userId.toString(),
-        subjects: predictor.subjects.map(s => ({
+        subjects: predictor.subjects.map((s) => ({
           ...s,
           id: s.id.toString(),
           semesterId: s.semesterId.toString(),
-          components: s.components.map(c => ({
+          components: s.components.map((c) => ({
             ...c,
             id: c.id.toString(),
             subjectId: c.subjectId.toString(),
@@ -94,52 +89,49 @@ const getPredictorById = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('Error fetching predictor:', error);
+    console.error("Error fetching predictor:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to fetch predictor',
+      error: "Failed to fetch predictor",
     });
   }
 };
 
-/**
- * Create a new predictor semester
- */
 const createPredictor = async (req, res) => {
   try {
     const userId = req.user.id;
     const { name, targetCGPA, subjects } = req.body;
 
-    // Validation
     if (!name || !targetCGPA || !Array.isArray(subjects)) {
       return res.status(400).json({
         success: false,
-        error: 'Name, targetCGPA, and subjects are required',
+        error: "Name, targetCGPA, and subjects are required",
       });
     }
 
     if (targetCGPA < 0 || targetCGPA > 10) {
       return res.status(400).json({
         success: false,
-        error: 'Target CGPA must be between 0 and 10',
+        error: "Target CGPA must be between 0 and 10",
       });
     }
 
-    // Create predictor with subjects and components
     const predictor = await prisma.predictorSemester.create({
       data: {
         userId: BigInt(userId),
         name,
         targetCGPA: parseFloat(targetCGPA),
         subjects: {
-          create: subjects.map(subject => ({
+          create: subjects.map((subject) => ({
             name: subject.name,
             credits: parseFloat(subject.credits),
             components: {
-              create: subject.components.map(comp => ({
+              create: subject.components.map((comp) => ({
                 name: comp.name,
                 maxMarks: parseFloat(comp.maxMarks),
-                obtainedMarks: comp.obtainedMarks ? parseFloat(comp.obtainedMarks) : null,
+                obtainedMarks: comp.obtainedMarks
+                  ? parseFloat(comp.obtainedMarks)
+                  : null,
               })),
             },
           })),
@@ -160,11 +152,11 @@ const createPredictor = async (req, res) => {
         ...predictor,
         id: predictor.id.toString(),
         userId: predictor.userId.toString(),
-        subjects: predictor.subjects.map(s => ({
+        subjects: predictor.subjects.map((s) => ({
           ...s,
           id: s.id.toString(),
           semesterId: s.semesterId.toString(),
-          components: s.components.map(c => ({
+          components: s.components.map((c) => ({
             ...c,
             id: c.id.toString(),
             subjectId: c.subjectId.toString(),
@@ -173,24 +165,20 @@ const createPredictor = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('Error creating predictor:', error);
+    console.error("Error creating predictor:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to create predictor',
+      error: "Failed to create predictor",
     });
   }
 };
 
-/**
- * Update a predictor
- */
 const updatePredictor = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
     const { name, targetCGPA, subjects } = req.body;
 
-    // Check if predictor exists and belongs to user
     const existing = await prisma.predictorSemester.findFirst({
       where: {
         id: BigInt(id),
@@ -201,34 +189,37 @@ const updatePredictor = async (req, res) => {
     if (!existing) {
       return res.status(404).json({
         success: false,
-        error: 'Predictor not found',
+        error: "Predictor not found",
       });
     }
 
-    // Delete existing subjects and components (cascade)
+    // Delete existing subjects (cascade will handle components)
     await prisma.predictorSubject.deleteMany({
       where: { semesterId: BigInt(id) },
     });
 
-    // Update predictor with new data
     const predictor = await prisma.predictorSemester.update({
       where: { id: BigInt(id) },
       data: {
         name: name || existing.name,
         targetCGPA: targetCGPA ? parseFloat(targetCGPA) : existing.targetCGPA,
-        subjects: subjects ? {
-          create: subjects.map(subject => ({
-            name: subject.name,
-            credits: parseFloat(subject.credits),
-            components: {
-              create: subject.components.map(comp => ({
-                name: comp.name,
-                maxMarks: parseFloat(comp.maxMarks),
-                obtainedMarks: comp.obtainedMarks ? parseFloat(comp.obtainedMarks) : null,
+        subjects: subjects
+          ? {
+              create: subjects.map((subject) => ({
+                name: subject.name,
+                credits: parseFloat(subject.credits),
+                components: {
+                  create: subject.components.map((comp) => ({
+                    name: comp.name,
+                    maxMarks: parseFloat(comp.maxMarks),
+                    obtainedMarks: comp.obtainedMarks
+                      ? parseFloat(comp.obtainedMarks)
+                      : null,
+                  })),
+                },
               })),
-            },
-          })),
-        } : undefined,
+            }
+          : undefined,
       },
       include: {
         subjects: {
@@ -245,11 +236,11 @@ const updatePredictor = async (req, res) => {
         ...predictor,
         id: predictor.id.toString(),
         userId: predictor.userId.toString(),
-        subjects: predictor.subjects.map(s => ({
+        subjects: predictor.subjects.map((s) => ({
           ...s,
           id: s.id.toString(),
           semesterId: s.semesterId.toString(),
-          components: s.components.map(c => ({
+          components: s.components.map((c) => ({
             ...c,
             id: c.id.toString(),
             subjectId: c.subjectId.toString(),
@@ -258,23 +249,19 @@ const updatePredictor = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('Error updating predictor:', error);
+    console.error("Error updating predictor:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to update predictor',
+      error: "Failed to update predictor",
     });
   }
 };
 
-/**
- * Delete a predictor
- */
 const deletePredictor = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
 
-    // Check if predictor exists and belongs to user
     const existing = await prisma.predictorSemester.findFirst({
       where: {
         id: BigInt(id),
@@ -285,7 +272,7 @@ const deletePredictor = async (req, res) => {
     if (!existing) {
       return res.status(404).json({
         success: false,
-        error: 'Predictor not found',
+        error: "Predictor not found",
       });
     }
 
@@ -295,13 +282,13 @@ const deletePredictor = async (req, res) => {
 
     res.json({
       success: true,
-      message: 'Predictor deleted successfully',
+      message: "Predictor deleted successfully",
     });
   } catch (error) {
-    console.error('Error deleting predictor:', error);
+    console.error("Error deleting predictor:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to delete predictor',
+      error: "Failed to delete predictor",
     });
   }
 };

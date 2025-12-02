@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
 
 function SemesterComparison({ semesters }) {
-  // Prepare comparison data
   const comparisonData = useMemo(() => {
     return semesters.map(sem => {
       const subjects = sem.subjects || [];
@@ -31,7 +30,6 @@ function SemesterComparison({ semesters }) {
     });
   }, [semesters]);
 
-  // Calculate insights
   const insights = useMemo(() => {
     if (semesters.length === 0) return null;
 

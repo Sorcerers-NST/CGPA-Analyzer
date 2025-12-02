@@ -1,10 +1,3 @@
-/**
- * Dashboard - cal.com style
- * 
- * Clean, minimalist dashboard with generous white space
- * Focus on typography hierarchy and subtle interactions
- */
-
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -14,7 +7,6 @@ import Button from '../../components/ui/Button';
 import Modal from '../../components/ui/Modal';
 import Input from '../../components/ui/Input';
 
-// Imported Components
 import DashboardHero from '../../components/dashboard/DashboardHero';
 import DashboardStats from '../../components/dashboard/DashboardStats';
 import DashboardSemesters from '../../components/dashboard/DashboardSemesters';
@@ -35,12 +27,11 @@ const DashboardNew = () => {
   
   const addSemesterModal = useModal();
 
-  // Fetch semesters on mount
   useEffect(() => {
     fetchSemesters();
   }, []);
 
-  // Listen for command palette events
+
   useEffect(() => {
     const handleOpenAddSemester = () => addSemesterModal.open();
     window.addEventListener('open-add-semester', handleOpenAddSemester);
@@ -54,11 +45,9 @@ const DashboardNew = () => {
       const response = await getAllSemesters();
       const data = response.data || [];
       
-      // Calculate SGPA for each semester
       const semestersWithSGPA = data.map(semester => {
         const subjects = semester.subjects || [];
         
-        // Filter subjects that have gradePoint
         const completedSubjects = subjects.filter(
           subject => subject.gradePoint !== null && subject.gradePoint !== undefined
         );
@@ -67,7 +56,6 @@ const DashboardNew = () => {
           return { ...semester, sgpa: 0 };
         }
         
-        // Calculate SGPA
         let weightedSum = 0;
         let totalCredits = 0;
         

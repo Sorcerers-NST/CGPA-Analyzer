@@ -9,11 +9,7 @@ import SubjectCard from '../../components/semester/SubjectCard';
 import AddSubjectModal from '../../components/semester/AddSubjectModal';
 import EditSubjectModal from '../../components/semester/EditSubjectModal';
 
-/**
- * SemesterView Component
- * Displays detailed semester information with subjects
- * Minimalist, Cal.com-inspired design matching Dashboard
- */
+
 const SemesterView = () => {
   const { id } = useParams();
   const navigate = useNavigate();

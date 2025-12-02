@@ -1,10 +1,3 @@
-/**
- * CTASection - cal.com style
- * 
- * Large centered call-to-action
- * Minimal, clean, generous white space
- */
-
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import Button from '../ui/Button';

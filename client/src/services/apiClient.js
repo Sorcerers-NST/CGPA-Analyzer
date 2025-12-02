@@ -1,9 +1,8 @@
-// API utility for making authenticated requests
 const apiClient = async (url, options = {}) => {
   const defaultOptions = {
-    credentials: 'include',
+    credentials: "include",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options.headers,
     },
   };
@@ -12,17 +11,19 @@ const apiClient = async (url, options = {}) => {
 
   try {
     const response = await fetch(url, config);
-    
-    // If unauthorized, redirect to login
+
+    // Auto-redirect to login on unauthorized access
     if (response.status === 401) {
-      localStorage.removeItem('isAuthenticated');
-      window.location.href = '/login';
-      throw new Error('Unauthorized');
+      localStorage.removeItem("isAuthenticated");
+      window.location.href = "/login";
+      throw new Error("Unauthorized");
     }
 
     return response;
   } catch (error) {
-    console.error('API request failed:', error);
+    if (import.meta.env.DEV) {
+      console.error("API request failed:", error);
+    }
     throw error;
   }
 };

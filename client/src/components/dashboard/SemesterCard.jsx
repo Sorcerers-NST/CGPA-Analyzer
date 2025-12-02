@@ -1,15 +1,9 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
-/**
- * SemesterCard Component
- * Individual semester card with hover animations
- * Clean, minimal design
- */
 const SemesterCard = ({ semester, index }) => {
   const navigate = useNavigate();
 
-  // Calculate progress percentage (example: based on completed courses)
   const calculateProgress = () => {
     if (!semester.subjects || semester.subjects.length === 0) return 0;
     const completedCourses = semester.subjects.filter(sub => sub.grade).length;

@@ -1,14 +1,8 @@
 import { motion } from 'framer-motion';
 
-/**
- * QuickStats Component
- * Visual progress indicators and key metrics
- * Real-time performance insights
- */
 const QuickStats = ({ stats }) => {
   const { cgpa, totalSemesters, totalCredits, completedCourses } = stats;
 
-  // Calculate progress percentage (assuming 10.0 is max)
   const cgpaProgress = cgpa ? (cgpa / 10) * 100 : 0;
 
   // Determine performance level
@@ -31,7 +25,6 @@ const QuickStats = ({ stats }) => {
     >
       <h3 className="text-lg font-semibold text-black mb-6">Quick Overview</h3>
 
-      {/* CGPA Progress Bar */}
       <div className="mb-6">
         <div className="flex justify-between items-center mb-2">
           <span className="text-sm font-medium text-gray-700">Current CGPA</span>
@@ -53,7 +46,6 @@ const QuickStats = ({ stats }) => {
         </div>
       </div>
 
-      {/* Key Metrics Grid */}
       <div className="grid grid-cols-2 gap-4">
         <div className="bg-gray-50 rounded-lg p-4">
           <div className="flex items-center justify-between mb-2">

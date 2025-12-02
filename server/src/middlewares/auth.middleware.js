@@ -12,7 +12,6 @@ export const authMiddleware = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (err) {
-    console.log(err);
     return res.status(401).json({ error: "Access Denied" });
   }
 };

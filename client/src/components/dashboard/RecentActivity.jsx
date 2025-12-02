@@ -1,10 +1,5 @@
 import { motion } from 'framer-motion';
 
-/**
- * RecentActivity Component
- * Shows recent changes and updates
- * Provides timeline of academic progress
- */
 const RecentActivity = ({ semesters }) => {
   // Generate activity feed from semester data
   const generateActivities = () => {
@@ -39,7 +34,6 @@ const RecentActivity = ({ semesters }) => {
       }
     });
 
-    // Sort by timestamp (most recent first)
     return activities.sort((a, b) => b.timestamp - a.timestamp).slice(0, 8);
   };
 

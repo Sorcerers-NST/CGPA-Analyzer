@@ -2,9 +2,14 @@ import prisma from "../../db.config.js";
 import isEmail from "validator/lib/isEmail.js";
 import bcrypt from "bcrypt";
 import { generateToken } from "../utils/generateToken.js";
+
 const saltRounds = 12;
+
+// Username: 3-30 chars, alphanumeric with optional separators (., _, -)
 const usernameRegex =
   /^(?=.{3,30}$)(?!.*[.]{2})[a-zA-Z0-9]+(?:[._-][a-zA-Z0-9]+)*$/;
+
+// Password: min 8 chars, must include uppercase, lowercase, digit, and special char
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}$/;
 
@@ -116,20 +121,24 @@ export const loginUser = async (req, res) => {
     if (!checkPass) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
-    
-    generateToken(res, { 
-      id: user.id.toString(), 
-      username: user.username, 
-      email: user.email 
-    }, rememberMe);
 
-    return res.json({ 
+    generateToken(
+      res,
+      {
+        id: user.id.toString(),
+        username: user.username,
+        email: user.email,
+      },
+      rememberMe
+    );
+
+    return res.json({
       message: "Login successful",
       user: {
         id: user.id.toString(),
         username: user.username,
-        email: user.email
-      }
+        email: user.email,
+      },
     });
   } catch (err) {
     console.error("Login error:", err);
@@ -141,15 +150,15 @@ export const loginUser = async (req, res) => {
 
 export const logoutUser = async (req, res) => {
   try {
-    res.clearCookie('jwt', { 
-      path: '/',
+    res.clearCookie("jwt", {
+      path: "/",
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
     });
-    return res.json({ message: 'Logged out successfully' });
+    return res.json({ message: "Logged out successfully" });
   } catch (err) {
-    console.error('Logout error:', err);
-    return res.status(500).json({ error: 'Unable to logout' });
+    console.error("Logout error:", err);
+    return res.status(500).json({ error: "Unable to logout" });
   }
 };

@@ -4,17 +4,14 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { FiTrendingUp, FiTrendingDown, FiMinus } from 'react-icons/fi';
 
 function PerformanceAnalytics({ semesters }) {
-  // Calculate comprehensive analytics
   const analytics = useMemo(() => {
     if (!semesters || semesters.length === 0) return null;
 
-    // Trend data for area chart
     let cumulativeCGPA = 0;
     let totalCredits = 0;
     let totalWeightedGPA = 0;
 
     const trendData = semesters.map((sem, index) => {
-      // Calculate semester stats
       const subjects = sem.subjects || [];
       const completedSubjects = subjects.filter(s => s.gradePoint != null);
       
@@ -38,7 +35,6 @@ function PerformanceAnalytics({ semesters }) {
       };
     });
 
-    // Performance categories (for radar chart)
     const categories = {
       consistency: 0,
       trend: 0,
@@ -46,9 +42,6 @@ function PerformanceAnalytics({ semesters }) {
       excellence: 0,
       progress: 0
     };
-
-    // 1. Consistency (variance in SGPA)
-    // 1. Consistency (variance in SGPA)
     const sgpas = trendData.map(d => d.sgpa).filter(s => s > 0);
     if (sgpas.length > 0) {
       const avg = sgpas.reduce((a, b) => a + b) / sgpas.length;
@@ -230,9 +223,7 @@ function PerformanceAnalytics({ semesters }) {
         </motion.div>
       </div>
 
-      {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Trend Chart */}
         <div>
           <h4 className="text-sm font-semibold text-gray-600 mb-4">CGPA & SGPA Progression</h4>
           <ResponsiveContainer width="100%" height={250}>
@@ -288,7 +279,6 @@ function PerformanceAnalytics({ semesters }) {
           </ResponsiveContainer>
         </div>
 
-        {/* Radar Chart */}
         <div>
           <h4 className="text-sm font-semibold text-gray-600 mb-4">Performance Profile</h4>
           <ResponsiveContainer width="100%" height={250}>
@@ -325,7 +315,7 @@ function PerformanceAnalytics({ semesters }) {
         </div>
       </div>
 
-      {/* Insights */}
+      
       <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="p-4 border border-gray-200 rounded-lg">
           <p className="text-sm text-gray-600 mb-1">Total Subjects</p>
@@ -351,22 +341,22 @@ function PerformanceAnalytics({ semesters }) {
 
       {/* Performance Tips */}
       <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-        <h5 className="font-semibold mb-2 text-sm">💡 Performance Insights</h5>
+        <h5 className="font-semibold mb-2 text-sm"> ➚ Performance Insights</h5>
         <ul className="text-sm text-gray-600 space-y-1">
           {analytics.trendDirection === 'improving' && (
-            <li>• Great job! Your performance is trending upward. Keep it up! 📈</li>
+            <li>• Great job! Your performance is trending upward. Keep it up!</li>
           )}
           {analytics.trendDirection === 'declining' && (
-            <li>• Focus on improving your study habits. You can turn this around! 💪</li>
+            <li>• Focus on improving your study habits. You can turn this around!</li>
           )}
           {analytics.currentStreak >= 3 && (
-            <li>• Amazing streak! You're maintaining excellent performance consistently! 🔥</li>
+            <li>• Amazing streak! You're maintaining excellent performance consistently!</li>
           )}
           {analytics.currentStreak === 0 && analytics.maxStreak > 0 && (
             <li>• You've had great streaks before. Let's start a new one! 🎯</li>
           )}
           {parseFloat(analytics.avgCredits) < 15 && (
-            <li>• Consider taking more credits per semester if possible. ⚡</li>
+            <li>• Consider taking more credits per semester if possible.</li>
           )}
         </ul>
       </div>

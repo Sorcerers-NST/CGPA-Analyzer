@@ -8,7 +8,6 @@ function SearchFilter({ semesters }) {
   const [selectedSemester, setSelectedSemester] = useState('all');
   const [isOpen, setIsOpen] = useState(false);
 
-  // Get all unique grades
   const grades = useMemo(() => {
     const allGrades = new Set();
     semesters.forEach(sem => {
@@ -17,7 +16,6 @@ function SearchFilter({ semesters }) {
     return Array.from(allGrades).sort();
   }, [semesters]);
 
-  // Filter subjects based on search and filters
   const filteredResults = useMemo(() => {
     let results = [];
     

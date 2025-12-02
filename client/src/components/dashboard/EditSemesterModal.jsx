@@ -1,11 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
-
-/**
- * EditSemesterModal Component
- * Modal for editing existing semesters
- * Clean, minimalist design matching EditSubjectModal
- */
 const EditSemesterModal = ({ isOpen, onClose, onSubmit, semester, isLoading }) => {
   const [formData, setFormData] = useState({
     semesterNumber: '',
@@ -15,7 +9,6 @@ const EditSemesterModal = ({ isOpen, onClose, onSubmit, semester, isLoading }) =
 
   const [errors, setErrors] = useState({});
 
-  // Populate form when semester changes
   useEffect(() => {
     if (semester) {
       setFormData({
@@ -30,7 +23,6 @@ const EditSemesterModal = ({ isOpen, onClose, onSubmit, semester, isLoading }) =
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     
-    // Clear error for this field
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -63,7 +55,6 @@ const EditSemesterModal = ({ isOpen, onClose, onSubmit, semester, isLoading }) =
         semesterNumber: parseInt(formData.semesterNumber),
       };
 
-      // Only include dates if they are provided
       if (formData.startDate) {
         updateData.startDate = formData.startDate;
       }
@@ -103,7 +94,6 @@ const EditSemesterModal = ({ isOpen, onClose, onSubmit, semester, isLoading }) =
           <h2 className="text-2xl font-bold text-black mb-6">Edit Semester</h2>
 
           <form onSubmit={handleSubmit}>
-            {/* Semester Number */}
             <div className="mb-5">
               <label htmlFor="semesterNumber" className="block text-sm font-medium text-gray-700 mb-2">
                 Semester Number *
@@ -121,7 +111,6 @@ const EditSemesterModal = ({ isOpen, onClose, onSubmit, semester, isLoading }) =
               {errors.semesterNumber && <p className="text-red-500 text-xs mt-1">{errors.semesterNumber}</p>}
             </div>
 
-            {/* Start Date */}
             <div className="mb-5">
               <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-2">
                 Start Date (Optional)
@@ -137,7 +126,6 @@ const EditSemesterModal = ({ isOpen, onClose, onSubmit, semester, isLoading }) =
               {errors.startDate && <p className="text-red-500 text-xs mt-1">{errors.startDate}</p>}
             </div>
 
-            {/* End Date */}
             <div className="mb-6">
               <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 mb-2">
                 End Date (Optional)
@@ -153,7 +141,6 @@ const EditSemesterModal = ({ isOpen, onClose, onSubmit, semester, isLoading }) =
               {errors.endDate && <p className="text-red-500 text-xs mt-1">{errors.endDate}</p>}
             </div>
 
-            {/* Buttons */}
             <div className="flex space-x-3">
               <button
                 type="button"

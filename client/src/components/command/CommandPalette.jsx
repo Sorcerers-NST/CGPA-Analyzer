@@ -14,7 +14,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
 
   const isOnSemesterPage = location.pathname.startsWith('/semester/');
 
-
+  // Instructions
   const allCommands = [
     {
       id: 'dashboard',
@@ -75,7 +75,6 @@ const CommandPalette = ({ isOpen, onClose }) => {
     return true;
   });
 
-  // Fuzzy search
   const filteredCommands = commands.filter(cmd => {
     if (!debouncedQuery) return true;
     const searchText = debouncedQuery.toLowerCase();
@@ -86,19 +85,18 @@ const CommandPalette = ({ isOpen, onClose }) => {
     );
   });
 
-  // Reset selection when results change
+
   useEffect(() => {
     setSelectedIndex(0);
   }, [debouncedQuery]);
 
-  // Focus input when opened
   useEffect(() => {
     if (isOpen && inputRef.current) {
       inputRef.current.focus();
     }
   }, [isOpen]);
 
-  // Keyboard navigation
+  // Controls
   useEffect(() => {
     if (!isOpen) return;
 
@@ -140,11 +138,10 @@ const CommandPalette = ({ isOpen, onClose }) => {
   };
 
   if (!isOpen) return null;
-
+  // display
   return (
     <AnimatePresence>
       <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] px-4">
-        {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -154,7 +151,6 @@ const CommandPalette = ({ isOpen, onClose }) => {
           onClick={onClose}
         />
 
-        {/* Command Palette */}
         <motion.div
           initial={{ opacity: 0, scale: 0.98, y: -10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -163,7 +159,6 @@ const CommandPalette = ({ isOpen, onClose }) => {
           className="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Search Input */}
           <div className="flex items-center gap-3 px-4 py-4 border-b border-gray-100">
             <FiSearch className="w-5 h-5 text-gray-400" />
             <input
@@ -179,7 +174,6 @@ const CommandPalette = ({ isOpen, onClose }) => {
             </kbd>
           </div>
 
-          {/* Results */}
           <div className="max-h-96 overflow-y-auto">
             {filteredCommands.length > 0 ? (
               <div className="py-2">
@@ -223,7 +217,6 @@ const CommandPalette = ({ isOpen, onClose }) => {
             )}
           </div>
 
-          {/* Footer Hint */}
           <div className="px-4 py-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
             <span>Navigate with ↑↓ arrows</span>
             <span>Press Enter to select</span>

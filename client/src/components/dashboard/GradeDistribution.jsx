@@ -7,11 +7,10 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
  * Grading: 10=A+, 9=A, 8=B+, 7=B, 6=C+, 5=C, <5=F
  */
 const GradeDistribution = ({ semesters }) => {
-  // Aggregate all subjects from all semesters
+
   const allSubjects = semesters.flatMap(sem => sem.subjects || []);
   const totalSubjects = allSubjects.length;
 
-  // Define grade categories based on new system
   const gradeCategories = {
     'A+ (10)': { point: 10, count: 0, color: '#16a34a', range: 'Excellent' },
     'A (9)': { point: 9, count: 0, color: '#22c55e', range: 'Excellent' },
@@ -22,7 +21,7 @@ const GradeDistribution = ({ semesters }) => {
     'F (<5)': { maxPoint: 4, count: 0, color: '#ef4444', range: 'Needs Improvement' },
   };
 
-  // Count subjects in each grade category
+
   allSubjects.forEach(subject => {
     const gp = subject.gradePoint || 0;
     let categorized = false;
