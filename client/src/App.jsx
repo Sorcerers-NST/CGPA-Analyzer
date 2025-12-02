@@ -18,6 +18,7 @@ import ProtectedRoute from './components/ProtectedRoute.jsx'
 import AppLayout from './components/layout/AppLayout.jsx'
 import PublicLayout from './components/layout/PublicLayout.jsx'
 import HomeRedirect from './components/HomeRedirect.jsx'
+import NotFound from './pages/NotFound.jsx'
 
 function App() {
   return (
@@ -36,74 +37,75 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          <Route 
-            path="/dashboard" 
+          <Route
+            path="/dashboard"
             element={
               <ProtectedRoute>
                 <AppLayout>
                   <DashboardNew />
                 </AppLayout>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/profile-setup" 
+          <Route
+            path="/profile-setup"
             element={
               <ProtectedRoute requireProfileSetup={false}>
                 <ProfileSetup />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/semester/:id" 
+          <Route
+            path="/semester/:id"
             element={
               <ProtectedRoute>
                 <AppLayout>
                   <SemesterView />
                 </AppLayout>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/profile" 
+          <Route
+            path="/profile"
             element={
               <ProtectedRoute>
                 <AppLayout>
                   <Profile />
                 </AppLayout>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/settings" 
+          <Route
+            path="/settings"
             element={
               <ProtectedRoute>
                 <AppLayout>
                   <Settings />
                 </AppLayout>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/analytics" 
+          <Route
+            path="/analytics"
             element={
               <ProtectedRoute>
                 <AppLayout>
                   <Analytics />
                 </AppLayout>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/predictor" 
+          <Route
+            path="/predictor"
             element={
               <ProtectedRoute>
                 <AppLayout>
                   <Predictor />
                 </AppLayout>
               </ProtectedRoute>
-            } 
+            }
           />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </AuthProvider>
