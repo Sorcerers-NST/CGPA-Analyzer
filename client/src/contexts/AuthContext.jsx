@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import apiClient from '../services/apiClient';
 
 const AuthContext = createContext(null);
 
@@ -19,9 +20,7 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('/api/users/me', {
-        credentials: 'include',
-      });
+      const response = await apiClient('/api/users/me', { skipAuthRedirect: true });
 
       if (response.ok) {
         const userData = await response.json();
@@ -76,14 +75,18 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password, rememberMe = false) => {
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await apiClient('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ email, password, rememberMe }),
       });
 
-      const data = await response.json();
+      let data = {};
+      try {
+        data = await response.json();
+      } catch (err) {
+        data = {};
+      }
 
       if (!response.ok) {
         throw new Error(data.error || 'Login failed');
@@ -98,9 +101,8 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await fetch('/api/auth/logout', {
+      await apiClient('/api/auth/logout', {
         method: 'POST',
-        credentials: 'include',
       });
     } catch (error) {
       console.error('Logout error:', error);
@@ -114,14 +116,18 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (userData) => {
     try {
-      const response = await fetch('/api/auth/register', {
+      const response = await apiClient('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify(userData),
       });
 
-      const data = await response.json();
+      let data = {};
+      try {
+        data = await response.json();
+      } catch (err) {
+        data = {};
+      }
 
       if (!response.ok) {
         throw new Error(data.error || 'Signup failed');
