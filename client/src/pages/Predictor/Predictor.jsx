@@ -92,9 +92,20 @@ const Predictor = () => {
         s.id === subjectId
           ? {
               ...s,
-              components: s.components.map((c, i) =>
-                i === componentIndex ? { ...c, [field]: value } : c
-              ),
+              components: s.components.map((c, i) => {
+                if (i === componentIndex) {
+                  // Validate obtainedMarks doesn't exceed maxMarks
+                  if (field === 'obtainedMarks') {
+                    const maxMarks = parseFloat(c.maxMarks) || 0;
+                    const obtained = parseFloat(value) || 0;
+                    if (obtained > maxMarks && maxMarks > 0) {
+                      return c; // Don't update if exceeds max
+                    }
+                  }
+                  return { ...c, [field]: value };
+                }
+                return c;
+              }),
             }
           : s
       )
@@ -205,8 +216,116 @@ const Predictor = () => {
     setPredictions(newPredictions);
   };
 
+  const calculateForSubject = (subjectId) => {
+    const targetGP = parseFloat(targetCGPA);
+    if (!targetGP || targetGP < 0 || targetGP > 10) {
+      alert('Please enter a valid target CGPA (0-10)');
+      return;
+    }
+
+    const subject = subjects.find(s => s.id === subjectId);
+    if (!subject) return;
+
+    // Validation for this subject
+    if (!subject.name || !subject.credits) {
+      alert('Please fill in subject name and credits');
+      return;
+    }
+    for (const comp of subject.components) {
+      if (!comp.name || !comp.maxMarks) {
+        alert('Please fill in all component names and max marks');
+        return;
+      }
+    }
+
+    const gradePoint = Math.round(targetGP);
+    const targetPercentage = gradeMapping[gradePoint]?.percentage || targetGP * 10;
+
+    const totalMaxMarks = subject.components.reduce(
+      (sum, comp) => sum + (parseFloat(comp.maxMarks) || 0),
+      0
+    );
+
+    if (totalMaxMarks === 0) return;
+
+    const requiredTotal = (totalMaxMarks * targetPercentage) / 100;
+
+    // Calculate marks already obtained
+    let completedMarks = 0;
+    let completedMax = 0;
+    let remainingMax = 0;
+
+    subject.components.forEach(comp => {
+      const maxMarks = parseFloat(comp.maxMarks) || 0;
+      const obtained = comp.obtainedMarks ? parseFloat(comp.obtainedMarks) : null;
+      
+      if (obtained !== null && obtained !== '') {
+        completedMarks += obtained;
+        completedMax += maxMarks;
+      } else {
+        remainingMax += maxMarks;
+      }
+    });
+
+    const remainingNeeded = requiredTotal - completedMarks;
+    const requiredPercentageRemaining = remainingMax > 0 
+      ? (remainingNeeded / remainingMax) * 100 
+      : 0;
+
+    const componentPredictions = subject.components.map(comp => {
+      const maxMarks = parseFloat(comp.maxMarks) || 0;
+      const obtained = comp.obtainedMarks ? parseFloat(comp.obtainedMarks) : null;
+      
+      if (obtained !== null && obtained !== '') {
+        return {
+          name: comp.name,
+          maxMarks: maxMarks,
+          obtained: obtained,
+          recommended: obtained,
+          percentage: maxMarks > 0 ? (obtained / maxMarks) * 100 : 0,
+          completed: true,
+        };
+      } else {
+        const needed = (maxMarks * requiredPercentageRemaining) / 100;
+        return {
+          name: comp.name,
+          maxMarks: maxMarks,
+          obtained: null,
+          recommended: Math.round(needed * 10) / 10,
+          percentage: requiredPercentageRemaining,
+          completed: false,
+        };
+      }
+    });
+
+    setPredictions({
+      ...predictions,
+      [subjectId]: {
+        totalMax: totalMaxMarks,
+        requiredTotal: Math.round(requiredTotal * 10) / 10,
+        completedMarks: Math.round(completedMarks * 10) / 10,
+        remainingNeeded: Math.round(remainingNeeded * 10) / 10,
+        remainingMax: remainingMax,
+        targetPercentage,
+        requiredPercentageRemaining: Math.round(requiredPercentageRemaining * 10) / 10,
+        components: componentPredictions,
+      },
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+      <style>{`
+        /* Hide number input spinners */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+        input[type=number] {
+          -moz-appearance: textfield;
+        }
+      `}</style>
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
@@ -354,221 +473,221 @@ const Predictor = () => {
                       </button>
                     </div>
 
-                    {/* Assessment Components */}
-                    <div className="mt-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <label className="text-sm font-medium text-gray-700">
-                          Assessment Components
-                        </label>
-                        <button
-                          onClick={() => addComponent(subject.id)}
-                          className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-                        >
-                          + Add Component
-                        </button>
-                      </div>
-
-                      <div className="space-y-2">
-                        {/* Header Row */}
-                        <div className="grid grid-cols-12 gap-2 text-xs font-medium text-gray-600 px-1">
-                          <div className="col-span-5">Component</div>
-                          <div className="col-span-2 text-center">Max</div>
-                          <div className="col-span-3 text-center">Marks Achieved</div>
-                          <div className="col-span-2"></div>
-                        </div>
-
-                        {subject.components.map((component, componentIndex) => {
-                          const isCompleted = component.obtainedMarks && component.obtainedMarks !== '';
-                          
-                          return (
-                            <div key={componentIndex} className="grid grid-cols-12 gap-2 items-center">
-                              <div className="col-span-5">
-                                <input
-                                  type="text"
-                                  value={component.name}
-                                  onChange={(e) =>
-                                    updateComponent(
-                                      subject.id,
-                                      componentIndex,
-                                      'name',
-                                      e.target.value
-                                    )
-                                  }
-                                  placeholder="e.g., Mid Sem"
-                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm bg-white"
-                                />
-                              </div>
-                              <div className="col-span-2">
-                                <input
-                                  type="number"
-                                  value={component.maxMarks}
-                                  onChange={(e) =>
-                                    updateComponent(
-                                      subject.id,
-                                      componentIndex,
-                                      'maxMarks',
-                                      e.target.value
-                                    )
-                                  }
-                                  placeholder="Max"
-                                  min="0"
-                                  step="0.5"
-                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm bg-white"
-                                />
-                              </div>
-                              <div className="col-span-3 relative">
-                                <input
-                                  type="number"
-                                  value={component.obtainedMarks}
-                                  onChange={(e) =>
-                                    updateComponent(
-                                      subject.id,
-                                      componentIndex,
-                                      'obtainedMarks',
-                                      e.target.value
-                                    )
-                                  }
-                                  placeholder="Got?"
-                                  min="0"
-                                  max={component.maxMarks || undefined}
-                                  step="0.5"
-                                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 text-sm ${
-                                    isCompleted 
-                                      ? 'border-green-300 bg-green-50' 
-                                      : 'border-gray-300 bg-white'
-                                  }`}
-                                />
-                                {isCompleted && (
-                                  <FiCheck className="absolute right-2 top-2.5 text-green-600" size={16} />
-                                )}
-                              </div>
-                              <div className="col-span-2 flex items-center gap-1">
-                                {isCompleted && (
-                                  <span className="text-xs text-green-600 font-medium">✓ Done</span>
-                                )}
-                                {subject.components.length > 1 && (
-                                  <button
-                                    onClick={() => removeComponent(subject.id, componentIndex)}
-                                    className="text-red-600 hover:text-red-700 p-1 ml-auto"
-                                  >
-                                    ✕
-                                  </button>
-                                )}
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Prediction Results */}
-                    {predictions[subject.id] && (
-                      <div className="mt-6 pt-6 border-t border-gray-300">
-                        <h4 className="text-sm font-semibold text-gray-700 mb-3">
-                          📊 Smart Prediction for {subject.name}
-                        </h4>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-                          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                            <p className="text-xs text-blue-600 mb-1">Total Needed</p>
-                            <p className="text-lg font-bold text-blue-900">
-                              {predictions[subject.id].requiredTotal} / {predictions[subject.id].totalMax}
-                              <span className="text-sm font-normal ml-1">
-                                ({predictions[subject.id].targetPercentage}%)
-                              </span>
-                            </p>
-                          </div>
-                          
-                          {predictions[subject.id].completedMarks > 0 && (
-                            <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                              <p className="text-xs text-green-600 mb-1">Already Got ✓</p>
-                              <p className="text-lg font-bold text-green-900">
-                                {predictions[subject.id].completedMarks} marks
-                                <span className="text-sm font-normal ml-1">completed</span>
-                              </p>
-                            </div>
-                          )}
-                          
-                          {predictions[subject.id].remainingMax > 0 && (
-                            <div className={`rounded-lg p-3 md:col-span-2 ${
-                              predictions[subject.id].requiredPercentageRemaining > 100
-                                ? 'bg-red-50 border border-red-200'
-                                : 'bg-orange-50 border border-orange-200'
-                            }`}>
-                              <p className={`text-xs mb-1 ${
-                                predictions[subject.id].requiredPercentageRemaining > 100
-                                  ? 'text-red-600'
-                                  : 'text-orange-600'
-                              }`}>Need in Remaining</p>
-                              <p className={`text-lg font-bold ${
-                                predictions[subject.id].requiredPercentageRemaining > 100
-                                  ? 'text-red-900'
-                                  : 'text-orange-900'
-                              }`}>
-                                {predictions[subject.id].remainingNeeded} / {predictions[subject.id].remainingMax} marks
-                                <span className="text-sm font-normal ml-1">
-                                  ({predictions[subject.id].requiredPercentageRemaining}% in pending)
-                                </span>
-                              </p>
-                              {predictions[subject.id].requiredPercentageRemaining > 100 && (
-                                <p className="text-xs text-red-600 mt-2 font-medium">
-                                  ⚠️ Target unreachable! You can't reach the target CGPA.
-                                </p>
-                              )}
-                            </div>
-                          )}
+                    {/* Assessment Components & Predictions Side by Side */}
+                    <div className={`mt-4 grid gap-4 ${predictions[subject.id] ? 'md:grid-cols-2' : 'md:grid-cols-1'}`}>
+                      {/* Left: Assessment Components */}
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <label className="text-sm font-medium text-gray-700">
+                            Assessment Components
+                          </label>
+                          <button
+                            onClick={() => addComponent(subject.id)}
+                            className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                          >
+                            + Add Component
+                          </button>
                         </div>
 
                         <div className="space-y-2">
-                          {predictions[subject.id].components.map((comp, idx) => (
-                            <div
-                              key={idx}
-                              className={`flex items-center justify-between p-3 rounded-lg border ${
-                                comp.completed 
-                                  ? 'bg-green-50 border-green-200'
-                                  : 'bg-orange-50 border-orange-200'
-                              }`}
-                            >
-                              <div className="flex items-center gap-2">
-                                {comp.completed && <FiCheck className="text-green-600" size={16} />}
-                                <span className="text-sm font-medium text-gray-700">
-                                  {comp.name}
-                                </span>
+                          {/* Header Row */}
+                          <div className="grid grid-cols-12 gap-2 text-xs font-medium text-gray-600 px-1">
+                            <div className="col-span-5">Component</div>
+                            <div className="col-span-2 text-center">Max Marks</div>
+                            <div className="col-span-3 text-center">Marks Achieved</div>
+                            <div className="col-span-2"></div>
+                          </div>
+
+                          {subject.components.map((component, componentIndex) => {
+                            const isCompleted = component.obtainedMarks && component.obtainedMarks !== '';
+                            
+                            return (
+                              <div key={componentIndex} className="grid grid-cols-12 gap-2 items-center">
+                                <div className="col-span-5">
+                                  <input
+                                    type="text"
+                                    value={component.name}
+                                    onChange={(e) =>
+                                      updateComponent(
+                                        subject.id,
+                                        componentIndex,
+                                        'name',
+                                        e.target.value
+                                      )
+                                    }
+                                    placeholder="e.g., Mid Sem, End Sem"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm bg-white"
+                                  />
+                                </div>
+                                <div className="col-span-2">
+                                  <input
+                                    type="number"
+                                    value={component.maxMarks}
+                                    onChange={(e) =>
+                                      updateComponent(
+                                        subject.id,
+                                        componentIndex,
+                                        'maxMarks',
+                                        e.target.value
+                                      )
+                                    }
+                                    placeholder="Max"
+                                    min="0"
+                                    step="0.5"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm bg-white"
+                                  />
+                                </div>
+                                <div className="col-span-3 relative">
+                                  <input
+                                    type="number"
+                                    value={component.obtainedMarks}
+                                    onChange={(e) =>
+                                      updateComponent(
+                                        subject.id,
+                                        componentIndex,
+                                        'obtainedMarks',
+                                        e.target.value
+                                      )
+                                    }
+                                    placeholder="Got?"
+                                    min="0"
+                                    max={component.maxMarks || undefined}
+                                    step="0.5"
+                                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 text-sm ${
+                                      isCompleted 
+                                        ? 'border-green-300 bg-green-50' 
+                                        : 'border-gray-300 bg-white'
+                                    }`}
+                                  />
+                                  {isCompleted && (
+                                    <FiCheck className="absolute right-2 top-2.5 text-green-600" size={16} />
+                                  )}
+                                </div>
+                                <div className="col-span-2 flex items-center gap-1">
+                                  {isCompleted && (
+                                    <span className="text-xs text-green-600 font-medium">✓ Done</span>
+                                  )}
+                                  {subject.components.length > 1 && (
+                                    <button
+                                      onClick={() => removeComponent(subject.id, componentIndex)}
+                                      className="text-red-600 hover:text-red-700 p-1 ml-auto"
+                                    >
+                                      ✕
+                                    </button>
+                                  )}
+                                </div>
                               </div>
-                              <div className="text-right">
-                                <span className={`text-sm font-semibold ${
-                                  comp.completed ? 'text-green-900' : 'text-orange-900'
-                                }`}>
-                                  {comp.recommended} / {comp.maxMarks}
-                                </span>
-                                <span className="text-xs text-gray-600 ml-2">
-                                  ({Math.round(comp.percentage)}%)
-                                </span>
-                                {comp.completed && (
-                                  <span className="ml-2 text-xs text-green-600 font-medium">✓</span>
-                                )}
-                              </div>
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
                       </div>
-                    )}
+
+                      {/* Right: Prediction Results (Only if calculated) */}
+                      {predictions[subject.id] && (
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                          <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                            Smart Prediction
+                          </h4>
+                          
+                          {/* Summary Cards */}
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-4">
+                            <div className="bg-white rounded-lg p-2 border border-blue-200">
+                              <p className="text-xs text-blue-600 mb-0.5">Total Needed</p>
+                              <p className="text-sm font-bold text-blue-900">
+                                {predictions[subject.id].requiredTotal} / {predictions[subject.id].totalMax}
+                                <span className="text-xs font-normal ml-1 block">
+                                  ({predictions[subject.id].targetPercentage}%)
+                                </span>
+                              </p>
+                            </div>
+                            
+                            {predictions[subject.id].completedMarks > 0 && (
+                              <div className="bg-white rounded-lg p-2 border border-green-200">
+                                <p className="text-xs text-green-600 mb-0.5">Already Got ✓</p>
+                                <p className="text-sm font-bold text-green-900">
+                                  {predictions[subject.id].completedMarks} marks
+                                </p>
+                              </div>
+                            )}
+                            
+                            {predictions[subject.id].remainingMax > 0 && (
+                              <div className={`rounded-lg p-2 border ${
+                                predictions[subject.id].requiredPercentageRemaining > 100
+                                  ? 'bg-white border-red-200'
+                                  : 'bg-white border-orange-200'
+                              }`}>
+                                <p className={`text-xs mb-0.5 ${
+                                  predictions[subject.id].requiredPercentageRemaining > 100
+                                    ? 'text-red-600'
+                                    : 'text-orange-600'
+                                }`}>Need in Remaining</p>
+                                <p className={`text-sm font-bold ${
+                                  predictions[subject.id].requiredPercentageRemaining > 100
+                                    ? 'text-red-900'
+                                    : 'text-orange-900'
+                                }`}>
+                                  {predictions[subject.id].remainingNeeded} / {predictions[subject.id].remainingMax}
+                                  <span className="text-xs font-normal ml-1 block">
+                                    ({predictions[subject.id].requiredPercentageRemaining}%)
+                                  </span>
+                                </p>
+                                {predictions[subject.id].requiredPercentageRemaining > 100 && (
+                                  <p className="text-xs text-red-600 mt-1 font-medium">
+                                    ⚠️ Target unreachable!
+                                  </p>
+                                )}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Pending Components Only */}
+                          <div>
+                            <p className="text-xs font-semibold text-gray-600 mb-2">You Need:</p>
+                            <div className="space-y-1.5">
+                              {predictions[subject.id].components
+                                .filter(comp => !comp.completed) // Only show pending
+                                .map((comp, idx) => (
+                                  <div
+                                    key={idx}
+                                    className="bg-white rounded-lg p-2 border border-orange-200"
+                                  >
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-xs font-medium text-gray-700">
+                                        {comp.name}
+                                      </span>
+                                      <span className="text-xs font-bold text-orange-900">
+                                        {comp.recommended}/{comp.maxMarks}
+                                      </span>
+                                    </div>
+                                    <div className="text-xs text-gray-500 mt-0.5">
+                                      {Math.round(comp.percentage)}% required
+                                    </div>
+                                  </div>
+                                ))}
+                              {predictions[subject.id].components.every(c => c.completed) && (
+                                <p className="text-xs text-green-600 italic">
+                                  All components completed! ✓
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Calculate Button for this subject */}
+                    <button
+                      onClick={() => calculateForSubject(subject.id)}
+                      disabled={!targetCGPA}
+                      className="w-full mt-4 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-lg transition-colors shadow-sm disabled:cursor-not-allowed"
+                    >
+                      Calculate for {subject.name || 'this subject'}
+                    </button>
                   </motion.div>
                 ))}
               </div>
-            )}
+            )}  
           </div>
-
-          {/* Calculate Button */}
-          {subjects.length > 0 && (
-            <button
-              onClick={calculateSmartPredictions}
-              disabled={!targetCGPA}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-4 px-6 rounded-lg transition-colors shadow-md"
-            >
-              Calculate Smart Predictions
-            </button>
-          )}
         </div>
       </div>
     </div>
