@@ -19,6 +19,7 @@ model User {
   semesters  Semester[]
   cgpaRecords CGPARecord[]
   leaderboardEntries Leaderboard[]
+  predictorSemesters PredictorSemester[]
   
   // Profile completion fields
   profileCompleted Boolean @default(false)
@@ -169,6 +170,43 @@ model AssessmentScore {
 
   @@unique([componentId, subjectAssessmentId])
 }
+
+model PredictorSemester {
+  id          BigInt    @id @default(autoincrement())
+  userId      BigInt
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String    // e.g., "Semester 5 - Spring 2024"
+  targetCGPA  Float
+  subjects    PredictorSubject[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model PredictorSubject {
+  id          BigInt    @id @default(autoincrement())
+  semesterId  BigInt
+  semester    PredictorSemester @relation(fields: [semesterId], references: [id], onDelete: Cascade)
+  name        String
+  credits     Float
+  components  PredictorComponent[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model PredictorComponent {
+  id            BigInt    @id @default(autoincrement())
+  subjectId     BigInt
+  subject       PredictorSubject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  name          String    // e.g., "Mid Sem", "End Sem"
+  maxMarks      Float
+  obtainedMarks Float?    // null = pending, number = completed
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
 
 enum Role {
   STUDENT
