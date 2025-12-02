@@ -116,14 +116,14 @@ export const loginUser = async (req, res) => {
     if (!checkPass) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
-    
-    generateToken(res, { 
-      id: user.id.toString(), 
-      username: user.username, 
-      email: user.email 
+
+    generateToken(res, {
+      id: user.id.toString(),
+      username: user.username,
+      email: user.email
     }, rememberMe);
 
-    return res.json({ 
+    return res.json({
       message: "Login successful",
       user: {
         id: user.id.toString(),
@@ -141,11 +141,11 @@ export const loginUser = async (req, res) => {
 
 export const logoutUser = async (req, res) => {
   try {
-    res.clearCookie('jwt', { 
+    res.clearCookie('jwt', {
       path: '/',
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     });
     return res.json({ message: 'Logged out successfully' });
   } catch (err) {

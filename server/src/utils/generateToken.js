@@ -10,7 +10,7 @@ export const generateToken = (res, payload, rememberMe = false) => {
   res.cookie("jwt", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     maxAge: maxAge,
     path: "/",
   });
