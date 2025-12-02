@@ -16,7 +16,7 @@ const allowedOrigins = [
   "http://localhost:5176",
   "http://localhost:5173",
   "https://cgpa-analyzer.vercel.app",
-  "https://cgpa-analyzer-0c2q.onrender.com",
+  "https://cgpa-test-pra.onrender.com",
   process.env.CLIENT_URL,
 ].filter(Boolean);
 

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://cgpa-analyzer-gr3n.onrender.com';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://cgpa-test-pra-1.onrender.com';
 
 // Create axios instance with default config
 const axiosInstance = axios.create({
