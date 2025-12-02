@@ -391,7 +391,7 @@ const Predictor = () => {
                 )}
                 <button
                   onClick={addSubject}
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-all font-medium shadow-sm"
                 >
                   <FiPlus /> Add Subject
                 </button>
@@ -559,14 +559,9 @@ const Predictor = () => {
                                         : 'border-gray-300 bg-white'
                                     }`}
                                   />
-                                  {isCompleted && (
-                                    <FiCheck className="absolute right-2 top-2.5 text-green-600" size={16} />
-                                  )}
                                 </div>
                                 <div className="col-span-2 flex items-center gap-1">
-                                  {isCompleted && (
-                                    <span className="text-xs text-green-600 font-medium">✓ Done</span>
-                                  )}
+
                                   {subject.components.length > 1 && (
                                     <button
                                       onClick={() => removeComponent(subject.id, componentIndex)}
@@ -610,7 +605,7 @@ const Predictor = () => {
                               </div>
                             )}
                             
-                            {predictions[subject.id].remainingMax > 0 && (
+                            {(predictions[subject.id].remainingMax > 0 || predictions[subject.id].remainingNeeded > 0) && (
                               <div className={`rounded-lg p-2 border ${
                                 predictions[subject.id].requiredPercentageRemaining > 100
                                   ? 'bg-white border-red-200'
@@ -620,20 +615,35 @@ const Predictor = () => {
                                   predictions[subject.id].requiredPercentageRemaining > 100
                                     ? 'text-red-600'
                                     : 'text-orange-600'
-                                }`}>Need in Remaining</p>
+                                }`}>
+                                  {predictions[subject.id].remainingMax > 0 ? 'Need in Remaining' : 'Target Status'}
+                                </p>
                                 <p className={`text-sm font-bold ${
                                   predictions[subject.id].requiredPercentageRemaining > 100
                                     ? 'text-red-900'
                                     : 'text-orange-900'
                                 }`}>
-                                  {predictions[subject.id].remainingNeeded} / {predictions[subject.id].remainingMax}
-                                  <span className="text-xs font-normal ml-1 block">
-                                    ({predictions[subject.id].requiredPercentageRemaining}%)
-                                  </span>
+                                  {predictions[subject.id].remainingMax > 0 ? (
+                                    <>
+                                      {predictions[subject.id].remainingNeeded} / {predictions[subject.id].remainingMax}
+                                      <span className="text-xs font-normal ml-1 block">
+                                        ({predictions[subject.id].requiredPercentageRemaining}%)
+                                      </span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      Short by {Math.abs(predictions[subject.id].remainingNeeded).toFixed(1)} marks
+                                    </>
+                                  )}
                                 </p>
                                 {predictions[subject.id].requiredPercentageRemaining > 100 && (
                                   <p className="text-xs text-red-600 mt-1 font-medium">
                                     ⚠️ Target unreachable!
+                                  </p>
+                                )}
+                                {predictions[subject.id].remainingMax === 0 && predictions[subject.id].remainingNeeded > 0 && (
+                                  <p className="text-xs text-red-600 mt-1 font-medium">
+                                    ⚠️ All components completed but target not reached!
                                   </p>
                                 )}
                               </div>
@@ -679,7 +689,7 @@ const Predictor = () => {
                     <button
                       onClick={() => calculateForSubject(subject.id)}
                       disabled={!targetCGPA}
-                      className="w-full mt-4 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-lg transition-colors shadow-sm disabled:cursor-not-allowed"
+                      className="w-full mt-4 bg-black text-white hover:bg-gray-800 disabled:bg-gray-300 disabled:text-gray-500 font-semibold py-3 px-4 rounded-lg transition-all disabled:cursor-not-allowed shadow-sm"
                     >
                       Calculate for {subject.name || 'this subject'}
                     </button>
