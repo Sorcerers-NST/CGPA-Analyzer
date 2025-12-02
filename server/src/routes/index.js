@@ -7,6 +7,7 @@ import subjectRouter from "./subject.routes.js";
 import passwordResetRouter from "./passwordReset.routes.js";
 import assessmentTemplateRouter from "./assessmentTemplate.routes.js";
 import assessmentScoreRouter from "./assessmentScore.routes.js";
+import predictorRouter from "./predictor.routes.js";
 
 const router = express.Router();
 
@@ -18,6 +19,6 @@ router.use("/api/v1/semesters", semesterRouter);
 router.use("/api/v1/subjects", subjectRouter);
 router.use("/api/assessment-templates", assessmentTemplateRouter);
 router.use("/api/assessment-scores", assessmentScoreRouter);
+router.use("/api/v1/predictor", predictorRouter);
 
 export default router;
-

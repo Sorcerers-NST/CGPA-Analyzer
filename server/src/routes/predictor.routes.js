@@ -1,13 +1,13 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const {
+import {
   getAllPredictors,
   getPredictorById,
   createPredictor,
   updatePredictor,
   deletePredictor,
-} = require('../controllers/predictor.controller');
-const { authMiddleware } = require('../middlewares/auth.middleware');
+} from '../controllers/predictor.controller.js';
+import { authMiddleware } from '../middlewares/auth.middleware.js';
 
 // All routes require authentication
 router.use(authMiddleware);
@@ -27,4 +27,4 @@ router.put('/:id', updatePredictor);
 // Delete a predictor
 router.delete('/:id', deletePredictor);
 
-module.exports = router;
+export default router;

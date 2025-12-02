@@ -1,6 +1,6 @@
-const prisma = require('../generated/prisma');
+import prisma from '../../db.config.js';
 
-const getAllPredictors = async (req, res) => {
+export const getAllPredictors = async (req, res) => {
   try {
     const userId = req.user.id;
 
@@ -43,7 +43,7 @@ const getAllPredictors = async (req, res) => {
   }
 };
 
-const getPredictorById = async (req, res) => {
+export const getPredictorById = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
@@ -96,7 +96,7 @@ const getPredictorById = async (req, res) => {
   }
 };
 
-const createPredictor = async (req, res) => {
+export const createPredictor = async (req, res) => {
   try {
     const userId = req.user.id;
     const { name, targetCGPA, subjects } = req.body;
@@ -172,7 +172,7 @@ const createPredictor = async (req, res) => {
   }
 };
 
-const updatePredictor = async (req, res) => {
+export const updatePredictor = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
@@ -254,7 +254,7 @@ const updatePredictor = async (req, res) => {
   }
 };
 
-const deletePredictor = async (req, res) => {
+export const deletePredictor = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
@@ -289,12 +289,4 @@ const deletePredictor = async (req, res) => {
       error: 'Failed to delete predictor',
     });
   }
-};
-
-module.exports = {
-  getAllPredictors,
-  getPredictorById,
-  createPredictor,
-  updatePredictor,
-  deletePredictor,
 };
