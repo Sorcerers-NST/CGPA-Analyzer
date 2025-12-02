@@ -1,9 +1,3 @@
-/**
- * AppLayout - Main layout wrapper
- * 
- * Includes Navbar and Command Palette with keyboard shortcuts
- */
-
 import { useState, useEffect } from 'react';
 import { useKeyboardShortcut } from '../../hooks/useKeyboardShortcut';
 import Navbar from '../layout/Navbar';

@@ -1,10 +1,5 @@
 import { motion } from 'framer-motion';
 
-/**
- * RecentActivity Component
- * Shows recent changes and updates
- * Provides timeline of academic progress
- */
 const RecentActivity = ({ semesters }) => {
   // Generate activity feed from semester data
   const generateActivities = () => {

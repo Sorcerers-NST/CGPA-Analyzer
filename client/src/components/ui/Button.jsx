@@ -1,14 +1,3 @@
-/**
- * Button Component - cal.com style
- * 
- * Variants:
- * - primary: Black background, white text
- * - secondary: White background, black border
- * - ghost: Transparent, hover shows gray
- * 
- * Sizes: sm, md, lg
- */
-
 import { forwardRef } from 'react';
 import { motion } from 'framer-motion';
 

@@ -1,10 +1,3 @@
-/**
- * PublicNavbar - cal.com style
- * 
- * Minimal navbar for public pages (homepage)
- * Logo on left, nav links center, auth buttons right
- */
-
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiMoon, FiSun } from 'react-icons/fi';

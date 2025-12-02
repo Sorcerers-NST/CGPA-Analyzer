@@ -1,11 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 
-/**
- * AddSubjectModal Component
- * Modal for adding new subjects with form validation
- * User selects grade point, grade is automatically determined
- */
 const AddSubjectModal = ({ isOpen, onClose, onSubmit, isLoading }) => {
   const [formData, setFormData] = useState({
     name: '',

@@ -1,10 +1,5 @@
 import { motion } from 'framer-motion';
 
-/**
- * SemesterHeader Component
- * Displays semester title and description with Add Subject button
- * Minimalist design matching Dashboard
- */
 const SemesterHeader = ({ semesterNumber, onAddSubject }) => {
   return (
     <motion.div

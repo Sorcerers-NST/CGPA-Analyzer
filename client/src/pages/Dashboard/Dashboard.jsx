@@ -16,11 +16,6 @@ import SemesterCard from '../../components/dashboard/SemesterCard';
 // import GoalTracker from '../../components/dashboard/GoalTracker';
 // import PerformanceAnalytics from '../../components/dashboard/PerformanceAnalytics';
 
-/**
- * Dashboard Component
- * Minimalist, Cal.com-inspired design
- * Clean black & white theme with smooth animations
- */
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user, loading: authLoading, logout } = useAuth();

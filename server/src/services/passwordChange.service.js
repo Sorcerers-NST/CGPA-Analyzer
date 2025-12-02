@@ -2,20 +2,10 @@ import prisma from "../../db.config.js";
 import bcrypt from "bcrypt";
 import { sendPasswordChangeVerificationEmail } from "../utils/sendEmail.js";
 
-/**
- * Generate a random 6-digit numeric code
- * @returns {string} 6-digit code
- */
 const generateVerificationCode = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
-/**
- * Request password change verification code
- * @param {string} email - User email
- * @param {string} currentPassword - Current password for verification
- * @returns {Promise<object>} Success message
- */
 export const requestPasswordChangeCode = async (email, currentPassword) => {
   // Get user with password
   const user = await prisma.user.findFirst({
@@ -62,13 +52,6 @@ export const requestPasswordChangeCode = async (email, currentPassword) => {
   return { message: 'Verification code sent to your email' };
 };
 
-/**
- * Verify code and change password
- * @param {string} email - User email
- * @param {string} code - Verification code
- * @param {string} newPassword - New password
- * @returns {Promise<object>} Success message
- */
 export const verifyCodeAndChangePassword = async (email, code, newPassword) => {
   // Get user
   const user = await prisma.user.findFirst({

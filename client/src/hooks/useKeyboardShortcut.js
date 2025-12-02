@@ -1,10 +1,3 @@
-/**
- * useKeyboardShortcut Hook
- * 
- * Register keyboard shortcuts
- * Supports Cmd/Ctrl modifiers
- */
-
 import { useEffect } from 'react';
 
 export function useKeyboardShortcut(key, callback, modifiers = {}) {

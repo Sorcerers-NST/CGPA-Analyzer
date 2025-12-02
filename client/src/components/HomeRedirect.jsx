@@ -2,11 +2,6 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
-/**
- * HomeRedirect Component
- * Redirects authenticated users from root (/) to /dashboard
- * Non-authenticated users see the normal Home page
- */
 const HomeRedirect = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
   const navigate = useNavigate();

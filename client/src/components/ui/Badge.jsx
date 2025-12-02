@@ -1,9 +1,3 @@
-/**
- * Badge Component - cal.com style
- * 
- * Small pill-shaped badge for grades, status indicators
- */
-
 const Badge = ({
   children,
   variant = 'default',

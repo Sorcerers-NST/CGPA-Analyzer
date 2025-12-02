@@ -1,11 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
-/**
- * EditSubjectModal Component
- * Modal for editing existing subjects
- * User selects grade point, grade is automatically determined
- */
 const EditSubjectModal = ({ isOpen, onClose, onSubmit, subject, isLoading }) => {
   const [formData, setFormData] = useState({
     name: '',

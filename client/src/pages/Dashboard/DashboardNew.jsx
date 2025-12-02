@@ -1,10 +1,3 @@
-/**
- * Dashboard - cal.com style
- * 
- * Clean, minimalist dashboard with generous white space
- * Focus on typography hierarchy and subtle interactions
- */
-
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';

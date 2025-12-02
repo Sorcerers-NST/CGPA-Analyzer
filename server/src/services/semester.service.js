@@ -1,8 +1,5 @@
 import prisma from "../../db.config.js";
 
-/**
- * Helper function to convert BigInt fields to strings for JSON serialization
- */
 const convertBigIntToString = (obj) => {
   if (!obj) return obj;
   
@@ -29,11 +26,6 @@ const convertBigIntToString = (obj) => {
   return obj;
 };
 
-/**
- * Create a new semester for a user
- * @param {Object} semesterData - Semester data including semesterNumber, userId, startDate, endDate
- * @returns {Promise<Object>} Created semester
- */
 export const createSemester = async (semesterData) => {
   const { semesterNumber, userId, startDate, endDate } = semesterData;
 
@@ -65,11 +57,6 @@ export const createSemester = async (semesterData) => {
   return convertBigIntToString(semester);
 };
 
-/**
- * Get all semesters for a specific user
- * @param {BigInt|String} userId - User ID
- * @returns {Promise<Array>} Array of semesters with subjects
- */
 export const getUserSemesters = async (userId) => {
   const semesters = await prisma.semester.findMany({
     where: {
@@ -86,12 +73,6 @@ export const getUserSemesters = async (userId) => {
   return convertBigIntToString(semesters);
 };
 
-/**
- * Get a single semester by ID with subjects
- * @param {BigInt|String} semesterId - Semester ID
- * @param {BigInt|String} userId - User ID (for authorization)
- * @returns {Promise<Object>} Semester with subjects
- */
 export const getSemesterById = async (semesterId, userId) => {
   const semester = await prisma.semester.findFirst({
     where: {
@@ -114,13 +95,6 @@ export const getSemesterById = async (semesterId, userId) => {
   return convertBigIntToString(semester);
 };
 
-/**
- * Update semester data
- * @param {BigInt|String} semesterId - Semester ID
- * @param {BigInt|String} userId - User ID (for authorization)
- * @param {Object} updateData - Data to update (semesterNumber, startDate, endDate)
- * @returns {Promise<Object>} Updated semester
- */
 export const updateSemester = async (semesterId, userId, updateData) => {
   // Verify semester belongs to user
   const semester = await prisma.semester.findFirst({
@@ -177,12 +151,6 @@ export const updateSemester = async (semesterId, userId, updateData) => {
   return convertBigIntToString(updatedSemester);
 };
 
-/**
- * Delete a semester and all its subjects
- * @param {BigInt|String} semesterId - Semester ID
- * @param {BigInt|String} userId - User ID (for authorization)
- * @returns {Promise<Object>} Deleted semester
- */
 export const deleteSemester = async (semesterId, userId) => {
   // Verify semester belongs to user
   const semester = await prisma.semester.findFirst({
@@ -227,12 +195,6 @@ export const deleteSemester = async (semesterId, userId) => {
   return convertBigIntToString(deletedSemester);
 };
 
-/**
- * Calculate CGPA/SGPA for a semester based on subjects' gradePoints and credits
- * @param {BigInt|String} semesterId - Semester ID
- * @param {BigInt|String} userId - User ID (for authorization)
- * @returns {Promise<Object>} Calculated SGPA and other stats
- */
 export const calculateSemesterCGPA = async (semesterId, userId) => {
   // Get semester with subjects
   const semester = await prisma.semester.findFirst({

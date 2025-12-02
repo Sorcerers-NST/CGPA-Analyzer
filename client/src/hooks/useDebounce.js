@@ -1,10 +1,3 @@
-/**
- * useDebounce Hook
- * 
- * Debounces a value with configurable delay
- * Used for search inputs, command palette
- */
-
 import { useState, useEffect } from 'react';
 
 export function useDebounce(value, delay = 300) {

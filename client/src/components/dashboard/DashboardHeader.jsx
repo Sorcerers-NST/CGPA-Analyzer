@@ -2,11 +2,6 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../contexts/AuthContext';
 
-/**
- * DashboardHeader Component
- * Minimalist sticky navbar with user dropdown
- * Inspired by Cal.com design
- */
 const DashboardHeader = () => {
   const { user, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

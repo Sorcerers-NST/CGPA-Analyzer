@@ -233,10 +233,6 @@ export const deleteAccount = async (req, res) => {
   }
 };
 
-/**
- * Request password change verification code
- * POST /api/users/request-password-change
- */
 export const requestPasswordChangeVerification = async (req, res) => {
   try {
     if (!req.user || !req.user.email) {
@@ -271,10 +267,6 @@ export const requestPasswordChangeVerification = async (req, res) => {
   }
 };
 
-/**
- * Change password with verification code
- * PUT /api/users/change-password-verified
- */
 export const changePasswordWithVerification = async (req, res) => {
   try {
     if (!req.user || !req.user.email) {

@@ -1,11 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
-/**
- * EditSemesterModal Component
- * Modal for editing existing semesters
- * Clean, minimalist design matching EditSubjectModal
- */
 const EditSemesterModal = ({ isOpen, onClose, onSubmit, semester, isLoading }) => {
   const [formData, setFormData] = useState({
     semesterNumber: '',

@@ -1,11 +1,6 @@
 import { motion } from 'framer-motion';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
-/**
- * GradeDistribution Component
- * Visual breakdown of grades across all subjects using new grading system
- * Grading: 10=A+, 9=A, 8=B+, 7=B, 6=C+, 5=C, <5=F
- */
 const GradeDistribution = ({ semesters }) => {
   // Aggregate all subjects from all semesters
   const allSubjects = semesters.flatMap(sem => sem.subjects || []);

@@ -1,10 +1,5 @@
 import nodemailer from 'nodemailer';
 
-/**
- * Email utility for sending password reset codes
- * Uses Nodemailer with SMTP configuration
- */
-
 // Create reusable transporter
 const createTransporter = () => {
   return nodemailer.createTransporter({
@@ -18,13 +13,6 @@ const createTransporter = () => {
   });
 };
 
-/**
- * Send password reset email with 6-digit code
- * @param {string} email - Recipient email address
- * @param {string} code - 6-digit verification code
- * @param {string} username - User's username
- * @returns {Promise<void>}
- */
 export const sendPasswordResetEmail = async (email, code, username) => {
   try {
     const transporter = createTransporter();
@@ -141,13 +129,6 @@ export const sendPasswordResetEmail = async (email, code, username) => {
   }
 };
 
-/**
- * Send password change verification email with 6-digit code
- * @param {string} email - Recipient email address
- * @param {string} code - 6-digit verification code
- * @param {string} username - User's username
- * @returns {Promise<void>}
- */
 export const sendPasswordChangeVerificationEmail = async (email, code, username) => {
   try {
     const transporter = createTransporter();
@@ -273,10 +254,6 @@ export const sendPasswordChangeVerificationEmail = async (email, code, username)
   }
 };
 
-/**
- * Test email configuration
- * @returns {Promise<boolean>}
- */
 export const testEmailConnection = async () => {
   try {
     const transporter = createTransporter();

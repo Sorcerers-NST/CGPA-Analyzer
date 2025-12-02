@@ -1,11 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState, useRef, useEffect } from 'react';
 
-/**
- * SubjectCard Component
- * Displays individual subject with edit/delete actions
- * Minimalist card design with hover effects
- */
 const SubjectCard = ({ subject, index, onEdit, onDelete }) => {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);

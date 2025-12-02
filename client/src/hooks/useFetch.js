@@ -1,9 +1,3 @@
-/**
- * useFetch Hook
- * 
- * Generic data fetching hook with loading, error states
- */
-
 import { useState, useEffect, useCallback } from 'react';
 
 export function useFetch(fetchFn, dependencies = []) {

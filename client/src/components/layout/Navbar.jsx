@@ -1,14 +1,3 @@
-/**
- * Navbar - cal.com style
- * 
- * Global sticky navigation with:
- * - Logo/brand on left
- * - Breadcrumbs/page title in center
- * - Command trigger, user menu on right
- * 
- * Height: 64px, minimal, clean
- */
-
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';

@@ -1,11 +1,6 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
-/**
- * SemesterCard Component
- * Individual semester card with hover animations
- * Clean, minimal design
- */
 const SemesterCard = ({ semester, index }) => {
   const navigate = useNavigate();
 

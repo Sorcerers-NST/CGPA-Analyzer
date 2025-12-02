@@ -1,18 +1,3 @@
-/**
- * Home - Professional Homepage (cal.com style)
- * 
- * Main product page showcasing CGPA Analyzer
- * Clean, minimalist, professional SaaS aesthetic
- * 
- * Sections:
- * 1. Hero with headline and CTA
- * 2. Feature blocks (3-column grid)
- * 3. Product sections (alternating layout)
- * 4. Colleges section (no fake testimonials)
- * 5. Final CTA
- * 6. Footer
- */
-
 import HomeHero from '../../components/home/HomeHero';
 import FeatureBlocks from '../../components/home/FeatureBlocks';
 import ProductSections from '../../components/home/ProductSections';

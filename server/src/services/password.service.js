@@ -1,13 +1,6 @@
 import prisma from "../../db.config.js";
 import bcrypt from "bcrypt";
 
-/**
- * Change user password
- * @param {string} email - User email
- * @param {string} currentPassword - Current password
- * @param {string} newPassword - New password
- * @returns {Promise<object>} Success message
- */
 export const changePassword = async (email, currentPassword, newPassword) => {
   // Get user with password
   const user = await prisma.user.findFirst({

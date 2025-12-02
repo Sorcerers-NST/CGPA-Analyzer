@@ -1,11 +1,6 @@
 import { motion } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-/**
- * CGPACard Component
- * Displays current CGPA with trend chart
- * Minimalist design with smooth animations
- */
 const CGPACard = ({ cgpa = 0, lastUpdated, semesterData = [] }) => {
   // Format date
   const formatDate = (dateString) => {

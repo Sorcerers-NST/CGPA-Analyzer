@@ -2,21 +2,10 @@ import bcrypt from 'bcrypt';
 import prisma from '../../db.config.js';
 import { sendPasswordResetEmail } from '../utils/sendEmail.js';
 
-/**
- * Generate a random 6-digit numeric code
- * @returns {string} 6-digit code
- */
 const generateResetCode = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
-/**
- * Request password reset - Step 1
- * POST /api/auth/forgot-password
- * 
- * @param {Object} req - Express request
- * @param {Object} res - Express response
- */
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -82,13 +71,6 @@ export const forgotPassword = async (req, res) => {
   }
 };
 
-/**
- * Reset password with code - Step 2
- * POST /api/auth/reset-password
- * 
- * @param {Object} req - Express request
- * @param {Object} res - Express response
- */
 export const resetPassword = async (req, res) => {
   try {
     const { email, code, newPassword } = req.body;

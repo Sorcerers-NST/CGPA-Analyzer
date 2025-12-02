@@ -1,10 +1,3 @@
-/**
- * Card Component - cal.com style
- * 
- * Minimal white card with subtle shadow and rounded corners
- * Hover effect increases shadow and slightly scales
- */
-
 import { motion } from 'framer-motion';
 
 const Card = ({

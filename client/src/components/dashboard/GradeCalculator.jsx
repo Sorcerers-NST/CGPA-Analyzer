@@ -1,11 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-/**
- * GradeCalculator Component
- * Interactive calculator to predict grades needed
- * Helps students plan their academic goals
- */
 const GradeCalculator = ({ currentCGPA, totalCredits }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [targetCGPA, setTargetCGPA] = useState('');

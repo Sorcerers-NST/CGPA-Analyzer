@@ -1,9 +1,3 @@
-/**
- * Input Component - cal.com style
- * 
- * Clean input field with label, error state, and optional helper text
- */
-
 import { forwardRef } from 'react';
 
 const Input = forwardRef(({

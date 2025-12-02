@@ -1,10 +1,3 @@
-/**
- * ProductSections - cal.com style
- * 
- * Alternating left-right layout sections showcasing features
- * Generous spacing, clean typography, subtle animations
- */
-
 import { motion } from 'framer-motion';
 
 const sections = [

@@ -1,10 +1,3 @@
-/**
- * FeatureBlocks - cal.com style
- * 
- * 3-column grid of product features
- * Clean cards with icons, titles, descriptions
- */
-
 import { motion } from 'framer-motion';
 import { FiTrendingUp, FiBook, FiBarChart2 } from 'react-icons/fi';
 import Card from '../ui/Card';

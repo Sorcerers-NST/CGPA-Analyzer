@@ -1,8 +1,5 @@
 const prisma = require('../generated/prisma');
 
-/**
- * Get all predictor semesters for the authenticated user
- */
 const getAllPredictors = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -46,9 +43,6 @@ const getAllPredictors = async (req, res) => {
   }
 };
 
-/**
- * Get a single predictor by ID
- */
 const getPredictorById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -102,9 +96,6 @@ const getPredictorById = async (req, res) => {
   }
 };
 
-/**
- * Create a new predictor semester
- */
 const createPredictor = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -181,9 +172,6 @@ const createPredictor = async (req, res) => {
   }
 };
 
-/**
- * Update a predictor
- */
 const updatePredictor = async (req, res) => {
   try {
     const { id } = req.params;
@@ -266,9 +254,6 @@ const updatePredictor = async (req, res) => {
   }
 };
 
-/**
- * Delete a predictor
- */
 const deletePredictor = async (req, res) => {
   try {
     const { id } = req.params;

@@ -1,10 +1,3 @@
-/**
- * HomeFooter - cal.com style
- * 
- * Minimal SaaS footer with links and copyright
- * Clean, single line, no clutter
- */
-
 import { Link } from 'react-router-dom';
 
 const HomeFooter = () => {

@@ -1,9 +1,3 @@
-/**
- * Select Component - cal.com style
- * 
- * Custom dropdown select matching input design
- */
-
 import { forwardRef } from 'react';
 
 const Select = forwardRef(({

@@ -1,10 +1,5 @@
 import * as subjectService from "../services/subject.service.js";
 
-/**
- * Controller to create a new subject
- * POST /api/v1/subjects/
- * Body: { name, credits, grade?, gradePoint?, semesterId }
- */
 export const createSubject = async (req, res, next) => {
   try {
     const userId = req.user?.id;
@@ -62,10 +57,6 @@ export const createSubject = async (req, res, next) => {
   }
 };
 
-/**
- * Controller to get all subjects for a semester
- * GET /api/v1/subjects/semester/:semesterId
- */
 export const getSubjectsBySemester = async (req, res, next) => {
   try {
     const userId = req.user?.id;
@@ -98,10 +89,6 @@ export const getSubjectsBySemester = async (req, res, next) => {
   }
 };
 
-/**
- * Controller to get a single subject by ID
- * GET /api/v1/subjects/:id
- */
 export const getSubjectById = async (req, res, next) => {
   try {
     const userId = req.user?.id;
@@ -134,11 +121,6 @@ export const getSubjectById = async (req, res, next) => {
   }
 };
 
-/**
- * Controller to update a subject
- * PUT /api/v1/subjects/:id
- * Body: { name?, credits?, grade?, gradePoint? }
- */
 export const updateSubject = async (req, res, next) => {
   try {
     const userId = req.user?.id;
@@ -180,10 +162,6 @@ export const updateSubject = async (req, res, next) => {
   }
 };
 
-/**
- * Controller to delete a subject
- * DELETE /api/v1/subjects/:id
- */
 export const deleteSubject = async (req, res, next) => {
   try {
     const userId = req.user?.id;

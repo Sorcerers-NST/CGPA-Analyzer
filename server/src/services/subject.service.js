@@ -1,8 +1,5 @@
 import prisma from "../../db.config.js";
 
-/**
- * Helper function to convert BigInt fields to strings for JSON serialization
- */
 const convertBigIntToString = (obj) => {
   if (!obj) return obj;
   
@@ -29,11 +26,6 @@ const convertBigIntToString = (obj) => {
   return obj;
 };
 
-/**
- * Create a new subject for a semester
- * @param {Object} subjectData - Subject data including name, credits, grade, gradePoint, semesterId, userId
- * @returns {Promise<Object>} Created subject
- */
 export const createSubject = async (subjectData) => {
   const { name, credits, grade, gradePoint, semesterId, userId } = subjectData;
 
@@ -75,12 +67,6 @@ export const createSubject = async (subjectData) => {
   return convertBigIntToString(subject);
 };
 
-/**
- * Get all subjects for a specific semester
- * @param {BigInt|String} semesterId - Semester ID
- * @param {BigInt|String} userId - User ID (for authorization)
- * @returns {Promise<Array>} Array of subjects
- */
 export const getSubjectsBySemester = async (semesterId, userId) => {
   // Verify semester belongs to user
   const semester = await prisma.semester.findFirst({
@@ -106,12 +92,6 @@ export const getSubjectsBySemester = async (semesterId, userId) => {
   return convertBigIntToString(subjects);
 };
 
-/**
- * Get a single subject by ID
- * @param {BigInt|String} subjectId - Subject ID
- * @param {BigInt|String} userId - User ID (for authorization)
- * @returns {Promise<Object>} Subject
- */
 export const getSubjectById = async (subjectId, userId) => {
   const subject = await prisma.subject.findFirst({
     where: {
@@ -134,13 +114,6 @@ export const getSubjectById = async (subjectId, userId) => {
   return convertBigIntToString(subject);
 };
 
-/**
- * Update subject data
- * @param {BigInt|String} subjectId - Subject ID
- * @param {BigInt|String} userId - User ID (for authorization)
- * @param {Object} updateData - Data to update (name, credits, grade, gradePoint)
- * @returns {Promise<Object>} Updated subject
- */
 export const updateSubject = async (subjectId, userId, updateData) => {
   // Get subject with semester for authorization
   const subject = await prisma.subject.findFirst({
@@ -204,12 +177,6 @@ export const updateSubject = async (subjectId, userId, updateData) => {
   return convertBigIntToString(updatedSubject);
 };
 
-/**
- * Delete a subject
- * @param {BigInt|String} subjectId - Subject ID
- * @param {BigInt|String} userId - User ID (for authorization)
- * @returns {Promise<Object>} Deleted subject
- */
 export const deleteSubject = async (subjectId, userId) => {
   // Get subject with semester for authorization
   const subject = await prisma.subject.findFirst({
