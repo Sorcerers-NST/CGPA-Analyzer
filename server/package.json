@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "build": "prisma generate && prisma migrate deploy",
+    "build": "npm install && npx prisma@6.19.0 generate && npx prisma@6.19.0 migrate deploy",
     "postinstall": "prisma generate"
   },
   "keywords": [],
