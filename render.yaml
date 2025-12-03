@@ -31,7 +31,7 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
-        value: https://cgpa-analyzer-gr3n.onrender.com
+        value: https://cgpa-analyzer-9-backend.onrender.com
       - key: NODE_ENV
         value: production
     headers:

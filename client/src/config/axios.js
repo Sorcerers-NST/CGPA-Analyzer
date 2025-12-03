@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://cgpa-test-pra-1.onrender.com';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://cgpa-analyzer-9-backend.onrender.com';
 
 // Create axios instance with default config
 const axiosInstance = axios.create({
@@ -30,7 +30,7 @@ axiosInstance.interceptors.response.use(
     // Handle 401 errors (except for auth check endpoints)
     if (error.response?.status === 401) {
       const skipAuthRedirect = error.config?.skipAuthRedirect;
-      
+
       if (!skipAuthRedirect) {
         localStorage.removeItem('isAuthenticated');
         // Clear all cookies by setting them to expire
@@ -40,7 +40,7 @@ axiosInstance.interceptors.response.use(
         window.location.href = '/login';
       }
     }
-    
+
     return Promise.reject(error);
   }
 );
